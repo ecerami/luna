@@ -8,17 +8,21 @@ import "./App.css";
 
 class App extends React.Component {
   private getColor(datum: any) {
-    if (datum.leiden === 1) {
-      return "red";
-    } else if (datum.leiden === 2) {
-      return "blue";
-    } else if (datum.leiden === 3) {
-      return "purple";
-    } else if (datum.leiden === 4) {
-      return "orange";
-    } else {
-      return "green";
-    }
+    //  colors:  https://colorbrewer2.org/
+    //  only currently supports up to 9 colors
+    let colors = [
+      "#a6cee3",
+      "#1f78b4",
+      "#b2df8a",
+      "#33a02c",
+      "#fb9a99",
+      "#e31a1c",
+      "#fdbf6f",
+      "#ff7f00",
+      "#cab2d6",
+    ]
+    let cluster = datum.leiden;
+    return colors[cluster];
   }
 
   render() {
