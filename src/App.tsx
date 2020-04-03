@@ -1,13 +1,27 @@
 import React from "react";
 import data from "./data/umap_clusters.json";
 import { VictoryChart, VictoryScatter } from "victory";
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import { observable, configure, action } from "mobx";
+import { observer } from "mobx-react";
+
 import "./App.css";
 
+@observer
 class App extends React.Component {
-  private getColor(datum: any) {
+  @observable colorMenu = 0;
+
+  constructor() {
+    super({});
+    this.handleColorMenuChange = this.handleColorMenuChange.bind(this);
+  }  
+
+  private getColor(datum: any): string {
     //  colors:  https://colorbrewer2.org/
     //  only currently supports up to 9 colors
     let colors = [
@@ -19,22 +33,47 @@ class App extends React.Component {
       "#e31a1c",
       "#fdbf6f",
       "#ff7f00",
-      "#cab2d6",
-    ]
-    let cluster = datum.leiden;
-    return colors[cluster];
+      "#cab2d6"
+    ];
+    if (this.colorMenu === 1) {
+      return colors[datum.leiden];
+    } else if (this.colorMenu === 2) {
+      return colors[datum.louvain];
+    } else {
+      return "black";
+    }
+  }
+
+  handleColorMenuChange(event: any) {
+    this.colorMenu = event.target.value;
+    console.log("Event:  " + event.target.value);
   }
 
   render() {
+    let formStyle = {
+      minWidth: 200,
+      paddingTop: 20,
+      paddingLeft: 20
+    }
     return (
       <div>
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h6">
-              Luna:  Single Cell Visualizer
-            </Typography>
+            <Typography variant="h6">Luna: Single Cell Visualizer</Typography>
           </Toolbar>
         </AppBar>
+
+        <FormControl style={formStyle}>
+          <Select
+            value={this.colorMenu}
+            onChange={this.handleColorMenuChange}
+          >
+            <MenuItem value={0}>No Color Coding</MenuItem>
+            <MenuItem value={1}>Color Code by Louvian Cluster</MenuItem>
+            <MenuItem value={2}>Color Code by Ledein Cluster</MenuItem>
+          </Select>
+        </FormControl>
+
         <div id="plot">
           <VictoryChart>
             <VictoryScatter
