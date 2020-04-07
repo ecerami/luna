@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { observable, configure, action } from "mobx";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 
 import "./App.css";
@@ -54,7 +54,18 @@ class App extends React.Component {
       minWidth: 200,
       paddingTop: 20,
       paddingLeft: 20
-    }
+    };
+
+    let chipStyle = {
+        borderRadius: 5,
+        background: "#73AD21",
+        marginLeft:20,
+        marginTop:10,
+        padding: 2,
+        width: 10,
+        height: 15,
+    };
+
     return (
       <div>
         <AppBar position="static">
@@ -73,6 +84,7 @@ class App extends React.Component {
             <MenuItem value={2}>Color Code by Ledein Cluster</MenuItem>
           </Select>
         </FormControl>
+        <div style={chipStyle}></div>
 
         <div id="plot">
           <VictoryChart>
