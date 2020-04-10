@@ -18,6 +18,32 @@ def countUniqueCategories(key, clusterMap):
         uniqueCategorySet[currentCategory] = 1
     return (len(uniqueCategorySet))
 
+# Dump CSV Content
+def dumpCsv(cellList):
+    index = 0
+    currentCell = cellList[0]
+    keys = currentCell.keys()
+    line = "id,"
+    for key in keys:
+        if key == "x":
+            line += ("point_latitude,")
+        elif key == "y":
+            line += ("point_longitude,")
+        else:
+            line += ("%s," % key)
+    print (line[0:len(line)-1])
+
+    for currentCell in cellList:
+        keys = currentCell.keys()
+        line = "%d," % index
+        for key in keys:
+            if key == "x" or key == "y":
+                line += ("%.12f," % currentCell[key])
+            else:
+                line += ("%s," % currentCell[key])
+        print (line[0:len(line)-1])
+        index +=1
+
 # Generate Cell List
 def generateCellList(umap, clusterValuesMap, clusterMap):
     cellList = []
@@ -36,7 +62,7 @@ def generateCellList(umap, clusterValuesMap, clusterMap):
     return cellList
 
 # Parse H5AD File
-def parseH5ad(fileName):
+def parseH5ad(fileName, fileType):
     clusterMap = {}
     f = h5py.File(fileName, 'r')
 
@@ -63,10 +89,13 @@ def parseH5ad(fileName):
     # Extract all the info
     cellList = generateCellList(umap, clusterValuesMap, clusterMap)
 
-    # Dump to JSON
-    j = json.dumps(cellList, indent=4)
-    print(j)
+    if (fileType == "json"):
+        j = json.dumps(cellList, indent=4)
+        print(j)
+    else:
+        dumpCsv(cellList)
 
 # Open the specified h5ad file
 fileName = sys.argv[1]
-parseH5ad(fileName)
+fileType = sys.argv[2]
+parseH5ad(fileName, fileType)
