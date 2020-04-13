@@ -1,6 +1,7 @@
 import h5py
 import json
 import sys
+import numpy as np
 
 # Parse Category/Cluster File
 def parseCategoryFile (unsFile, clusterMap):
@@ -53,16 +54,23 @@ def generateCellList(umap, clusterValuesMap, clusterMap):
         currentCell["y"] = umap[i][1]
         for key in clusterValuesMap:
             values = clusterValuesMap[key]
-            try:
+            if key in clusterMap:
                 categoryMap = clusterMap[key]
                 currentCell[key] = categoryMap[values[i]]
-            except KeyError:
-                pass
+            else:
+                currentCell[key] = values[i]
         cellList.append(currentCell)
     return cellList
 
+# Gets the Gene Index
+def getGeneIndex(f):
+    varDataSet = f['var']
+    geneSymbols = varDataSet["index"]
+    geneIndex = np.where(geneSymbols == targetGene.encode())
+    return (geneIndex[0][0])
+
 # Parse H5AD File
-def parseH5ad(fileName, fileType):
+def parseH5ad(fileName, targetGene, fileType):
     clusterMap = {}
     f = h5py.File(fileName, 'r')
 
@@ -86,7 +94,11 @@ def parseH5ad(fileName, fileType):
     for field in fieldNames:
         clusterValuesMap[field] = obs[field]
 
-    # Extract all the info
+    # Get the gene index and extract expression values for target gene
+    targetGeneIndex = getGeneIndex(f)
+    clusterValuesMap[targetGene] = f['X'][:,targetGeneIndex]
+
+    # Extract all the info into an array of cells
     cellList = generateCellList(umap, clusterValuesMap, clusterMap)
 
     if (fileType == "json"):
@@ -97,5 +109,6 @@ def parseH5ad(fileName, fileType):
 
 # Open the specified h5ad file
 fileName = sys.argv[1]
-fileType = sys.argv[2]
-parseH5ad(fileName, fileType)
+targetGene = sys.argv[2]
+fileType = sys.argv[3]
+parseH5ad(fileName, targetGene, fileType)
