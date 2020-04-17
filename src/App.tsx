@@ -4,14 +4,15 @@ import { observable } from "mobx";
 import { observer } from "mobx-react";
 import DeckGL from '@deck.gl/react';
 import {HexagonLayer} from '@deck.gl/aggregation-layers';
-import data from "./data/hex-test.json";
+import data from "./data/temp.json";
+//import data from "./data/hex-test.json";
 import "./App.css";
 
 // Viewport settings
 const viewState = {
-  longitude: -122.408778,
-  latitude: 37.782887,
-  zoom: 13,
+  longitude: -0.4374792,
+  latitude: 13.08756237717,
+  zoom: 8,
   pitch: 20,
   bearing: 0,
 };
@@ -30,13 +31,17 @@ class App extends React.Component {
       data,
       pickable: true,
       extruded: true,
-      radius: 60,
-      elevationScale: 4,
+      radius: 3000,
+      elevationScale: 140,
+      onHover: (info: any, event: any) => console.log('Hovered:', info, event),
     });
 
     return (
       <div>
-        <DeckGL viewState={viewState} layers={[layer]} />
+        <DeckGL
+          controller={true} 
+          initialViewState={viewState}
+          layers={[layer]} />
       </div>
     );
   }
