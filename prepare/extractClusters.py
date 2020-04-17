@@ -46,24 +46,25 @@ def dumpCsv(cellList):
         index +=1
 
 # Generate Cell List
-def generateCellList(umap, clusterValuesMap, clusterMap):
+def generateCellList(umap, clusterValuesMap, clusterMap, targetGene):
     cellList = []
     for i in range(0, len(umap)):
         currentCell = {}
-        currentCell["x"] = umap[i][0]
-        currentCell["y"] = umap[i][1]
+        #currentCell["x"] = umap[i][0]
+        #currentCell["y"] = umap[i][1]
+        currentCell["position"] = [umap[i][0], umap[i][1]]
         for key in clusterValuesMap:
             values = clusterValuesMap[key]
             if key in clusterMap:
                 categoryMap = clusterMap[key]
                 currentCell[key] = categoryMap[values[i]]
-            else:
-                currentCell[key] = values[i]
+            elif key == targetGene:
+                currentCell[key] = str(values[i])
         cellList.append(currentCell)
     return cellList
 
 # Gets the Gene Index
-def getGeneIndex(f):
+def getGeneIndex(f, targetGene):
     varDataSet = f['var']
     geneSymbols = varDataSet["index"]
     geneIndex = np.where(geneSymbols == targetGene.encode())
@@ -95,11 +96,11 @@ def parseH5ad(fileName, targetGene, fileType):
         clusterValuesMap[field] = obs[field]
 
     # Get the gene index and extract expression values for target gene
-    targetGeneIndex = getGeneIndex(f)
+    targetGeneIndex = getGeneIndex(f, targetGene)
     clusterValuesMap[targetGene] = f['X'][:,targetGeneIndex]
 
     # Extract all the info into an array of cells
-    cellList = generateCellList(umap, clusterValuesMap, clusterMap)
+    cellList = generateCellList(umap, clusterValuesMap, clusterMap, targetGene)
 
     if (fileType == "json"):
         j = json.dumps(cellList, indent=4)
