@@ -1,3 +1,48 @@
-#plot {
-  width: 800px;
+body {
+  font-family: "arial";
+}
+
+#map {
+  margin-top: 10px;
+}
+
+#deckgl-wrapper {
+  position: relative !important;
+}
+
+#deckgl-overlay {
+  position: relative !important;
+}
+
+#left-column {
+}
+
+#left-column-content{
+  margin-left: 5px;
+  margin-top:10px;
+}
+
+.cluster1 {
+  margin-top:5px;
+  padding:5px;
+  background-color: #646464;
+  color:white;
+}
+
+.cluster2 {
+  margin-top:5px;
+  padding:5px;
+  background-color: #377EB8;
+  color:white;
+}
+
+.cluster3 {
+  margin-top:5px;
+  padding:5px;
+  background-color: #E41A1C;
+  color:white;
+}
+
+.control{
+  flex-direction: column !important;
 }
