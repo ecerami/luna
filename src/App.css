@@ -46,3 +46,12 @@ body {
 .control{
   flex-direction: column !important;
 }
+
+#tooltip {
+  background-color: #eeeeee;
+  padding:10px;
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  display: none;
+}

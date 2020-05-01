@@ -15,6 +15,8 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ClusterCounter from "./utils/ClusterCounter";
+import StringUtils from "./utils/StringUtils";
 
 import "./App.css";
 
@@ -85,6 +87,36 @@ class App extends React.Component {
     }
   }
 
+  setTooltip(info: any, event: any) {
+    console.log("Info: ", info);
+    console.log("Event:  ", event);
+    let object = info.object;
+    let x = info.x;
+    let y = info.y;
+    const el = document.getElementById('tooltip');
+    if (el != null) {
+      if (object) {
+        let clusterCounter = new ClusterCounter(info.object.points, "cell_ontology_class");
+        let rankedClusterList = clusterCounter.getClusterCountsRanked();
+        let clusterHtml = "<table>";
+        rankedClusterList.forEach((value) => {
+          let clusterName = StringUtils.truncateOrPadString(value.clusterName);
+          clusterHtml += "<tr>";
+          clusterHtml += "<td>" + clusterName + "</td>";
+          clusterHtml += "<td>N=" + value.numCells + "</td>";
+          clusterHtml += "<td>" + (100.0 * value.percentage).toFixed(0) + "%</td>";
+          clusterHtml += "</tr>";
+        });
+        el.innerHTML = clusterHtml;
+        el.style.display = 'block';
+        el.style.left = (x + 100) + 'px';
+        el.style.top = (y + 50) + 'px';
+      } else {
+        el.style.display = 'none';
+      }
+    }
+  }  
+
   render() {
     let controlPanel = this.getControlPanel();
     let summaryPanel = this.getSummaryPanel();
@@ -106,7 +138,7 @@ class App extends React.Component {
         [55, 126, 184],
         [228, 26, 28],
       ],
-      onHover: (info: any, event: any) => console.log("Hovered:", info, event),
+      onHover: this.setTooltip,
     });
 
     return (
@@ -122,6 +154,7 @@ class App extends React.Component {
               {controlPanel}
               {summaryPanel}
               {navigationPanel}
+              <div id="tooltip"></div>
             </div>
           </Grid>
           <Grid item xs={9}>
