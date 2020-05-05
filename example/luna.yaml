@@ -1,0 +1,29 @@
+h5ad:  tabula-muris.h5ad
+label:  Tabula Muris
+description:  Transcriptomic characterization of 20 organs and tissues from Mus musculus at single cell resolution.
+vignettes:
+  - key:  cell_ontology_clusters
+    label:  Cell ontology clusters
+    description:  Individual cells color coded by cell ontology.
+    color-range:  inferno
+    color-by:  cluster
+    color-key:  cell_ontology
+  - key:  p2ry12_gene_expression
+    label:  P2ry12 gene expression
+    description:  Microglial cells exhibit increased expression of P2ry12.
+    color-range:  inferno
+    color-by:  gene_expression
+    color-key: P2ry12
+  - key:  p2ry12_gene_expression_3d
+    label:  P2ry12 gene expression (3D Map)
+    description:  Microglial cells exhibit increased expression of P2ry12 (3D Map)
+    color-range:  inferno
+    color-by:  cluster
+    color-key:  cell_ontology
+    altitude-key:  P2ry12
+  - key: Serpina1c_gene_expression
+    label:  Serpina1c gene expression
+    description:  Hepatocyte cells exhibit increased expression of Serpina1c.
+    color-range:  inferno
+    color-by:  gene_expression
+    color-key: Serpina1c
