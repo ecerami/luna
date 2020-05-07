@@ -9,6 +9,7 @@ class MapState {
     @observable hexBinRadius = MapState.HEX_BIN_RADIUS_DEFAULT;
     @observable elevationScale = MapState.ELEVATION_SCALE_DEFAULT;
     @observable checked3D = false;
+    @observable vignetteSelected = 0;
 }
 
 export default MapState;
