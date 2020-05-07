@@ -1,0 +1,55 @@
+{
+    "h5ad": "tabula-muris.h5ad",
+    "label": "Tabula Muris",
+    "description": "Transcriptomic characterization of 20 organs and tissues from Mus musculus at single cell resolution.",
+    "vignettes": [
+        {
+            "key": "p2ry12_gene_expression",
+            "label": "P2ry12 gene expression",
+            "description": "Microglial cells exhibit increased expression of P2ry12.",
+            "color_map": "density",
+            "color_by": "gene_expression",
+            "color_key": "P2ry12"
+        },
+        {
+            "key": "p2ry12_gene_expression_magma",
+            "label": "P2ry12 gene expression (magma color coding)",
+            "description": "Microglial cells exhibit increased expression of P2ry12.",
+            "color_map": "magma",
+            "color_by": "gene_expression",
+            "color_key": "P2ry12"
+        },
+        {
+            "key": "cell_ontology_clusters",
+            "label": "Cell ontology clusters",
+            "description": "Individual cells color coded by cell ontology.",
+            "color_map": "inferno",
+            "color_by": "cluster",
+            "color_key": "cell_ontology"
+        },
+        {
+            "key": "p2ry12_gene_expression_3d",
+            "label": "P2ry12 gene expression (3D Map)",
+            "description": "Microglial cells exhibit increased expression of P2ry12 (3D Map)",
+            "color_map": "density",
+            "color_by": "cluster",
+            "color_key": "cell_ontology",
+            "altitude_key": "P2ry12"
+        },
+        {
+            "key": "serpina1c_gene_expression",
+            "label": "Serpina1c gene expression",
+            "description": "Hepatocyte cells exhibit increased expression of Serpina1c.",
+            "color_map": "density",
+            "color_by": "gene_expression",
+            "color_key": "Serpina1c"
+        }
+    ],
+    "center_x": -0.4593691298507423,
+    "center_y": 0.8204394346639639,
+    "default_zoom": 4,
+    "expression_max": {
+        "P2ry12": 10.4956875,
+        "Serpina1c": 9.399846
+    }
+}
