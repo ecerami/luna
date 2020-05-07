@@ -3,7 +3,6 @@ import { observable } from "mobx";
 import { observer } from "mobx-react";
 import DeckGL from "@deck.gl/react";
 import { HexagonLayer } from "@deck.gl/aggregation-layers";
-import data from "./data/temp.json";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -13,66 +12,98 @@ import ClusterCounter from "./utils/ClusterCounter";
 import StringUtils from "./utils/StringUtils";
 import NavigationPanel from "./components/NavigationPanel"
 import SummaryPanel from "./components/SummaryPanel"
+import DataSummaryPanel from "./components/DataSummaryPanel"
 import ControlPanel from "./components/ControlPanel"
+import config from "./data/lunaConfig.json";
+import data from "./data/lunaData.json";
 
 import "./App.css";
-
-// Viewport settings
-const viewState = {
-  longitude: -0.4374792,
-  latitude: 13.08756237717,
-  zoom: 5,
-  pitch: 0,
-  bearing: 0,
-};
+let colormap = require('colormap')
 
 @observer
 class Luna extends React.Component<{},{}> {
   @observable mapState = new MapState();
+  lunaConfig = config;
+
+  viewState = {
+    longitude: config["center_x"],
+    latitude: config["center_y"],
+    zoom: config["default_zoom"],
+    pitch: 0,
+    bearing: 0,
+  };
 
   constructor(props: any) {
     super(props);
     this.getColorValue = this.getColorValue.bind(this);
+    this.getColorList = this.getColorList.bind(this);
   }
 
-  // Hard-coded right now to show average expression of target gene
+  /**
+   * Gets Color List, based on Current Vignette
+   */
+  getColorList() {
+    let currentVignette = this.lunaConfig["vignettes"][this.mapState.vignetteSelected];
+    let colorBy = currentVignette["color_by"];
+    if (colorBy === "gene_expression") {
+      let colorList = colormap({
+        colormap: currentVignette["color_map"],
+        nshades: 20,
+        format: 'rba',
+        alpha: 1
+      })
+      // Adjust alpha channel
+      for (let colorKey in colorList) {
+        colorList[colorKey][3] = 255;
+      }
+      return colorList;
+    }
+  }
+
+  getColorDomainMax() {
+    let currentVignette = this.lunaConfig["vignettes"][this.mapState.vignetteSelected];
+    let colorBy = currentVignette["color_by"];
+    if (colorBy === "gene_expression") {
+      let targetGene = currentVignette["color_key"]
+      let maxExpressionMap: any = this.lunaConfig["expression_max"]
+      return maxExpressionMap[targetGene];
+    }
+  }
+
+  /**
+   * Gets the Color Value for Set of Points
+   */
+  getColorValue(dataList: any) {
+    let currentVignette = this.lunaConfig["vignettes"][this.mapState.vignetteSelected];
+    let targetGene = currentVignette["color_key"]
+    let expressionAverage = 0.0;
+    for (let i = 0; i < dataList.length; i++) {
+      expressionAverage += parseFloat(dataList[i][targetGene]);
+    }
+    let maxExpressionMap: any = this.lunaConfig["expression_max"]
+    return maxExpressionMap[targetGene] - (expressionAverage / dataList.length);
+  }
+
+  /**
+   * Gets the Elevation Value for a Set of Points
+   */
   getElevationValue(dataList: any) {
     let expressionAverage: number = 0.0;
     for (let i = 0; i < dataList.length; i++) {
+      // TODO:  Replace with Utility to Identify Target Gene
       expressionAverage += parseFloat(dataList[i]["P2ry12"]);
     }
     return expressionAverage / dataList.length;
   }
 
-  // Hard-coded right now to show two clusters
-  getColorValue(dataList: any) {
-    let target1Reached = false;
-    let target2Reached = false;
-    for (let i = 0; i < dataList.length; i++) {
-      if (dataList[i]["cell_ontology_class"] === "microglial cell") {
-        target1Reached = true;
-      } else if (dataList[i]["cell_ontology_class"] === "leukocyte") {
-        target2Reached = true;
-      }
-    }
-    if (target1Reached) {
-      return 1;
-    } else if (target2Reached) {
-      return 2;
-    } else {
-      return 0;
-    }
-  }
-
   setTooltip(info: any, event: any) {
-    // console.log("Info: ", info);
-    // console.log("Event:  ", event);
     let object = info.object;
     let x = info.x;
     let y = info.y;
     const el = document.getElementById('tooltip');
     if (el != null) {
       if (object) {
+        //  TODO:  Replace with Pull-down menu Option?
         let clusterCounter = new ClusterCounter(info.object.points, "cell_ontology_class");
         let rankedClusterList = clusterCounter.getClusterCountsRanked();
         let clusterHtml = "<table>";
@@ -95,6 +126,8 @@ class Luna extends React.Component<{},{}> {
   }  
 
   render() {
+    let colorList = this.getColorList();
+    let colorDomainMax = this.getColorDomainMax();
     const layer = new HexagonLayer({
       id: "column-layer",
       data,
@@ -102,20 +135,17 @@ class Luna extends React.Component<{},{}> {
       extruded: this.mapState.checked3D,
       radius: this.mapState.hexBinRadius,
       elevationScale: this.mapState.elevationScale,
+      // TODO:  MAKE DYNAMIC
       elevationDomain: [0, 10],
       getElevationValue: this.getElevationValue,
       getColorValue: this.getColorValue,
-      colorDomain: [0, 2],
-      colorRange: [
-        [100, 100, 100],
-        [55, 126, 184],
-        [228, 26, 28],
-      ],
+      colorDomain: [0, colorDomainMax],
+      colorRange: colorList,
       onHover: this.setTooltip,
     });
 
     return (
-      <div ref={this.wrapper}>
+      <div>
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6">Luna: Single Cell Visualizer</Typography>
@@ -124,6 +154,7 @@ class Luna extends React.Component<{},{}> {
         <Grid container spacing={3}>
           <Grid id="left-column" item xs={3}>
             <div id="left-column-content">
+              <DataSummaryPanel mapState={this.mapState}/>
               <ControlPanel mapState={this.mapState}/>
               <SummaryPanel/>
               <NavigationPanel/>
@@ -134,7 +165,7 @@ class Luna extends React.Component<{},{}> {
             <div id="map" />
             <DeckGL
               controller={true}
-              initialViewState={viewState}
+              initialViewState={this.viewState}
               layers={[layer]}
             />
           </Grid>
