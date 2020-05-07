@@ -55,3 +55,28 @@ body {
   pointer-events: none;
   display: none;
 }
+
+#legend {
+  position: fixed;
+  top: 100px; right: 10px;
+  margin: auto;
+  width: 200px;
+  height: 250px;
+  opacity: 0.7;
+  z-index: 99;
+  
+  color: black;
+  background: white;
+  padding-top: 0px;
+  padding-left: 10px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  -moz-box-shadow: 0 0 18px rgba(0, 0, 0, 0.9);
+  -webkit-box-shadow: 0 0 18px rgba(0, 0, 0, 0.9);
+  -box-shadow: 0 0 18px rgba(0, 0, 0, 0.9);
+}
+
+.legend-tick {
+  padding-left: 25px;
+}
