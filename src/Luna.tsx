@@ -2,6 +2,7 @@ import React from "react";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
 import DeckGL from "@deck.gl/react";
+import {FlyToInterpolator} from '@deck.gl/core';
 import { HexagonLayer } from "@deck.gl/aggregation-layers";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -11,61 +12,48 @@ import MapState from "./utils/MapState";
 import ClusterCounter from "./utils/ClusterCounter";
 import StringUtils from "./utils/StringUtils";
 import NavigationPanel from "./components/NavigationPanel"
-import SummaryPanel from "./components/SummaryPanel"
 import DataSummaryPanel from "./components/DataSummaryPanel"
+import LegendPanel from "./components/LegendPanel"
 import ControlPanel from "./components/ControlPanel"
-import config from "./data/lunaConfig.json";
+import configInit from "./data/lunaConfig.json";
 import data from "./data/lunaData.json";
 
 import "./App.css";
-let colormap = require('colormap')
 
 @observer
 class Luna extends React.Component<{},{}> {
-  @observable mapState = new MapState();
-  lunaConfig = config;
+  @observable mapState = new MapState(configInit);
 
   viewState = {
-    longitude: config["center_x"],
-    latitude: config["center_y"],
-    zoom: config["default_zoom"],
+    longitude: this.mapState.lunaConfig["center_x"],
+    latitude: this.mapState.lunaConfig["center_y"],
+    zoom: this.mapState.lunaConfig["default_zoom"],
     pitch: 0,
     bearing: 0,
+    transitionDuration: 0,
+    transitionInterpolator: null
   };
 
   constructor(props: any) {
     super(props);
     this.getColorValue = this.getColorValue.bind(this);
     this.getColorList = this.getColorList.bind(this);
+    this.flyToNewLocation = this.flyToNewLocation.bind(this);
   }
 
   /**
    * Gets Color List, based on Current Vignette
    */
   getColorList() {
-    let currentVignette = this.lunaConfig["vignettes"][this.mapState.vignetteSelected];
-    let colorBy = currentVignette["color_by"];
-    if (colorBy === "gene_expression") {
-      let colorList = colormap({
-        colormap: currentVignette["color_map"],
-        nshades: 20,
-        format: 'rba',
-        alpha: 1
-      })
-      // Adjust alpha channel
-      for (let colorKey in colorList) {
-        colorList[colorKey][3] = 255;
-      }
-      return colorList;
-    }
+    return this.mapState.getColorListByFormat("rba")
   }
 
   getColorDomainMax() {
-    let currentVignette = this.lunaConfig["vignettes"][this.mapState.vignetteSelected];
+    let currentVignette = this.mapState.lunaConfig["vignettes"][this.mapState.vignetteSelected];
     let colorBy = currentVignette["color_by"];
     if (colorBy === "gene_expression") {
       let targetGene = currentVignette["color_key"]
-      let maxExpressionMap: any = this.lunaConfig["expression_max"]
+      let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"]
       return maxExpressionMap[targetGene];
     }
   }
@@ -74,13 +62,13 @@ class Luna extends React.Component<{},{}> {
    * Gets the Color Value for Set of Points
    */
   getColorValue(dataList: any) {
-    let currentVignette = this.lunaConfig["vignettes"][this.mapState.vignetteSelected];
+    let currentVignette = this.mapState.lunaConfig["vignettes"][this.mapState.vignetteSelected];
     let targetGene = currentVignette["color_key"]
     let expressionAverage = 0.0;
     for (let i = 0; i < dataList.length; i++) {
       expressionAverage += parseFloat(dataList[i][targetGene]);
     }
-    let maxExpressionMap: any = this.lunaConfig["expression_max"]
+    let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"]
     return maxExpressionMap[targetGene] - (expressionAverage / dataList.length);
   }
 
@@ -123,7 +111,20 @@ class Luna extends React.Component<{},{}> {
         el.style.display = 'none';
       }
     }
-  }  
+  } 
+  
+  flyToNewLocation() {
+    console.log("Fly!!")
+    this.viewState = {
+        ...this.viewState,
+        longitude: 10.2,
+        latitude: 7.73,
+        zoom: 5,
+        transitionDuration: 2000,
+        transitionInterpolator: new FlyToInterpolator()
+    }
+    this.mapState.hexBinRadius = this.mapState.hexBinRadius + 1;
+  }
 
   render() {
     let colorList = this.getColorList();
@@ -151,12 +152,15 @@ class Luna extends React.Component<{},{}> {
             <Typography variant="h6">Luna: Single Cell Visualizer</Typography>
           </Toolbar>
         </AppBar>
+        <div id="legend">
+          <LegendPanel mapState={this.mapState}/>
+        </div>
         <Grid container spacing={3}>
           <Grid id="left-column" item xs={3}>
             <div id="left-column-content">
+              <button onClick={this.flyToNewLocation}>Fly to New Location</button>
               <DataSummaryPanel mapState={this.mapState}/>
               <ControlPanel mapState={this.mapState}/>
-              <SummaryPanel/>
               <NavigationPanel/>
               <div id="tooltip"></div>
             </div>
