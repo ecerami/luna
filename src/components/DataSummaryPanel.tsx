@@ -25,6 +25,12 @@ class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
 
   handleVignetteChange(event: any) {
     this.props.mapState.vignetteSelected = event.target.value;
+
+    //  The code below is a small bit of hackery.
+    //  When you change vignette, you have to trigger to Deck.gl
+    //  to recall all the color values;  you can force this by making a
+    //  very tiny change to the hex bin radius.
+    this.props.mapState.hexBinRadius = this.props.mapState.hexBinRadius + 1;
   }
 
   render() {
@@ -64,7 +70,7 @@ class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
     let menuItems: Array<any> = [];
     for (let key in config["vignettes"]) {
       let vignette = config["vignettes"][key];
-      menuItems.push(<MenuItem value={key}>{vignette["label"]}</MenuItem>);
+      menuItems.push(<MenuItem key={"vignette_" + key} value={key}>{vignette["label"]}</MenuItem>);
     }
     return menuItems;
   }
