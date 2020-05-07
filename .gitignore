@@ -3,3 +3,4 @@ build
 .vscode
 src/data/pbmc3k.json
 src/data/tabula-muris.json
+example/tabula-muris.h5ad
