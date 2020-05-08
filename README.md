@@ -6,6 +6,10 @@ Luna is a tool for publishing single cell data with highlighted observations and
 
 The tool is being developed as part of the Human Tumor Atlas Network (HTAN) and is currently in alpha.  
 
+## Demo
+
+Demo running at:  http://luna-alpha.surge.sh
+
 ## Overview
 
 Luna takes in two sets of files:
