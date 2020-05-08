@@ -25,7 +25,7 @@ class ClusterCounter {
    */
   private countClusters(points: Points, targetCluster: string) {
     for (let key in points) {
-      //console.log(points[key]["position"]);
+      console.log(points[key]["position"]);
       let currentCluster = points[key][targetCluster];
       if (currentCluster !== undefined) {
         this.totalNumPoints += 1;

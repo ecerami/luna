@@ -41,20 +41,21 @@ class LegendPanel extends React.Component<LegendPanelProps> {
         height: "8px",
         backgroundColor: currentColor,
       };
+      let key = "legend_box_" + index;
       if (index === 0) {
         legend.push(
-          <div style={boxStyle}>
+          <div key={key} style={boxStyle}>
             <span className="legend-tick">{maxGeneExpression}.0</span>
           </div>
         );
       } else if (index === colorList.length - 2) {
         legend.push(
-          <div style={boxStyle}>
+          <div key={key} style={boxStyle}>
             <span className="legend-tick">0.0</span>
           </div>
         );
       } else {
-        legend.push(<div style={boxStyle}></div>);
+        legend.push(<div key={key} style={boxStyle}></div>);
       }
       index += 1;
     }

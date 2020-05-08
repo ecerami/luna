@@ -2,7 +2,6 @@ import React from "react";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
 import DeckGL from "@deck.gl/react";
-import {FlyToInterpolator} from '@deck.gl/core';
 import { HexagonLayer } from "@deck.gl/aggregation-layers";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -17,28 +16,16 @@ import LegendPanel from "./components/LegendPanel"
 import ControlPanel from "./components/ControlPanel"
 import configInit from "./data/lunaConfig.json";
 import data from "./data/lunaData.json";
-
 import "./App.css";
 
 @observer
 class Luna extends React.Component<{},{}> {
   @observable mapState = new MapState(configInit);
 
-  viewState = {
-    longitude: this.mapState.lunaConfig["center_x"],
-    latitude: this.mapState.lunaConfig["center_y"],
-    zoom: this.mapState.lunaConfig["default_zoom"],
-    pitch: 0,
-    bearing: 0,
-    transitionDuration: 0,
-    transitionInterpolator: null
-  };
-
   constructor(props: any) {
     super(props);
     this.getColorValue = this.getColorValue.bind(this);
     this.getColorList = this.getColorList.bind(this);
-    this.flyToNewLocation = this.flyToNewLocation.bind(this);
   }
 
   /**
@@ -50,7 +37,7 @@ class Luna extends React.Component<{},{}> {
 
   getColorDomainMax() {
     if (this.mapState.vignetteHasBeenSelected()) {
-      let currentVignette = this.mapState.lunaConfig["vignettes"][this.mapState.vignetteSelected];
+      let currentVignette = this.mapState.lunaConfig["vignettes"][this.mapState.getVignetteSelected()];
       let colorBy = currentVignette["color_by"];
       if (colorBy === "gene_expression") {
         let targetGene = currentVignette["color_key"]
@@ -67,7 +54,7 @@ class Luna extends React.Component<{},{}> {
    */
   getColorValue(dataList: any) {
     if (this.mapState.vignetteHasBeenSelected()) {
-      let currentVignette = this.mapState.lunaConfig["vignettes"][this.mapState.vignetteSelected];
+      let currentVignette = this.mapState.lunaConfig["vignettes"][this.mapState.getVignetteSelected()];
       let targetGene = currentVignette["color_key"]
       let expressionAverage = 0.0;
       for (let i = 0; i < dataList.length; i++) {
@@ -120,19 +107,6 @@ class Luna extends React.Component<{},{}> {
       }
     }
   } 
-  
-  flyToNewLocation() {
-    console.log("Fly!!")
-    this.viewState = {
-        ...this.viewState,
-        longitude: 10.2,
-        latitude: 7.73,
-        zoom: 5,
-        transitionDuration: 2000,
-        transitionInterpolator: new FlyToInterpolator()
-    }
-    this.mapState.hexBinRadius = this.mapState.hexBinRadius + 1;
-  }
 
   render() {
     let colorList = this.getColorList();
@@ -164,7 +138,6 @@ class Luna extends React.Component<{},{}> {
         <Grid container spacing={3}>
           <Grid id="left-column" item xs={3}>
             <div id="left-column-content">
-              <button onClick={this.flyToNewLocation}>Fly to New Location</button>
               <DataSummaryPanel mapState={this.mapState}/>
               <ControlPanel mapState={this.mapState}/>
               <NavigationPanel/>
@@ -175,7 +148,7 @@ class Luna extends React.Component<{},{}> {
             <div id="map" />
             <DeckGL
               controller={true}
-              initialViewState={this.viewState}
+              initialViewState={this.mapState.viewState}
               layers={[layer]}
             />
           </Grid>

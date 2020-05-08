@@ -1,7 +1,8 @@
 /**
  * Encapsualates Map State.
-*/
+ */
 import { observable } from "mobx";
+import { FlyToInterpolator } from "@deck.gl/core";
 let colormap = require("colormap");
 
 class MapState {
@@ -9,26 +10,45 @@ class MapState {
   static ELEVATION_SCALE_DEFAULT = 100;
 
   lunaConfig: any;
+  viewState: any;
   @observable hexBinRadius = MapState.HEX_BIN_RADIUS_DEFAULT;
   @observable elevationScale = MapState.ELEVATION_SCALE_DEFAULT;
   @observable checked3D = false;
-  @observable vignetteSelected = -1;
+  @observable private vignetteSelected = -1;
 
   constructor(config: any) {
     this.lunaConfig = config;
+    this.viewState = {
+      longitude: this.lunaConfig["center_x"],
+      latitude: this.lunaConfig["center_y"],
+      zoom: this.lunaConfig["default_zoom"],
+      pitch: 0,
+      bearing: 0,
+      transitionDuration: 0,
+      transitionInterpolator: null,
+    };
   }
 
   vignetteHasBeenSelected() {
     if (this.vignetteSelected > -1) {
-        return true;
+      return true;
     } else {
-        return false;
+      return false;
     }
+  }
+
+  getVignetteSelected() {
+    return this.vignetteSelected;
+  }
+
+  setVignetteSelected(index: number) {
+    this.vignetteSelected = index;
+    this.flyToNewLocation()
   }
 
   getCurrentTargetGene() {
     if (this.vignetteHasBeenSelected()) {
-      let currentVignette = this.lunaConfig["vignettes"][this.vignetteSelected];
+      let currentVignette = this.getCurrentVignette();
       let colorBy = currentVignette["color_by"];
       if (colorBy === "gene_expression") {
         let targetGene = currentVignette["color_key"];
@@ -49,7 +69,7 @@ class MapState {
 
   getColorListByFormat(format: string) {
     if (this.vignetteHasBeenSelected()) {
-      let currentVignette = this.lunaConfig["vignettes"][this.vignetteSelected];
+      let currentVignette = this.getCurrentVignette();
       let colorBy = currentVignette["color_by"];
       if (colorBy === "gene_expression") {
         let colorList = colormap({
@@ -68,8 +88,39 @@ class MapState {
         return colorList;
       }
     } else {
-        return ["black"];
+      return ["black"];
     }
+  }
+
+  private getCurrentVignette() {
+    return this.lunaConfig["vignettes"][this.vignetteSelected];
+  }
+
+  flyToNewLocation() {
+    let center_x = this.lunaConfig["center_x"];
+    let center_y = this.lunaConfig["center_y"];
+    let zoom = this.lunaConfig["default_zoom"];
+    if (this.vignetteHasBeenSelected()) {
+        let currentVignette = this.getCurrentVignette();
+        if (currentVignette["center_x"]) {
+            center_x = currentVignette["center_x"]
+        }
+        if (currentVignette["center_y"]) {
+            center_y = currentVignette["center_y"]
+        }
+        if (currentVignette["zoom"]) {
+            zoom = currentVignette["zoom"]
+        }
+    }
+    this.viewState = {
+        ...this.viewState,
+        longitude: center_x,
+        latitude: center_y,
+        zoom: zoom,
+        transitionDuration: 2000,
+        transitionInterpolator: new FlyToInterpolator(),
+    };
+    this.hexBinRadius = this.hexBinRadius + 1;
   }
 }
 

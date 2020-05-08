@@ -24,7 +24,7 @@ class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
   }
 
   handleVignetteChange(event: any) {
-    this.props.mapState.vignetteSelected = event.target.value;
+    this.props.mapState.setVignetteSelected(event.target.value);
 
     //  The code below is a small bit of hackery.
     //  When you change vignette, you have to trigger to Deck.gl
@@ -38,7 +38,7 @@ class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
     let vignetteDescription = "Select a vignette above to get started.";
     if (this.props.mapState.vignetteHasBeenSelected()) {
       vignetteDescription =
-        config["vignettes"][this.props.mapState.vignetteSelected][
+        config["vignettes"][this.props.mapState.getVignetteSelected()][
           "description"
         ];
     }
@@ -61,7 +61,7 @@ class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
           <FormControl>
             <InputLabel>Vignette</InputLabel>
             <Select
-              value={this.props.mapState.vignetteSelected}
+              value={this.props.mapState.getVignetteSelected()}
               onChange={this.handleVignetteChange}
             >
               {vignetteList}
@@ -77,7 +77,7 @@ class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
   getVignetteMenuItems() {
     let menuItems: Array<any> = [];
     menuItems.push(
-      <MenuItem key={"vignette_0"} value={-1}>
+      <MenuItem key={"vignette_init"} value={-1}>
         Select a Vignette
       </MenuItem>
     );
