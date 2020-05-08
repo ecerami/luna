@@ -6,4 +6,4 @@ wget https://cellxgene-example-data.czi.technology/tabula-muris.h5ad
 
 Then run:
 
-python3 ../prepare/lunaBuild.py
+python3 ../prepare/lunaBuild.py -o ../src/data/
