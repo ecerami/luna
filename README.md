@@ -4,7 +4,7 @@ Luna is a tool for publishing single cell data with highlighted observations and
 
 ## Current Status
 
-The tool is currently in alpha.  
+The tool is being developed as part of the Human Tumor Atlas Network (HTAN) and is currently in alpha.  
 
 ## Overview
 
