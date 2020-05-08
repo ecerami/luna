@@ -26,6 +26,7 @@ class Luna extends React.Component<{},{}> {
     super(props);
     this.getColorValue = this.getColorValue.bind(this);
     this.getColorList = this.getColorList.bind(this);
+    this.getElevationValue = this.getElevationValue.bind(this);
   }
 
   /**
@@ -54,8 +55,7 @@ class Luna extends React.Component<{},{}> {
    */
   getColorValue(dataList: any) {
     if (this.mapState.vignetteHasBeenSelected()) {
-      let currentVignette = this.mapState.lunaConfig["vignettes"][this.mapState.getVignetteSelected()];
-      let targetGene = currentVignette["color_key"]
+      let targetGene = this.mapState.getCurrentTargetGene();
       let expressionAverage = 0.0;
       for (let i = 0; i < dataList.length; i++) {
         expressionAverage += parseFloat(dataList[i][targetGene]);
@@ -71,12 +71,13 @@ class Luna extends React.Component<{},{}> {
    * Gets the Elevation Value for a Set of Points
    */
   getElevationValue(dataList: any) {
-    let expressionAverage: number = 0.0;
-    for (let i = 0; i < dataList.length; i++) {
-      // TODO:  Replace with Utility to Identify Target Gene
-      expressionAverage += parseFloat(dataList[i]["P2ry12"]);
+    let elevation = this.getColorValue(dataList);
+    if (elevation >0) {
+      let targetGene = this.mapState.getCurrentTargetGene();
+      let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"]
+      elevation = maxExpressionMap[targetGene] - elevation;
     }
-    return expressionAverage / dataList.length;
+    return elevation;
   }
 
   setTooltip(info: any, event: any) {
@@ -118,8 +119,7 @@ class Luna extends React.Component<{},{}> {
       extruded: this.mapState.checked3D,
       radius: this.mapState.hexBinRadius,
       elevationScale: this.mapState.elevationScale,
-      // TODO:  MAKE DYNAMIC
-      elevationDomain: [0, 10],
+      elevationDomain: [0, colorDomainMax + 1],
       getElevationValue: this.getElevationValue,
       getColorValue: this.getColorValue,
       colorDomain: [0, colorDomainMax],

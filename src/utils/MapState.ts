@@ -92,7 +92,7 @@ class MapState {
     }
   }
 
-  private getCurrentVignette() {
+  getCurrentVignette() {
     return this.lunaConfig["vignettes"][this.vignetteSelected];
   }
 
