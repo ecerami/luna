@@ -1,8 +1,26 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Luna: Single Cell Viewer
 
-## Available Scripts
+Luna is a tool for publishing single cell data with highlighted observations and findings.
 
-In the project directory, you can run:
+## Current Status
+
+The tool is currently in alpha.  
+
+## Overview
+
+Luna takes in two sets of files:
+
+* A single cell data file in h5ad format.
+* A Luna config file.  This config file contains vignettes that you want to highlight when publishing your data.
+
+The buildLuna.py script takes these two files and generates a set of JSON files that can be used for deployment.
+
+## Example Luna Config File
+
+
+
+
+## To Run
 
 ### `yarn start`
 
@@ -27,18 +45,3 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
