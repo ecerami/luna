@@ -114,7 +114,8 @@ def extract_gene_list(luna_config):
         if color_by:
             if color_by == "gene_expression":
                 color_key = vignette["color_key"]
-                gene_list.append(color_key)
+                if color_key not in gene_list:
+                    gene_list.append(color_key)
     return gene_list
 
 
