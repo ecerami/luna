@@ -15,10 +15,7 @@ Luna takes in two sets of files:
 
 The buildLuna.py script takes these two files and generates a set of JSON files that can be used for deployment.
 
-## Example Luna Config File
-
-
-
+![screenshot_371](https://user-images.githubusercontent.com/1009066/81432352-bfc46b80-9130-11ea-8cc8-2ead3d0790de.png)
 
 ## To Run
 
@@ -26,9 +23,6 @@ The buildLuna.py script takes these two files and generates a set of JSON files 
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
 
 ### `yarn test`
 
