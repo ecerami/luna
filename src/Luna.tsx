@@ -49,12 +49,16 @@ class Luna extends React.Component<{},{}> {
   }
 
   getColorDomainMax() {
-    let currentVignette = this.mapState.lunaConfig["vignettes"][this.mapState.vignetteSelected];
-    let colorBy = currentVignette["color_by"];
-    if (colorBy === "gene_expression") {
-      let targetGene = currentVignette["color_key"]
-      let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"]
-      return maxExpressionMap[targetGene];
+    if (this.mapState.vignetteHasBeenSelected()) {
+      let currentVignette = this.mapState.lunaConfig["vignettes"][this.mapState.vignetteSelected];
+      let colorBy = currentVignette["color_by"];
+      if (colorBy === "gene_expression") {
+        let targetGene = currentVignette["color_key"]
+        let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"]
+        return maxExpressionMap[targetGene];
+      }
+    } else {
+      return 0;
     }
   }
 
@@ -62,14 +66,18 @@ class Luna extends React.Component<{},{}> {
    * Gets the Color Value for Set of Points
    */
   getColorValue(dataList: any) {
-    let currentVignette = this.mapState.lunaConfig["vignettes"][this.mapState.vignetteSelected];
-    let targetGene = currentVignette["color_key"]
-    let expressionAverage = 0.0;
-    for (let i = 0; i < dataList.length; i++) {
-      expressionAverage += parseFloat(dataList[i][targetGene]);
+    if (this.mapState.vignetteHasBeenSelected()) {
+      let currentVignette = this.mapState.lunaConfig["vignettes"][this.mapState.vignetteSelected];
+      let targetGene = currentVignette["color_key"]
+      let expressionAverage = 0.0;
+      for (let i = 0; i < dataList.length; i++) {
+        expressionAverage += parseFloat(dataList[i][targetGene]);
+      }
+      let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"]
+      return maxExpressionMap[targetGene] - (expressionAverage / dataList.length);
+    } else {
+      return 0;
     }
-    let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"]
-    return maxExpressionMap[targetGene] - (expressionAverage / dataList.length);
   }
 
   /**
@@ -152,9 +160,7 @@ class Luna extends React.Component<{},{}> {
             <Typography variant="h6">Luna: Single Cell Visualizer</Typography>
           </Toolbar>
         </AppBar>
-        <div id="legend">
-          <LegendPanel mapState={this.mapState}/>
-        </div>
+        <LegendPanel mapState={this.mapState}/>
         <Grid container spacing={3}>
           <Grid id="left-column" item xs={3}>
             <div id="left-column-content">

@@ -35,6 +35,13 @@ class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
 
   render() {
     let vignetteList = this.getVignetteMenuItems();
+    let vignetteDescription = "Select a vignette above to get started.";
+    if (this.props.mapState.vignetteHasBeenSelected()) {
+      vignetteDescription =
+        config["vignettes"][this.props.mapState.vignetteSelected][
+          "description"
+        ];
+    }
     return (
       <ExpansionPanel defaultExpanded={true}>
         <ExpansionPanelSummary
@@ -60,7 +67,8 @@ class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
               {vignetteList}
             </Select>
           </FormControl>
-          <br/>{config["vignettes"][this.props.mapState.vignetteSelected]["description"]}
+          <br />
+          {vignetteDescription}
         </ExpansionPanelDetails>
       </ExpansionPanel>
     );
@@ -68,9 +76,18 @@ class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
 
   getVignetteMenuItems() {
     let menuItems: Array<any> = [];
+    menuItems.push(
+      <MenuItem key={"vignette_0"} value={-1}>
+        Select a Vignette
+      </MenuItem>
+    );
     for (let key in config["vignettes"]) {
       let vignette = config["vignettes"][key];
-      menuItems.push(<MenuItem key={"vignette_" + key} value={key}>{vignette["label"]}</MenuItem>);
+      menuItems.push(
+        <MenuItem key={"vignette_" + key} value={key}>
+          {vignette["label"]}
+        </MenuItem>
+      );
     }
     return menuItems;
   }

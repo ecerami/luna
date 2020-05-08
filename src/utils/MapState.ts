@@ -1,7 +1,7 @@
 /**
  * Encapsualates Map State.
- */
-import { observable, computed } from "mobx";
+*/
+import { observable } from "mobx";
 let colormap = require("colormap");
 
 class MapState {
@@ -12,39 +12,63 @@ class MapState {
   @observable hexBinRadius = MapState.HEX_BIN_RADIUS_DEFAULT;
   @observable elevationScale = MapState.ELEVATION_SCALE_DEFAULT;
   @observable checked3D = false;
-  @observable vignetteSelected = 0;
+  @observable vignetteSelected = -1;
 
   constructor(config: any) {
     this.lunaConfig = config;
   }
 
+  vignetteHasBeenSelected() {
+    if (this.vignetteSelected > -1) {
+        return true;
+    } else {
+        return false;
+    }
+  }
+
   getCurrentTargetGene() {
-    let currentVignette = this.lunaConfig["vignettes"][this.vignetteSelected];
-    let colorBy = currentVignette["color_by"];
-    if (colorBy === "gene_expression") {
-      let targetGene = currentVignette["color_key"];
-      return targetGene;
+    if (this.vignetteHasBeenSelected()) {
+      let currentVignette = this.lunaConfig["vignettes"][this.vignetteSelected];
+      let colorBy = currentVignette["color_by"];
+      if (colorBy === "gene_expression") {
+        let targetGene = currentVignette["color_key"];
+        return targetGene;
+      }
+    }
+  }
+
+  getCurrentTargetGeneMaxExpression() {
+    if (this.vignetteHasBeenSelected()) {
+      let maxExpressionMap: any = this.lunaConfig["expression_max"];
+      let targetGene = this.getCurrentTargetGene();
+      if (targetGene !== undefined) {
+        return maxExpressionMap[targetGene];
+      }
     }
   }
 
   getColorListByFormat(format: string) {
-    let currentVignette = this.lunaConfig["vignettes"][this.vignetteSelected];
-    let colorBy = currentVignette["color_by"];
-    if (colorBy === "gene_expression") {
-      let colorList = colormap({
-        colormap: currentVignette["color_map"],
-        nshades: 20,
-        format: format,
-        alpha: 1,
-      });
+    if (this.vignetteHasBeenSelected()) {
+      let currentVignette = this.lunaConfig["vignettes"][this.vignetteSelected];
+      let colorBy = currentVignette["color_by"];
+      if (colorBy === "gene_expression") {
+        let colorList = colormap({
+          colormap: currentVignette["color_map"],
+          nshades: 20,
+          format: format,
+          alpha: 1,
+        });
 
-      // Adjust alpha channel
-      if (format === "rba") {
-        for (let colorKey in colorList) {
-          colorList[colorKey][3] = 255;
+        // Adjust alpha channel
+        if (format === "rba") {
+          for (let colorKey in colorList) {
+            colorList[colorKey][3] = 255;
+          }
         }
+        return colorList;
       }
-      return colorList;
+    } else {
+        return ["black"];
     }
   }
 }
