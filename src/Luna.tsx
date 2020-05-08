@@ -131,7 +131,7 @@ class Luna extends React.Component<{},{}> {
       <div>
         <AppBar position="static">
           <Toolbar>
-            <Typography variant="h6">Luna: Single Cell Visualizer</Typography>
+            <Typography variant="h6">Luna: Single Cell Viewer</Typography>
           </Toolbar>
         </AppBar>
         <LegendPanel mapState={this.mapState}/>
