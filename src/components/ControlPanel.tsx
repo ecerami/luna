@@ -50,7 +50,7 @@ class ControlPanel extends React.Component<ControlPanelProps> {
           <Typography>Hex Bin radius:</Typography>
           <Slider
             onChange={this.handleRadiusChange}
-            defaultValue={MapState.HEX_BIN_RADIUS_DEFAULT}
+            value={this.props.mapState.hexBinRadius}
             min={0}
             max={30000}
             step={500}
@@ -70,7 +70,7 @@ class ControlPanel extends React.Component<ControlPanelProps> {
           <Typography>Elevation Scale:</Typography>
           <Slider
             onChange={this.handleElevationChange}
-            defaultValue={MapState.ELEVATION_SCALE_DEFAULT}
+            value={this.props.mapState.elevationScale}
             disabled={!this.props.mapState.checked3D}
             min={1}
             max={1000}

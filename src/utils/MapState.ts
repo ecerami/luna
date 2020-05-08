@@ -7,7 +7,7 @@ let colormap = require("colormap");
 
 class MapState {
   static HEX_BIN_RADIUS_DEFAULT = 7000;
-  static ELEVATION_SCALE_DEFAULT = 100;
+  static ELEVATION_SCALE_DEFAULT = 200;
 
   lunaConfig: any;
   viewState: any;
@@ -100,6 +100,9 @@ class MapState {
     let center_x = this.lunaConfig["center_x"];
     let center_y = this.lunaConfig["center_y"];
     let zoom = this.lunaConfig["default_zoom"];
+    let pitch = 0;
+    this.elevationScale = MapState.ELEVATION_SCALE_DEFAULT;
+    this.checked3D = false;
     if (this.vignetteHasBeenSelected()) {
         let currentVignette = this.getCurrentVignette();
         if (currentVignette["center_x"]) {
@@ -111,12 +114,25 @@ class MapState {
         if (currentVignette["zoom"]) {
             zoom = currentVignette["zoom"]
         }
+        if (currentVignette["pitch"]) {
+            pitch = currentVignette["pitch"]
+        }
+        if (currentVignette["3d"]) {
+            this.checked3D = currentVignette["3d"]
+        }
+        if (currentVignette["hex_bin_size"]) {
+            this.hexBinRadius = currentVignette["hex_bin_size"]
+        }
+        if (currentVignette["elevation_scale"]) {
+            this.elevationScale = currentVignette["elevation_scale"]
+        }        
     }
     this.viewState = {
         ...this.viewState,
         longitude: center_x,
         latitude: center_y,
         zoom: zoom,
+        pitch: pitch,
         transitionDuration: 2000,
         transitionInterpolator: new FlyToInterpolator(),
     };

@@ -26,18 +26,6 @@
             "zoom": 5
         },
         {
-            "key": "p2ry12_gene_expression_3d",
-            "label": "P2ry12 gene expression (3D Map)",
-            "description": "Microglial cells exhibit increased expression of P2ry12 (3D Map)",
-            "color_map": "density",
-            "color_by": "cluster",
-            "color_key": "cell_ontology",
-            "altitude_key": "P2ry12",
-            "center_x": 10.2,
-            "center_y": 7.73,
-            "zoom": 5
-        },
-        {
             "key": "serpina1c_gene_expression",
             "label": "Serpina1c gene expression",
             "description": "Hepatocyte cells exhibit increased expression of Serpina1c.",
@@ -47,6 +35,21 @@
             "center_x": -0.7314,
             "center_y": -12.218,
             "zoom": 5
+        },
+        {
+            "key": "p2ry12_gene_expression_3d",
+            "label": "P2ry12 gene expression (3D Map)",
+            "description": "Microglial cells exhibit increased expression of P2ry12 (3D Map)",
+            "color_map": "density",
+            "color_by": "gene_expression",
+            "color_key": "P2ry12",
+            "center_x": 10.2,
+            "center_y": 7.73,
+            "zoom": 5,
+            "3d": true,
+            "hex_bin_size": 20000,
+            "pitch": 50,
+            "elevation_scale": 800
         }
     ],
     "center_x": -0.4593691298507423,
