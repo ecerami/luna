@@ -10,16 +10,16 @@ import Grid from "@material-ui/core/Grid";
 import MapState from "./utils/MapState";
 import ClusterCounter from "./utils/ClusterCounter";
 import StringUtils from "./utils/StringUtils";
-import NavigationPanel from "./components/NavigationPanel"
-import DataSummaryPanel from "./components/DataSummaryPanel"
-import LegendPanel from "./components/LegendPanel"
-import ControlPanel from "./components/ControlPanel"
+import NavigationPanel from "./components/NavigationPanel";
+import DataSummaryPanel from "./components/DataSummaryPanel";
+import LegendPanel from "./components/LegendPanel";
+import ControlPanel from "./components/ControlPanel";
 import configInit from "./data/lunaConfig.json";
 import data from "./data/lunaData.json";
 import "./App.css";
 
 @observer
-class Luna extends React.Component<{},{}> {
+class Luna extends React.Component<{}, {}> {
   @observable mapState = new MapState(configInit);
 
   constructor(props: any) {
@@ -33,16 +33,18 @@ class Luna extends React.Component<{},{}> {
    * Gets Color List, based on Current Vignette
    */
   getColorList() {
-    return this.mapState.getColorListByFormat("rba")
+    return this.mapState.getColorListByFormat("rba");
   }
 
   getColorDomainMax() {
     if (this.mapState.vignetteHasBeenSelected()) {
-      let currentVignette = this.mapState.lunaConfig["vignettes"][this.mapState.getVignetteSelected()];
+      let currentVignette = this.mapState.lunaConfig["vignettes"][
+        this.mapState.getVignetteSelected()
+      ];
       let colorBy = currentVignette["color_by"];
       if (colorBy === "gene_expression") {
-        let targetGene = currentVignette["color_key"]
-        let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"]
+        let targetGene = currentVignette["color_key"];
+        let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"];
         return maxExpressionMap[targetGene];
       }
     } else {
@@ -60,8 +62,8 @@ class Luna extends React.Component<{},{}> {
       for (let i = 0; i < dataList.length; i++) {
         expressionAverage += parseFloat(dataList[i][targetGene]);
       }
-      let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"]
-      return maxExpressionMap[targetGene] - (expressionAverage / dataList.length);
+      let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"];
+      return maxExpressionMap[targetGene] - expressionAverage / dataList.length;
     } else {
       return 0;
     }
@@ -72,9 +74,9 @@ class Luna extends React.Component<{},{}> {
    */
   getElevationValue(dataList: any) {
     let elevation = this.getColorValue(dataList);
-    if (elevation >0) {
+    if (elevation > 0) {
       let targetGene = this.mapState.getCurrentTargetGene();
-      let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"]
+      let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"];
       elevation = maxExpressionMap[targetGene] - elevation;
     }
     return elevation;
@@ -84,11 +86,14 @@ class Luna extends React.Component<{},{}> {
     let object = info.object;
     let x = info.x;
     let y = info.y;
-    const el = document.getElementById('tooltip');
+    const el = document.getElementById("tooltip");
     if (el != null) {
       if (object) {
         //  TODO:  Replace with Pull-down menu Option?
-        let clusterCounter = new ClusterCounter(info.object.points, "cell_ontology_class");
+        let clusterCounter = new ClusterCounter(
+          info.object.points,
+          "cell_ontology_class"
+        );
         let rankedClusterList = clusterCounter.getClusterCountsRanked();
         let clusterHtml = "<table>";
         rankedClusterList.forEach((value) => {
@@ -96,18 +101,19 @@ class Luna extends React.Component<{},{}> {
           clusterHtml += "<tr>";
           clusterHtml += "<td>" + clusterName + "</td>";
           clusterHtml += "<td>N=" + value.numCells + "</td>";
-          clusterHtml += "<td>" + (100.0 * value.percentage).toFixed(0) + "%</td>";
+          clusterHtml +=
+            "<td>" + (100.0 * value.percentage).toFixed(0) + "%</td>";
           clusterHtml += "</tr>";
         });
         el.innerHTML = clusterHtml;
-        el.style.display = 'block';
-        el.style.left = (x + 100) + 'px';
-        el.style.top = (y + 50) + 'px';
+        el.style.display = "block";
+        el.style.left = x + 100 + "px";
+        el.style.top = y + 50 + "px";
       } else {
-        el.style.display = 'none';
+        el.style.display = "none";
       }
     }
-  } 
+  }
 
   render() {
     let colorList = this.getColorList();
@@ -134,13 +140,13 @@ class Luna extends React.Component<{},{}> {
             <Typography variant="h6">Luna: Single Cell Viewer</Typography>
           </Toolbar>
         </AppBar>
-        <LegendPanel mapState={this.mapState}/>
+        <LegendPanel mapState={this.mapState} />
         <Grid container spacing={3}>
           <Grid id="left-column" item xs={3}>
             <div id="left-column-content">
-              <DataSummaryPanel mapState={this.mapState}/>
-              <ControlPanel mapState={this.mapState}/>
-              <NavigationPanel/>
+              <DataSummaryPanel mapState={this.mapState} />
+              <ControlPanel mapState={this.mapState} />
+              <NavigationPanel />
               <div id="tooltip"></div>
             </div>
           </Grid>
