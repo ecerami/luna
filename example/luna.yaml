@@ -8,6 +8,8 @@ vignettes:
     color_map:  density
     color_by:  gene_expression
     color_key: P2ry12
+    cluster_keys:
+      - cell_ontology_class
     center_x: 10.2
     center_y: 7.73
     zoom: 5
@@ -20,6 +22,8 @@ vignettes:
     center_x: 10.2
     center_y: 7.73
     zoom: 5
+    cluster_keys:
+      - cell_ontology_class
   # - key:  cell_ontology_clusters
   #   label:  Cell ontology clusters
   #   description:  Individual cells color coded by cell ontology.
@@ -35,6 +39,8 @@ vignettes:
     center_x: -0.7314
     center_y: -12.218
     zoom: 5
+    cluster_keys:
+      - cell_ontology_class
   - key:  p2ry12_gene_expression_3d
     label:  P2ry12 gene expression (3D Map)
     description:  Microglial cells exhibit increased expression of P2ry12 (3D Map)
@@ -48,3 +54,5 @@ vignettes:
     hex_bin_size: 20000
     pitch: 50
     elevation_scale: 800
+    cluster_keys:
+      - cell_ontology_class
