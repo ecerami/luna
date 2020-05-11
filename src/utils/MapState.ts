@@ -57,6 +57,14 @@ class MapState {
     }
   }
 
+  getClusterList() {
+    if (this.vignetteHasBeenSelected()) {
+      let currentVignette = this.getCurrentVignette();
+      let clusterList = currentVignette["clusters"];
+      return clusterList;
+    }
+  }
+
   getCurrentTargetGeneMaxExpression() {
     if (this.vignetteHasBeenSelected()) {
       let maxExpressionMap: any = this.lunaConfig["expression_max"];
