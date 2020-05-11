@@ -3,7 +3,6 @@ import { observer } from "mobx-react";
 import MapState from "../utils/MapState";
 import { VictoryBoxPlot, VictoryGroup } from "victory";
 
-
 interface LegendPanelProps {
   mapState: MapState;
 }
@@ -15,30 +14,14 @@ class LegendPanel extends React.Component<LegendPanelProps> {
   }
 
   render() {
-    let legend = this.getLegend();
-    let tdStyle = {
-      width: "200px",
-    };
     if (this.props.mapState.vignetteHasBeenSelected()) {
       return (
         <div id="legend">
-          <br/>
+          <br />
+          {this.getExpressionLegend()}
+          <hr />
           <table>
-            <tr>
-              <td><b>{this.props.mapState.getCurrentTargetGene()}</b></td>
-              <td style={tdStyle}>{legend}</td>
-            </tr>
-          </table>
-          <hr/>
-          <table>
-            {this.addRow("microglial cell", 7, 9, 10, 8, 9.6)}
-            {this.addRow("luminal epithelial cell", 0, 1, 2, 2, 3)}
-            {this.addRow("basal cell of epidermis", 0, 1, 2, 2, 3)}
-            {this.addRow("basal cell of epidermis", 0, 1, 2, 2, 3)}
-            {this.addRow("basal cell of epidermis", 0, 1, 2, 2, 3)}
-            {this.addRow("basal cell of epidermis", 0, 1, 2, 2, 3)}
-            {this.addRow("basal cell of epidermis", 0, 1, 2, 2, 3)}
-            {this.addRow("basal cell of epidermis", 0, 1, 2, 2, 3)}
+            <tbody>{this.getClusters()}</tbody>
           </table>
         </div>
       );
@@ -47,66 +30,171 @@ class LegendPanel extends React.Component<LegendPanelProps> {
     }
   }
 
-  addRow(label: string, min: number, median:number, max: number, q1: number, q3: number) {
+  getExpressionLegend() {
+    let legend = this.getLegend();
+    let tdStyle = {
+      width: "200px",
+    };
+    return (
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <b>{this.props.mapState.getCurrentTargetGene()}</b>
+            </td>
+            <td style={tdStyle}>{legend}</td>
+          </tr>
+        </tbody>
+      </table>
+    );
+  }
+
+  getClusters() {
+    // Get the current cluster list associated with the current vignette
+    let clusterList = this.props.mapState.getClusterList();
+    let clusterReactList: any = [];
+    let count = 0;
+    if (clusterList !== undefined) {
+      for (let clusterKey in clusterList) {
+        //  For now, we only support the 0th cluster list
+        if (count === 0) {
+          let currentClusterList = clusterList[clusterKey];
+
+          // Iterate through each cluster item
+          for (let clusterKey2 in currentClusterList) {
+            let currentCluster = currentClusterList[clusterKey2];
+            this.addClusterRow(clusterReactList, currentCluster);
+          }
+        }
+        count += 1;
+      }
+    }
+    return clusterReactList;
+  }
+
+  addClusterRow(clusterReactList: any[], currentCluster: any) {
+    clusterReactList.push(
+      this.addRow(
+        currentCluster["cluster"],
+        currentCluster["min"],
+        currentCluster["median"],
+        currentCluster["max"],
+        currentCluster["q1"],
+        currentCluster["q3"]
+      )
+    );
+  }
+
+  addRow(
+    label: string,
+    min: number,
+    median: number,
+    max: number,
+    q1: number,
+    q3: number
+  ) {
     let tdStyle = {
       width: "150px",
     };
-    return(
-      <tr>
-      <td><span className="cluster-label">{label}</span></td>
-      <td style={tdStyle}>
-        <VictoryGroup height={15} width={350}>
-          <VictoryBoxPlot
-            data={[{ x: 1, min: min, median: median, max: max, q1: q1, q3: q3 }]}
-            horizontal
-            boxWidth={30}
-            domain={{y: [0, 10]}}
-          />
-        </VictoryGroup>
-      </td>
-    </tr>
-    )
+    label = this.truncateLabel(label);
+    if (q3 - q1 > 0.0001) {
+      return (
+        <tr>
+          <td>
+            <span className="cluster-label">{label}</span>
+          </td>
+          <td style={tdStyle}>
+            { this.getVictoryBoxPlot(label, min, median, max, q1, q3)}
+          </td>
+        </tr>
+      );
+    }
+  }
+
+  private getVictoryBoxPlot(
+    label: string,
+    min: number,
+    median: number,
+    max: number,
+    q1: number,
+    q3: number
+  ) {
+    return (
+      <VictoryGroup height={35} width={350}>
+        <VictoryBoxPlot
+          data={[{ x: 1, min: min, median: median, max: max, q1: q1, q3: q3 }]}
+          horizontal
+          boxWidth={40}
+          domain={{ y: [0, this.props.mapState.getCurrentTargetGeneMaxExpression()] }}
+        />
+      </VictoryGroup>
+    );
+  }
+
+  private truncateLabel(label: string) {
+    // Truncate labels and convert to all lowercase
+    let MAX_LEN = 15;
+    label = label.toLowerCase();
+    if (label.length > MAX_LEN) {
+      label = label.substr(0, MAX_LEN) + "...";
+    }
+    return label;
   }
 
   getLegend() {
     let legend: any = [];
+
+    //  Get current color map and max gene expression
     let colorList = this.props.mapState.getColorListByFormat("hex");
     colorList = colorList.reverse();
     let index = 0;
     let maxGeneExpression = Math.round(
       this.props.mapState.getCurrentTargetGeneMaxExpression()
     );
+
+    // Iterate through the color map
     for (let color in colorList) {
       let currentColor: string = colorList[color];
       currentColor = currentColor.toString();
-      let boxStyle = {
-        width: "7px",
-        height: "12px",
-        display: "inline-block",
-        backgroundColor: currentColor,
-      };
-      let key = "legend_box_" + index;
       if (index === 0) {
-        legend.push(
-          <span>
-          <span className="legend-tick-min">0.0</span>
-          <span key={key} style={boxStyle}>
-          </span>
-          </span>
-        );
+        legend.push(this.getColorBox(currentColor, index, 0));
       } else if (index === colorList.length - 1) {
-        legend.push(
-          <span>
-          <span key={key} style={boxStyle}></span>
-          <span className="legend-tick-max">{maxGeneExpression}.0</span>
-          </span>
-        );
+        legend.push(this.getColorBox(currentColor, index, maxGeneExpression));
       } else {
-        legend.push(<span key={key} style={boxStyle}></span>);
+        legend.push(this.getColorBox(currentColor, index));
       }
       index += 1;
     }
     return legend;
+  }
+
+  private getColorBox(currentColor: any, index: number, value: number = -1) {
+    //  Style for CSS Box with Specific Background Color
+    let boxStyle = {
+      width: "7px",
+      height: "12px",
+      display: "inline-block",
+      backgroundColor: currentColor,
+    };
+
+    // Keys required by React
+    let key1 = "legend_box_a" + index;
+    let key2 = "legend_box_b" + index;
+    let key3 = "legend_box_c" + index;
+
+    // Only show min/max values
+    let valueStr = "";
+    if (value > -1) {
+      valueStr = value + ".0";
+    }
+    return (
+      <span key={key1}>
+        <span key={key2} style={boxStyle}></span>
+        <span key={key3} className="legend-tick-max">
+          {valueStr}
+        </span>
+      </span>
+    );
   }
 }
 
