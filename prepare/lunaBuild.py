@@ -5,6 +5,7 @@ import argparse
 import yaml
 import os
 import numpy as np
+import pandas as pd
 
 
 def parse_category_file(uns_file, cluster_map):
@@ -190,6 +191,31 @@ def get_expression_max_list(cell_list, gene_list):
         expression_max[gene] = get_expression_max(cell_list, gene)
     return expression_max
 
+def assess_clusters(luna_config, out_path):
+    json_file_name = os.path.join(out_path, "lunaData.json")
+    cells_df = pd.read_json (json_file_name)
+    for vignette in luna_config["vignettes"]:
+        if "cluster_keys" in vignette:
+            cluster_map = {}
+            target_gene = vignette["color_key"]
+            for cluster_key in vignette["cluster_keys"]:
+                print ("processing vignette cluster:  %s" % cluster_key)
+                cluster_list = []
+                exp_df = cells_df.groupby(by=cluster_key)[target_gene].describe()
+                exp_df.sort_values(by=["50%"], inplace=True, ascending=False)
+                for i, j in exp_df.iterrows(): 
+                    stats = {
+                        "cluster": i,
+                        "min": j["min"],
+                        "q1": j["25%"],
+                        "median": j["50%"],
+                        "q3": j["75%"],
+                        "max": j["max"]
+                    }
+                    cluster_list.append(stats)
+                cluster_map[cluster_key] = cluster_list
+            vignette["clusters"] = cluster_map
+
 args = get_cli_args()
 
 # Read in the Config YAML
@@ -208,6 +234,7 @@ luna_build_console(args.config_path, h5ad_file_name,
 cell_list = parse_h5ad(h5ad_file_name, gene_list, args.data_format_type)
 write_data_file(args.out_path, args.data_format_type, cell_list)
 
+assess_clusters(luna_config, args.out_path)
 (center_x, center_y) = get_center(cell_list)
 luna_config["center_x"] = center_x
 luna_config["center_y"] = center_y
