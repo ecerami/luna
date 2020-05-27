@@ -33,19 +33,32 @@ class Luna extends React.Component<{}, {}> {
    * Gets Color List, based on Current Vignette
    */
   getColorList() {
-    return this.mapState.getColorListByFormat("rba");
+    if (this.mapState.clusterIsSelected()) {
+      let colorList = [
+        [0, 0, 255, 255],
+        [100, 100, 100, 255],
+        [255, 0, 0, 255],
+      ]
+      return colorList; 
+    } else {
+      return this.mapState.getColorListByFormat("rba");
+    }
   }
 
   getColorDomainMax() {
     if (this.mapState.vignetteHasBeenSelected()) {
-      let currentVignette = this.mapState.lunaConfig["vignettes"][
-        this.mapState.getVignetteSelected()
-      ];
-      let colorBy = currentVignette["color_by"];
-      if (colorBy === "gene_expression") {
-        let targetGene = currentVignette["color_key"];
-        let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"];
-        return maxExpressionMap[targetGene];
+      if (this.mapState.clusterIsSelected()) {
+        return 10;
+      } else {
+        let currentVignette = this.mapState.lunaConfig["vignettes"][
+          this.mapState.getVignetteSelected()
+        ];
+        let colorBy = currentVignette["color_by"];
+        if (colorBy === "gene_expression") {
+          let targetGene = currentVignette["color_key"];
+          let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"];
+          return maxExpressionMap[targetGene];
+        }
       }
     } else {
       return 0;
@@ -57,13 +70,32 @@ class Luna extends React.Component<{}, {}> {
    */
   getColorValue(dataList: any) {
     if (this.mapState.vignetteHasBeenSelected()) {
-      let targetGene = this.mapState.getCurrentTargetGene();
-      let expressionAverage = 0.0;
-      for (let i = 0; i < dataList.length; i++) {
-        expressionAverage += parseFloat(dataList[i][targetGene]);
+      if (this.mapState.clusterIsSelected()) {
+        let clusterTargetReached = false;
+        let clusterCounter = new ClusterCounter(
+          dataList,
+          this.mapState.clusterCategorySelected
+        );
+        let rankedClusterList = clusterCounter.getClusterCountsRanked();
+        rankedClusterList.forEach((value) => {
+          if (value.clusterName === this.mapState.clusterNameSelected) {
+            clusterTargetReached = true;
+          }
+        });
+        if (clusterTargetReached) {
+          return 10;
+        } else {
+          return 1;
+        }
+      } else {
+        let targetGene = this.mapState.getCurrentTargetGene();
+        let expressionAverage = 0.0;
+        for (let i = 0; i < dataList.length; i++) {
+          expressionAverage += parseFloat(dataList[i][targetGene]);
+        }
+        let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"];
+        return maxExpressionMap[targetGene] - expressionAverage / dataList.length;
       }
-      let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"];
-      return maxExpressionMap[targetGene] - expressionAverage / dataList.length;
     } else {
       return 0;
     }
@@ -131,6 +163,7 @@ class Luna extends React.Component<{}, {}> {
       colorDomain: [0, colorDomainMax],
       colorRange: colorList,
       onHover: this.setTooltip,
+      autoHighlight: true
     });
 
     return (

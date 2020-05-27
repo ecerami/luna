@@ -14,6 +14,8 @@ class MapState {
   @observable hexBinRadius = MapState.HEX_BIN_RADIUS_DEFAULT;
   @observable elevationScale = MapState.ELEVATION_SCALE_DEFAULT;
   @observable checked3D = false;
+  @observable clusterCategorySelected = "";
+  @observable clusterNameSelected = "";
   @observable private vignetteSelected = -1;
 
   constructor(config: any) {
@@ -44,6 +46,26 @@ class MapState {
   setVignetteSelected(index: number) {
     this.vignetteSelected = index;
     this.flyToNewLocation()
+  }
+
+  clusterIsSelected() {
+    if (this.clusterCategorySelected !== "") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  setClusterSelected(clusterCategory: string, clusterName: string) {
+    this.clusterCategorySelected = clusterCategory;
+    this.clusterNameSelected = clusterName;
+    this.hexBinHack();
+  }
+
+  unsetClusterSelected() {
+    this.clusterCategorySelected = "";
+    this.clusterNameSelected = "";
+    this.hexBinHack();
   }
 
   getCurrentTargetGene() {
@@ -144,6 +166,10 @@ class MapState {
         transitionDuration: 2000,
         transitionInterpolator: new FlyToInterpolator(),
     };
+    this.hexBinHack();
+  }
+
+  private hexBinHack() {
     this.hexBinRadius = this.hexBinRadius + 1;
   }
 }

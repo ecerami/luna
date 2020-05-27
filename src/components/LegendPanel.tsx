@@ -30,6 +30,14 @@ class LegendPanel extends React.Component<LegendPanelProps> {
     }
   }
 
+  selectCluster(clusterCategory: string, clusterName: string) {
+    this.props.mapState.setClusterSelected(clusterCategory, clusterName);
+  }
+
+  unSelectCluster(clusterCategory: string, clusterName: string) {
+    this.props.mapState.unsetClusterSelected();
+  }
+
   getExpressionLegend() {
     let legend = this.getLegend();
     let tdStyle = {
@@ -63,7 +71,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
           // Iterate through each cluster item
           for (let clusterKey2 in currentClusterList) {
             let currentCluster = currentClusterList[clusterKey2];
-            this.addClusterRow(clusterReactList, currentCluster);
+            this.addClusterRow(clusterReactList, currentCluster, clusterKey);
           }
         }
         count += 1;
@@ -72,9 +80,10 @@ class LegendPanel extends React.Component<LegendPanelProps> {
     return clusterReactList;
   }
 
-  addClusterRow(clusterReactList: any[], currentCluster: any) {
+  addClusterRow(clusterReactList: any[], currentCluster: any, clusterKey: string) {
     clusterReactList.push(
       this.addRow(
+        clusterKey,
         currentCluster["cluster"],
         currentCluster["min"],
         currentCluster["median"],
@@ -86,6 +95,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
   }
 
   addRow(
+    clusterKey: string,
     label: string,
     min: number,
     median: number,
@@ -96,15 +106,23 @@ class LegendPanel extends React.Component<LegendPanelProps> {
     let tdStyle = {
       width: "150px",
     };
-    label = this.truncateLabel(label);
+    let truncatedLabel = this.truncateLabel(label);
     if (q3 - q1 > 0.0001) {
       return (
         <tr>
           <td>
-            <span className="cluster-label">{label}</span>
+            <span className="cluster-label">
+              {/* <a
+                href="#"
+                onMouseOver={() => this.selectCluster(clusterKey, label)}
+                onMouseOut={() => this.unSelectCluster(clusterKey, label)}
+              > */}
+                {truncatedLabel}
+              {/* </a> */}
+            </span>
           </td>
           <td style={tdStyle}>
-            { this.getVictoryBoxPlot(label, min, median, max, q1, q3)}
+            {this.getVictoryBoxPlot(label, min, median, max, q1, q3)}
           </td>
         </tr>
       );
@@ -125,7 +143,9 @@ class LegendPanel extends React.Component<LegendPanelProps> {
           data={[{ x: 1, min: min, median: median, max: max, q1: q1, q3: q3 }]}
           horizontal
           boxWidth={40}
-          domain={{ y: [0, this.props.mapState.getCurrentTargetGeneMaxExpression()] }}
+          domain={{
+            y: [0, this.props.mapState.getCurrentTargetGeneMaxExpression()],
+          }}
         />
       </VictoryGroup>
     );
@@ -187,14 +207,25 @@ class LegendPanel extends React.Component<LegendPanelProps> {
     if (value > -1) {
       valueStr = value + ".0";
     }
-    return (
-      <span key={key1}>
-        <span key={key2} style={boxStyle}></span>
-        <span key={key3} className="legend-tick-max">
-          {valueStr}
+    if (value === 0) {
+      return (
+        <span key={key1}>
+          <span key={key3} className="legend-tick-min">
+            {valueStr}
+          </span>
+          <span key={key2} style={boxStyle}></span>
         </span>
-      </span>
-    );
+      );
+    } else {
+      return (
+        <span key={key1}>
+          <span key={key2} style={boxStyle}></span>
+          <span key={key3} className="legend-tick-max">
+            {valueStr}
+          </span>
+        </span>
+      );
+    }
   }
 }
 
