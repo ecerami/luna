@@ -186,9 +186,12 @@ class Luna extends React.Component<{}, {}> {
           <Grid item xs={9}>
             <div id="map" />
             <DeckGL
+              effects={[]}
               controller={true}
               initialViewState={this.mapState.viewState}
               layers={[layer]}
+              width={"100%"}
+              height={"100%"}
             />
           </Grid>
         </Grid>

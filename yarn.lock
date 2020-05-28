@@ -1667,6 +1667,15 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
+"@danmarshall/deckgl-typings@^4.1.8":
+  version "4.1.8"
+  resolved "https://registry.yarnpkg.com/@danmarshall/deckgl-typings/-/deckgl-typings-4.1.8.tgz#70df48ba76c912643d32fb32fdb3ff0d3082d8e6"
+  integrity sha512-dNXHVEnk8oLQP5wWLZnPoMGyRmR2j1BZXLVwWbmK7xI/7n99JXacNsYAdLh1IVhX3BNIFB7pLue3ytkrNcLk0g==
+  dependencies:
+    "@types/hammerjs" "^2.0.36"
+    "@types/react" "*"
+    indefinitely-typed "^1.1.0"
+
 "@deck.gl/aggregation-layers@8.1.1":
   version "8.1.1"
   resolved "https://registry.yarnpkg.com/@deck.gl/aggregation-layers/-/aggregation-layers-8.1.1.tgz#4985a0e81eca0eff4d5af611bc48d968b9296921"
@@ -2455,6 +2464,11 @@
     "@types/events" "*"
     "@types/minimatch" "*"
     "@types/node" "*"
+
+"@types/hammerjs@^2.0.36":
+  version "2.0.36"
+  resolved "https://registry.yarnpkg.com/@types/hammerjs/-/hammerjs-2.0.36.tgz#17ce0a235e9ffbcdcdf5095646b374c2bf615a4c"
+  integrity sha512-7TUK/k2/QGpEAv/BCwSHlYu3NXZhQ9ZwBYpzr9tjlPIL2C5BeGhH3DmVavRx3ZNyELX5TLC91JTz/cen6AAtIQ==
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0":
   version "2.0.1"
@@ -6542,6 +6556,14 @@ imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
   integrity sha1-khi5srkoojixPcT7a21XbyMUU+o=
+
+indefinitely-typed@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/indefinitely-typed/-/indefinitely-typed-1.1.0.tgz#d0acd3645445e89ae1c70129be21609a0aa5a114"
+  integrity sha512-giaI0hCj+wWZIZZLsmWHI+LrM4Hwc+rEZ/VrgCafKePcnE42fLnQTFt4xspqLin8fCjI5WnQr2fep/0EFqjaxw==
+  dependencies:
+    fs-extra "^7.0.0"
+    minimist "^1.2.5"
 
 indent-string@^4.0.0:
   version "4.0.0"
