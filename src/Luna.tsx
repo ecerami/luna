@@ -14,62 +14,72 @@ import NavigationPanel from "./components/NavigationPanel";
 import DataSummaryPanel from "./components/DataSummaryPanel";
 import LegendPanel from "./components/LegendPanel";
 import ControlPanel from "./components/ControlPanel";
-import configInit from "./data/lunaConfig.json";
 import data from "./data/lunaData.json";
+import axios from "axios";
+import { LunaConfig } from "./utils/LunaConfig";
 import "./App.css";
 
 @observer
 class Luna extends React.Component<{}, {}> {
-  @observable mapState = new MapState(configInit);
+  @observable mapState!: MapState;
 
   constructor(props: any) {
     super(props);
     this.getColorValue = this.getColorValue.bind(this);
     this.getColorList = this.getColorList.bind(this);
     this.getElevationValue = this.getElevationValue.bind(this);
+    axios({
+      method: "get",
+      url: "data/lunaConfig.json"
+    })
+     .then(res => this.initLunaConfig(res.data))
+     .catch(error => console.log(error));
+  }
+
+  initLunaConfig(json: any) {
+    let lunaConfig: LunaConfig = json;
+    this.mapState = new MapState(lunaConfig);
   }
 
   /**
    * Gets Color List, based on Current Vignette
    */
   getColorList() {
-    if (this.mapState.clusterIsSelected()) {
-      let colorList = [
-        [0, 0, 255, 255],
-        [100, 100, 100, 255],
-        [255, 0, 0, 255],
-      ]
-      return colorList; 
-    } else {
-      return this.mapState.getColorListByFormat("rba");
+    try {    
+      if (this.mapState.clusterIsSelected()) {
+        let colorList = [
+          [0, 0, 255, 255],
+          [100, 100, 100, 255],
+          [255, 0, 0, 255],
+        ];
+        return colorList;
+      } else {
+        return this.mapState.getColorListByFormat(MapState.RBA);
+      }
+    } catch (e) {
     }
   }
 
   getColorDomainMax() {
-    if (this.mapState.vignetteHasBeenSelected()) {
+    if (this.mapState != null && this.mapState.vignetteHasBeenSelected()) {
       if (this.mapState.clusterIsSelected()) {
         return 10;
       } else {
-        let currentVignette = this.mapState.lunaConfig["vignettes"][
-          this.mapState.getVignetteSelected()
-        ];
-        let colorBy = currentVignette["color_by"];
-        if (colorBy === "gene_expression") {
-          let targetGene = currentVignette["color_key"];
-          let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"];
-          return maxExpressionMap[targetGene];
+        let currentVignette = this.mapState.getCurrentVignette();
+        let colorBy = currentVignette.color_by;
+        if (colorBy === MapState.GENE_EXPRESSION) {
+          return this.mapState.getCurrentTargetGeneMaxExpression();
         }
       }
-    } else {
-      return 0;
     }
+    return 0;
   }
 
   /**
    * Gets the Color Value for Set of Points
    */
   getColorValue(dataList: any) {
-    if (this.mapState.vignetteHasBeenSelected()) {
+    if (this.mapState != null && this.mapState.vignetteHasBeenSelected()) {
       if (this.mapState.clusterIsSelected()) {
         let clusterTargetReached = false;
         let clusterCounter = new ClusterCounter(
@@ -89,16 +99,19 @@ class Luna extends React.Component<{}, {}> {
         }
       } else {
         let targetGene = this.mapState.getCurrentTargetGene();
-        let expressionAverage = 0.0;
-        for (let i = 0; i < dataList.length; i++) {
-          expressionAverage += parseFloat(dataList[i][targetGene]);
+        if (targetGene != null) {
+          let expressionAverage = 0.0;
+          for (let i = 0; i < dataList.length; i++) {
+            expressionAverage += parseFloat(dataList[i][targetGene]);
+          }
+          return (
+            this.mapState.getCurrentTargetGeneMaxExpression() -
+            expressionAverage / dataList.length
+          );
         }
-        let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"];
-        return maxExpressionMap[targetGene] - expressionAverage / dataList.length;
       }
-    } else {
-      return 0;
     }
+    return 0;
   }
 
   /**
@@ -107,9 +120,7 @@ class Luna extends React.Component<{}, {}> {
   getElevationValue(dataList: any) {
     let elevation = this.getColorValue(dataList);
     if (elevation > 0) {
-      let targetGene = this.mapState.getCurrentTargetGene();
-      let maxExpressionMap: any = this.mapState.lunaConfig["expression_max"];
-      elevation = maxExpressionMap[targetGene] - elevation;
+      elevation = this.mapState.getCurrentTargetGeneMaxExpression() - elevation;
     }
     return elevation;
   }
@@ -148,23 +159,24 @@ class Luna extends React.Component<{}, {}> {
   }
 
   render() {
-    let colorList = this.getColorList();
-    let colorDomainMax = this.getColorDomainMax();
-    const layer = new HexagonLayer({
-      id: "column-layer",
-      data,
-      pickable: true,
-      extruded: this.mapState.checked3D,
-      radius: this.mapState.hexBinRadius,
-      elevationScale: this.mapState.elevationScale,
-      elevationDomain: [0, colorDomainMax + 1],
-      getElevationValue: this.getElevationValue,
-      getColorValue: this.getColorValue,
-      colorDomain: [0, colorDomainMax],
-      colorRange: colorList,
-      onHover: this.setTooltip,
-      autoHighlight: true
-    });
+    if (this.mapState != null) {
+      let colorList = this.getColorList();
+      let colorDomainMax = this.getColorDomainMax();
+      const layer = new HexagonLayer({
+        id: "column-layer",
+        data,
+        pickable: true,
+        extruded: this.mapState.checked3D,
+        radius: this.mapState.hexBinRadius,
+        elevationScale: this.mapState.elevationScale,
+        elevationDomain: [0, colorDomainMax + 1],
+        getElevationValue: this.getElevationValue,
+        getColorValue: this.getColorValue,
+        colorDomain: [0, colorDomainMax],
+        colorRange: colorList,
+        onHover: this.setTooltip,
+        autoHighlight: true,
+      });
 
     return (
       <div>
@@ -197,6 +209,9 @@ class Luna extends React.Component<{}, {}> {
         </Grid>
       </div>
     );
+    } else {
+      return <div>Loading...</div>
+    }
   }
 }
 

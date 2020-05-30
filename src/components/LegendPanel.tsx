@@ -2,6 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import MapState from "../utils/MapState";
 import { VictoryBoxPlot, VictoryGroup } from "victory";
+import { ClusterList } from "../utils/LunaConfig";
 
 interface LegendPanelProps {
   mapState: MapState;
@@ -66,8 +67,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
       for (let clusterKey in clusterList) {
         //  For now, we only support the 0th cluster list
         if (count === 0) {
-          let currentClusterList = clusterList[clusterKey];
-
+          let currentClusterList = clusterList[clusterKey].cluster_list;
           // Iterate through each cluster item
           for (let clusterKey2 in currentClusterList) {
             let currentCluster = currentClusterList[clusterKey2];
@@ -80,16 +80,16 @@ class LegendPanel extends React.Component<LegendPanelProps> {
     return clusterReactList;
   }
 
-  addClusterRow(clusterReactList: any[], currentCluster: any, clusterKey: string) {
+  addClusterRow(clusterReactList: any[], currentCluster: ClusterList, clusterKey: string) {
     clusterReactList.push(
       this.addRow(
         clusterKey,
-        currentCluster["cluster"],
-        currentCluster["min"],
-        currentCluster["median"],
-        currentCluster["max"],
-        currentCluster["q1"],
-        currentCluster["q3"]
+        currentCluster.cluster_value,
+        currentCluster.min,
+        currentCluster.median,
+        currentCluster.max,
+        currentCluster.q1,
+        currentCluster.q3
       )
     );
   }

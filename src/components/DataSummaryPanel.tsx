@@ -10,7 +10,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import MapState from "../utils/MapState";
-import config from "../data/lunaConfig.json";
 
 interface DataSummaryPanelProps {
   mapState: MapState;
@@ -37,41 +36,43 @@ class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
     let vignetteList = this.getVignetteMenuItems();
     let vignetteDescription = "Select a vignette above to get started.";
     if (this.props.mapState.vignetteHasBeenSelected()) {
-      vignetteDescription =
-        config["vignettes"][this.props.mapState.getVignetteSelected()][
-          "description"
-        ];
+      vignetteDescription = this.props.mapState.getCurrentVignette()
+        .description;
     }
-    return (
-      <ExpansionPanel defaultExpanded={true}>
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography>Data Summary</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails className="control">
-          <b>{config["label"]}:</b>
-          <br />
-          <br />
-          {config["description"]}
-          <br />
-          <br />
-          <FormControl>
-            <InputLabel>Vignette</InputLabel>
-            <Select
-              value={this.props.mapState.getVignetteSelected()}
-              onChange={this.handleVignetteChange}
-            >
-              {vignetteList}
-            </Select>
-          </FormControl>
-          <br />
-          {vignetteDescription}
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    );
+    if (this.props.mapState != null) {
+      return (
+        <ExpansionPanel defaultExpanded={true}>
+          <ExpansionPanelSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>Data Summary</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails className="control">
+            <b>{this.props.mapState.lunaConfig.label}:</b>
+            <br />
+            <br />
+            {this.props.mapState.lunaConfig.description}
+            <br />
+            <br />
+            <FormControl>
+              <InputLabel>Vignette</InputLabel>
+              <Select
+                value={this.props.mapState.getVignetteSelected()}
+                onChange={this.handleVignetteChange}
+              >
+                {vignetteList}
+              </Select>
+            </FormControl>
+            <br />
+            {vignetteDescription}
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+      );
+    } else {
+      return <div />;
+    }
   }
 
   getVignetteMenuItems() {
@@ -81,8 +82,8 @@ class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
         Select a Vignette
       </MenuItem>
     );
-    for (let key in config["vignettes"]) {
-      let vignette = config["vignettes"][key];
+    for (let key in this.props.mapState.lunaConfig.vignettes) {
+      let vignette = this.props.mapState.lunaConfig.vignettes[key];
       menuItems.push(
         <MenuItem key={"vignette_" + key} value={key}>
           {vignette["label"]}

@@ -50,7 +50,7 @@ vignettes:
     center_x: 10.2
     center_y: 7.73
     zoom: 5
-    3d: true
+    three_d: true
     hex_bin_size: 20000
     pitch: 50
     elevation_scale: 800

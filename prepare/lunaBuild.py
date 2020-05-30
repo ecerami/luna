@@ -178,25 +178,28 @@ def get_center(cell_list):
     center_y = max_y - (max_y - min_y) / 2
     return (center_x, center_y)
 
-def get_expression_max(cell_list, target_gene):
+def get_gene_stats(cell_list, target_gene):
     max_expression = 0
     for cell in cell_list:
         current_expression = float(cell[target_gene])
         max_expression = max(current_expression, max_expression)
-    return max_expression
+    return {
+        "gene":  target_gene,
+        "max_expression":  max_expression
+    }
 
-def get_expression_max_list(cell_list, gene_list):
-    expression_max = {}
+def get_gene_stats_list(cell_list, gene_list):
+    gene_stats = []
     for gene in gene_list:
-        expression_max[gene] = get_expression_max(cell_list, gene)
-    return expression_max
+        gene_stats.append(get_gene_stats(cell_list, gene))
+    return gene_stats
 
 def assess_clusters(luna_config, out_path):
     json_file_name = os.path.join(out_path, "lunaData.json")
     cells_df = pd.read_json (json_file_name)
     for vignette in luna_config["vignettes"]:
         if "cluster_keys" in vignette:
-            cluster_map = {}
+            cluster_global_list = []
             target_gene = vignette["color_key"]
             for cluster_key in vignette["cluster_keys"]:
                 print ("processing vignette cluster:  %s" % cluster_key)
@@ -205,7 +208,7 @@ def assess_clusters(luna_config, out_path):
                 exp_df.sort_values(by=["50%"], inplace=True, ascending=False)
                 for i, j in exp_df.iterrows(): 
                     stats = {
-                        "cluster": i,
+                        "cluster_value": i,
                         "min": j["min"],
                         "q1": j["25%"],
                         "median": j["50%"],
@@ -213,8 +216,11 @@ def assess_clusters(luna_config, out_path):
                         "max": j["max"]
                     }
                     cluster_list.append(stats)
-                cluster_map[cluster_key] = cluster_list
-            vignette["clusters"] = cluster_map
+                cluster_global_list.append({
+                    "cluster_name":  cluster_key,
+                    "cluster_list": cluster_list
+                })
+            vignette["clusters"] = cluster_global_list
 
 args = get_cli_args()
 
@@ -239,7 +245,7 @@ assess_clusters(luna_config, args.out_path)
 luna_config["center_x"] = center_x
 luna_config["center_y"] = center_y
 luna_config["default_zoom"] = 4
-expression_map = get_expression_max_list(cell_list, gene_list)
-luna_config["expression_max"] = expression_map
+expression_map = get_gene_stats_list(cell_list, gene_list)
+luna_config["gene_stats"] = expression_map
 
 write_luna_config(luna_config, args.out_path)
