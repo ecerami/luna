@@ -24,44 +24,66 @@ def count_unique_categories(key, cluster_map):
     return (len(unique_category_set))
 
 
-def dump_csv(cell_list):
-    index = 0
+def dump_csv(cell_list, out_file_name):
+    fd = open (out_file_name, "w")
     current_cell = cell_list[0]
     keys = current_cell.keys()
-    line = "id,"
+    line = ""
     for key in keys:
-        if key == "x":
-            line += ("point_latitude,")
-        elif key == "y":
-            line += ("point_longitude,")
-        else:
-            line += ("%s," % key)
-    print(line[0:len(line)-1])
+        if (key == "position"):
+            line += "x\ty\t"
+        elif (key == "clusters"):
+            cluster_list = current_cell[key]
+            for cluster in cluster_list:
+                line += cluster["name"] + "\t"
+        elif (key == "genes"):
+            gene_list = current_cell[key]
+            for gene in gene_list:
+                line += gene["gene"] + "\t"
+    fd.write(line[0:len(line)-1])
+    fd.write("\n")
 
     for current_cell in cell_list:
         keys = current_cell.keys()
-        line = "%d," % index
+        line = ""
         for key in keys:
-            if key == "x" or key == "y":
-                line += ("%.12f," % current_cell[key])
-            else:
-                line += ("%s," % current_cell[key])
-        print(line[0:len(line)-1])
-        index += 1
-
+            if (key == "position"):
+                position = current_cell[key]
+                line += ("%.12f\t" % position[0])
+                line += ("%.12f\t" % position[1])
+            elif (key == "clusters"):
+                cluster_list = current_cell[key]
+                for cluster in cluster_list:
+                    line += cluster["value"] + "\t"
+            elif (key == "genes"):
+                gene_list = current_cell[key]
+                for gene in gene_list:
+                    line += gene["value"] + "\t"
+        fd.write(line[0:len(line)-1])
+        fd.write("\n")
 
 def generate_cell_list(umap, cluster_values_map, cluster_map, gene_list):
     cell_list = []
     for i in range(0, len(umap)):
         current_cell = {}
         current_cell["position"] = [umap[i][0], umap[i][1]]
+        temp_cluster_list = []
+        temp_gene_list = []
         for key in cluster_values_map:
             values = cluster_values_map[key]
             if key in cluster_map:
                 category_map = cluster_map[key]
-                current_cell[key] = category_map[values[i]]
+                temp_cluster_list.append ({
+                    "name":  key,
+                    "value": category_map[values[i]]
+                })
             elif key in gene_list:
-                current_cell[key] = str(values[i])
+                temp_gene_list.append ({
+                    "gene":  key,
+                    "value": str(values[i])
+                })
+        current_cell["clusters"] = temp_cluster_list
+        current_cell["genes"] = temp_gene_list
         cell_list.append(current_cell)
     return cell_list
 
@@ -73,7 +95,7 @@ def get_gene_index(f, target_gene):
     return (gene_index[0][0])
 
 
-def parse_h5ad(file_name, gene_list, file_type):
+def parse_h5ad(file_name, gene_list):
     cluster_map = {}
     f = h5py.File(file_name, 'r')
 
@@ -120,24 +142,22 @@ def extract_gene_list(luna_config):
     return gene_list
 
 
-def write_data_file(out_path, data_format_type, cell_list):
+def write_data_files(out_path, cell_list):
     # Output the Data
-    if (data_format_type == "json"):
-        out_file_name = os.path.join(out_path, "lunaData.json")
-        print("Writing data to:  %s." % out_file_name)
-        with open(out_file_name, 'w') as out_file:
-            json.dump(cell_list, out_file, indent=4)
-    else:
-        print("Data format not supported:  %s." % data_format_type)
-        # dumpCsv(cellList)
+    out_file_name = os.path.join(out_path, "lunaData.json")
+    print("Writing data to:  %s." % out_file_name)
+    with open(out_file_name, 'w') as out_file:
+        json.dump(cell_list, out_file, indent=4)
+    out_file_name = os.path.join(out_path, "lunaData.txt")
+    print("Writing data to:  %s." % out_file_name)
+    dump_csv(cell_list, out_file_name)
 
 
-def luna_build_console(luna_config_file_name, h5ad_file_name, data_format_type, gene_list):
+def luna_build_console(luna_config_file_name, h5ad_file_name, gene_list):
     print("Preparing Luna Build...")
     print("--------------------------")
     print("Parsing Luna Config File: %s" % luna_config_file_name)
     print("Target h5ad File:  %s" % h5ad_file_name)
-    print("Data Format Type:  %s" % data_format_type)
     print("Total number of genes identified:  %d" % len(gene_list))
     for gene in gene_list:
         print(" - " + gene)
@@ -157,8 +177,6 @@ def get_cli_args():
                         help="path to Luna config file", action="store", default="luna.yaml")
     parser.add_argument("-o", dest='out_path',
                         help="path to Luna build directory", action="store", default="build")
-    parser.add_argument("-d", dest='data_format_type',
-                        help="data format type", action="store", default="json")
     return parser.parse_args()
 
 def get_center(cell_list):
@@ -181,8 +199,11 @@ def get_center(cell_list):
 def get_gene_stats(cell_list, target_gene):
     max_expression = 0
     for cell in cell_list:
-        current_expression = float(cell[target_gene])
-        max_expression = max(current_expression, max_expression)
+        gene_list = cell["genes"]
+        for gene in gene_list:
+            if (gene["gene"] == target_gene):
+                current_expression = float(gene["value"])
+                max_expression = max(current_expression, max_expression)
     return {
         "gene":  target_gene,
         "max_expression":  max_expression
@@ -195,8 +216,8 @@ def get_gene_stats_list(cell_list, gene_list):
     return gene_stats
 
 def assess_clusters(luna_config, out_path):
-    json_file_name = os.path.join(out_path, "lunaData.json")
-    cells_df = pd.read_json (json_file_name)
+    json_file_name = os.path.join(out_path, "lunaData.txt")
+    cells_df = pd.read_table (json_file_name)
     for vignette in luna_config["vignettes"]:
         if "cluster_keys" in vignette:
             cluster_global_list = []
@@ -235,10 +256,9 @@ gene_list = extract_gene_list(luna_config)
 if not os.path.isdir(args.out_path):
     os.mkdir(args.out_path)
 
-luna_build_console(args.config_path, h5ad_file_name,
-                   args.data_format_type, gene_list)
-cell_list = parse_h5ad(h5ad_file_name, gene_list, args.data_format_type)
-write_data_file(args.out_path, args.data_format_type, cell_list)
+luna_build_console(args.config_path, h5ad_file_name, gene_list)
+cell_list = parse_h5ad(h5ad_file_name, gene_list)
+write_data_files(args.out_path, cell_list)
 
 assess_clusters(luna_config, args.out_path)
 (center_x, center_y) = get_center(cell_list)

@@ -45,20 +45,12 @@
                             "max": 6.0749154
                         },
                         {
-                            "cluster_value": "megakaryocyte-erythroid progenitor cell",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.8145208749999999,
-                            "max": 5.266868
-                        },
-                        {
-                            "cluster_value": "naive B cell",
+                            "cluster_value": "mature natural killer cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 7.4509015
+                            "max": 1.653641
                         },
                         {
                             "cluster_value": "myofibroblast cell",
@@ -106,15 +98,23 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 5.1464825
+                            "max": 5.146482499999999
                         },
                         {
-                            "cluster_value": "mature natural killer cell",
+                            "cluster_value": "megakaryocyte-erythroid progenitor cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 1.653641
+                            "q3": 0.8145208749999999,
+                            "max": 5.266868
+                        },
+                        {
+                            "cluster_value": "macrophage",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 2.9515685,
+                            "max": 9.533180999999999
                         },
                         {
                             "cluster_value": "natural killer cell",
@@ -123,14 +123,6 @@
                             "median": 0.6931472,
                             "q3": 0.6931472,
                             "max": 6.889877
-                        },
-                        {
-                            "cluster_value": "macrophage",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 2.9515684999999996,
-                            "max": 9.533181
                         },
                         {
                             "cluster_value": "lymphocyte",
@@ -146,7 +138,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 6.665492
+                            "max": 6.6654919999999995
                         },
                         {
                             "cluster_value": "luminal epithelial cell of mammary gland",
@@ -181,12 +173,20 @@
                             "max": 2.597409
                         },
                         {
-                            "cluster_value": "nan",
+                            "cluster_value": "kidney collecting duct epithelial cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 1.525477475,
-                            "max": 9.551636
+                            "q3": 1.2718256000000001,
+                            "max": 4.3687987
+                        },
+                        {
+                            "cluster_value": "naive B cell",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 0.6931472,
+                            "max": 7.4509015
                         },
                         {
                             "cluster_value": "neuron",
@@ -197,12 +197,12 @@
                             "max": 4.9096556
                         },
                         {
-                            "cluster_value": "keratinocyte stem cell",
+                            "cluster_value": "keratinocyte",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 4.08817
+                            "max": 2.5714054
                         },
                         {
                             "cluster_value": "precursor B cell",
@@ -234,14 +234,14 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.9646004750000001,
-                            "max": 3.9870946
+                            "max": 3.9870946000000003
                         },
                         {
                             "cluster_value": "skeletal muscle satellite stem cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 1.2224069499999999,
+                            "q3": 1.22240695,
                             "max": 3.4294617
                         },
                         {
@@ -258,14 +258,14 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.3894575
+                            "max": 2.3894575000000002
                         },
                         {
                             "cluster_value": "professional antigen presenting cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 0.8105375,
+                            "q3": 0.8105374999999999,
                             "max": 6.0646424
                         },
                         {
@@ -313,7 +313,7 @@
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 0.9254619,
+                            "q3": 0.9254619000000001,
                             "max": 3.9624352
                         },
                         {
@@ -330,7 +330,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 4.353564
+                            "max": 4.3535639999999995
                         },
                         {
                             "cluster_value": "oligodendrocyte precursor cell",
@@ -338,31 +338,15 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.8422203
+                            "max": 2.8422202999999997
                         },
                         {
-                            "cluster_value": "kidney collecting duct epithelial cell",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 1.2718256,
-                            "max": 4.3687987
-                        },
-                        {
-                            "cluster_value": "keratinocyte",
+                            "cluster_value": "keratinocyte stem cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.5714054
-                        },
-                        {
-                            "cluster_value": "Bergmann glial cell",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 5.139753
+                            "max": 4.08817
                         },
                         {
                             "cluster_value": "immature natural killer cell",
@@ -373,12 +357,20 @@
                             "max": 3.09258
                         },
                         {
-                            "cluster_value": "common lymphoid progenitor",
+                            "cluster_value": "Bergmann glial cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 4.652882
+                            "max": 5.139753
+                        },
+                        {
+                            "cluster_value": "basophil",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 0.6931472,
+                            "max": 4.691625599999999
                         },
                         {
                             "cluster_value": "classical monocyte",
@@ -386,7 +378,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 5.694469
+                            "max": 5.694469000000001
                         },
                         {
                             "cluster_value": "ciliated columnar cell of tracheobronchial tree",
@@ -394,14 +386,14 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 3.6481304
+                            "max": 3.6481303999999994
                         },
                         {
                             "cluster_value": "cardiac muscle cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 1.1940821,
+                            "q3": 1.1940821000000001,
                             "max": 2.5647748
                         },
                         {
@@ -418,7 +410,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 6.9522657
+                            "max": 6.952265700000001
                         },
                         {
                             "cluster_value": "bladder urothelial cell",
@@ -437,20 +429,20 @@
                             "max": 2.458743
                         },
                         {
-                            "cluster_value": "basophil",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 4.6916256
-                        },
-                        {
                             "cluster_value": "basal cell of epidermis",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
                             "max": 6.1318135
+                        },
+                        {
+                            "cluster_value": "endocardial cell",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 1.1213412,
+                            "max": 3.2642632000000003
                         },
                         {
                             "cluster_value": "basal cell",
@@ -474,7 +466,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 5.070669
+                            "max": 5.0706690000000005
                         },
                         {
                             "cluster_value": "Slamf1-positive multipotent progenitor cell",
@@ -498,7 +490,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 1.170023275,
-                            "max": 2.2508972
+                            "max": 2.2508972000000003
                         },
                         {
                             "cluster_value": "Brush cell of epithelium proper of large intestine",
@@ -509,12 +501,12 @@
                             "max": 1.5277755
                         },
                         {
-                            "cluster_value": "endocardial cell",
+                            "cluster_value": "common lymphoid progenitor",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 1.1213412,
-                            "max": 3.2642632
+                            "q3": 0.6931472,
+                            "max": 4.652882
                         },
                         {
                             "cluster_value": "endothelial cell",
@@ -522,23 +514,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 7.971432
-                        },
-                        {
-                            "cluster_value": "endothelial cell of hepatic sinusoid",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 1.467482775,
-                            "max": 4.849433
-                        },
-                        {
-                            "cluster_value": "granulocyte",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 7.222495
+                            "max": 7.971432000000001
                         },
                         {
                             "cluster_value": "immature T cell",
@@ -546,7 +522,15 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 5.4602284
+                            "max": 5.460228400000001
+                        },
+                        {
+                            "cluster_value": "fibroblast",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 1.0222360000000001,
+                            "max": 5.8532305000000004
                         },
                         {
                             "cluster_value": "immature NK T cell",
@@ -554,7 +538,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 1.6195114,
-                            "max": 2.6711128
+                            "max": 2.6711127999999995
                         },
                         {
                             "cluster_value": "immature B cell",
@@ -562,15 +546,15 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 3.1477518
+                            "max": 3.1477517999999995
                         },
                         {
                             "cluster_value": "hepatocyte",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 0.9220522499999999,
-                            "max": 4.4505076
+                            "q3": 0.92205225,
+                            "max": 4.450507599999999
                         },
                         {
                             "cluster_value": "hematopoietic precursor cell",
@@ -578,7 +562,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 5.1409717
+                            "max": 5.140971700000001
                         },
                         {
                             "cluster_value": "granulocytopoietic cell",
@@ -597,20 +581,12 @@
                             "max": 5.916684
                         },
                         {
-                            "cluster_value": "fibroblast",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 1.022236,
-                            "max": 5.8532305
-                        },
-                        {
-                            "cluster_value": "enterocyte of epithelium of large intestine",
+                            "cluster_value": "granulocyte",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 8.495363
+                            "max": 7.222494999999999
                         },
                         {
                             "cluster_value": "erythrocyte",
@@ -621,11 +597,19 @@
                             "max": 8.351754
                         },
                         {
+                            "cluster_value": "endothelial cell of hepatic sinusoid",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 1.4674827750000001,
+                            "max": 4.849433
+                        },
+                        {
                             "cluster_value": "epithelial cell of proximal tubule",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 1.2158988000000002,
+                            "q3": 1.2158988,
                             "max": 2.9543486
                         },
                         {
@@ -634,7 +618,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.2858493
+                            "max": 2.2858492999999998
                         },
                         {
                             "cluster_value": "epithelial cell of large intestine",
@@ -642,7 +626,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 3.896285
+                            "max": 3.8962849999999998
                         },
                         {
                             "cluster_value": "epithelial cell",
@@ -650,7 +634,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 6.175302
+                            "max": 6.175301999999999
                         },
                         {
                             "cluster_value": "epidermal cell",
@@ -667,6 +651,14 @@
                             "median": 0.6931472,
                             "q3": 0.6931472,
                             "max": 2.396425
+                        },
+                        {
+                            "cluster_value": "enterocyte of epithelium of large intestine",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 0.6931472,
+                            "max": 8.495363000000001
                         },
                         {
                             "cluster_value": "type B pancreatic cell",
@@ -722,20 +714,12 @@
                             "max": 6.0749154
                         },
                         {
-                            "cluster_value": "megakaryocyte-erythroid progenitor cell",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.8145208749999999,
-                            "max": 5.266868
-                        },
-                        {
-                            "cluster_value": "naive B cell",
+                            "cluster_value": "mature natural killer cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 7.4509015
+                            "max": 1.653641
                         },
                         {
                             "cluster_value": "myofibroblast cell",
@@ -783,15 +767,23 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 5.1464825
+                            "max": 5.146482499999999
                         },
                         {
-                            "cluster_value": "mature natural killer cell",
+                            "cluster_value": "megakaryocyte-erythroid progenitor cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 1.653641
+                            "q3": 0.8145208749999999,
+                            "max": 5.266868
+                        },
+                        {
+                            "cluster_value": "macrophage",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 2.9515685,
+                            "max": 9.533180999999999
                         },
                         {
                             "cluster_value": "natural killer cell",
@@ -800,14 +792,6 @@
                             "median": 0.6931472,
                             "q3": 0.6931472,
                             "max": 6.889877
-                        },
-                        {
-                            "cluster_value": "macrophage",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 2.9515684999999996,
-                            "max": 9.533181
                         },
                         {
                             "cluster_value": "lymphocyte",
@@ -823,7 +807,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 6.665492
+                            "max": 6.6654919999999995
                         },
                         {
                             "cluster_value": "luminal epithelial cell of mammary gland",
@@ -858,12 +842,20 @@
                             "max": 2.597409
                         },
                         {
-                            "cluster_value": "nan",
+                            "cluster_value": "kidney collecting duct epithelial cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 1.525477475,
-                            "max": 9.551636
+                            "q3": 1.2718256000000001,
+                            "max": 4.3687987
+                        },
+                        {
+                            "cluster_value": "naive B cell",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 0.6931472,
+                            "max": 7.4509015
                         },
                         {
                             "cluster_value": "neuron",
@@ -874,12 +866,12 @@
                             "max": 4.9096556
                         },
                         {
-                            "cluster_value": "keratinocyte stem cell",
+                            "cluster_value": "keratinocyte",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 4.08817
+                            "max": 2.5714054
                         },
                         {
                             "cluster_value": "precursor B cell",
@@ -911,14 +903,14 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.9646004750000001,
-                            "max": 3.9870946
+                            "max": 3.9870946000000003
                         },
                         {
                             "cluster_value": "skeletal muscle satellite stem cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 1.2224069499999999,
+                            "q3": 1.22240695,
                             "max": 3.4294617
                         },
                         {
@@ -935,14 +927,14 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.3894575
+                            "max": 2.3894575000000002
                         },
                         {
                             "cluster_value": "professional antigen presenting cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 0.8105375,
+                            "q3": 0.8105374999999999,
                             "max": 6.0646424
                         },
                         {
@@ -990,7 +982,7 @@
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 0.9254619,
+                            "q3": 0.9254619000000001,
                             "max": 3.9624352
                         },
                         {
@@ -1007,7 +999,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 4.353564
+                            "max": 4.3535639999999995
                         },
                         {
                             "cluster_value": "oligodendrocyte precursor cell",
@@ -1015,31 +1007,15 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.8422203
+                            "max": 2.8422202999999997
                         },
                         {
-                            "cluster_value": "kidney collecting duct epithelial cell",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 1.2718256,
-                            "max": 4.3687987
-                        },
-                        {
-                            "cluster_value": "keratinocyte",
+                            "cluster_value": "keratinocyte stem cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.5714054
-                        },
-                        {
-                            "cluster_value": "Bergmann glial cell",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 5.139753
+                            "max": 4.08817
                         },
                         {
                             "cluster_value": "immature natural killer cell",
@@ -1050,12 +1026,20 @@
                             "max": 3.09258
                         },
                         {
-                            "cluster_value": "common lymphoid progenitor",
+                            "cluster_value": "Bergmann glial cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 4.652882
+                            "max": 5.139753
+                        },
+                        {
+                            "cluster_value": "basophil",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 0.6931472,
+                            "max": 4.691625599999999
                         },
                         {
                             "cluster_value": "classical monocyte",
@@ -1063,7 +1047,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 5.694469
+                            "max": 5.694469000000001
                         },
                         {
                             "cluster_value": "ciliated columnar cell of tracheobronchial tree",
@@ -1071,14 +1055,14 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 3.6481304
+                            "max": 3.6481303999999994
                         },
                         {
                             "cluster_value": "cardiac muscle cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 1.1940821,
+                            "q3": 1.1940821000000001,
                             "max": 2.5647748
                         },
                         {
@@ -1095,7 +1079,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 6.9522657
+                            "max": 6.952265700000001
                         },
                         {
                             "cluster_value": "bladder urothelial cell",
@@ -1114,20 +1098,20 @@
                             "max": 2.458743
                         },
                         {
-                            "cluster_value": "basophil",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 4.6916256
-                        },
-                        {
                             "cluster_value": "basal cell of epidermis",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
                             "max": 6.1318135
+                        },
+                        {
+                            "cluster_value": "endocardial cell",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 1.1213412,
+                            "max": 3.2642632000000003
                         },
                         {
                             "cluster_value": "basal cell",
@@ -1151,7 +1135,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 5.070669
+                            "max": 5.0706690000000005
                         },
                         {
                             "cluster_value": "Slamf1-positive multipotent progenitor cell",
@@ -1175,7 +1159,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 1.170023275,
-                            "max": 2.2508972
+                            "max": 2.2508972000000003
                         },
                         {
                             "cluster_value": "Brush cell of epithelium proper of large intestine",
@@ -1186,12 +1170,12 @@
                             "max": 1.5277755
                         },
                         {
-                            "cluster_value": "endocardial cell",
+                            "cluster_value": "common lymphoid progenitor",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 1.1213412,
-                            "max": 3.2642632
+                            "q3": 0.6931472,
+                            "max": 4.652882
                         },
                         {
                             "cluster_value": "endothelial cell",
@@ -1199,23 +1183,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 7.971432
-                        },
-                        {
-                            "cluster_value": "endothelial cell of hepatic sinusoid",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 1.467482775,
-                            "max": 4.849433
-                        },
-                        {
-                            "cluster_value": "granulocyte",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 7.222495
+                            "max": 7.971432000000001
                         },
                         {
                             "cluster_value": "immature T cell",
@@ -1223,7 +1191,15 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 5.4602284
+                            "max": 5.460228400000001
+                        },
+                        {
+                            "cluster_value": "fibroblast",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 1.0222360000000001,
+                            "max": 5.8532305000000004
                         },
                         {
                             "cluster_value": "immature NK T cell",
@@ -1231,7 +1207,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 1.6195114,
-                            "max": 2.6711128
+                            "max": 2.6711127999999995
                         },
                         {
                             "cluster_value": "immature B cell",
@@ -1239,15 +1215,15 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 3.1477518
+                            "max": 3.1477517999999995
                         },
                         {
                             "cluster_value": "hepatocyte",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 0.9220522499999999,
-                            "max": 4.4505076
+                            "q3": 0.92205225,
+                            "max": 4.450507599999999
                         },
                         {
                             "cluster_value": "hematopoietic precursor cell",
@@ -1255,7 +1231,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 5.1409717
+                            "max": 5.140971700000001
                         },
                         {
                             "cluster_value": "granulocytopoietic cell",
@@ -1274,20 +1250,12 @@
                             "max": 5.916684
                         },
                         {
-                            "cluster_value": "fibroblast",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 1.022236,
-                            "max": 5.8532305
-                        },
-                        {
-                            "cluster_value": "enterocyte of epithelium of large intestine",
+                            "cluster_value": "granulocyte",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 8.495363
+                            "max": 7.222494999999999
                         },
                         {
                             "cluster_value": "erythrocyte",
@@ -1298,11 +1266,19 @@
                             "max": 8.351754
                         },
                         {
+                            "cluster_value": "endothelial cell of hepatic sinusoid",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 1.4674827750000001,
+                            "max": 4.849433
+                        },
+                        {
                             "cluster_value": "epithelial cell of proximal tubule",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 1.2158988000000002,
+                            "q3": 1.2158988,
                             "max": 2.9543486
                         },
                         {
@@ -1311,7 +1287,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.2858493
+                            "max": 2.2858492999999998
                         },
                         {
                             "cluster_value": "epithelial cell of large intestine",
@@ -1319,7 +1295,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 3.896285
+                            "max": 3.8962849999999998
                         },
                         {
                             "cluster_value": "epithelial cell",
@@ -1327,7 +1303,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 6.175302
+                            "max": 6.175301999999999
                         },
                         {
                             "cluster_value": "epidermal cell",
@@ -1344,6 +1320,14 @@
                             "median": 0.6931472,
                             "q3": 0.6931472,
                             "max": 2.396425
+                        },
+                        {
+                            "cluster_value": "enterocyte of epithelium of large intestine",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 0.6931472,
+                            "max": 8.495363000000001
                         },
                         {
                             "cluster_value": "type B pancreatic cell",
@@ -1377,16 +1361,16 @@
                         {
                             "cluster_value": "hepatocyte",
                             "min": 0.6931472,
-                            "q1": 7.9540690000000005,
+                            "q1": 7.954069,
                             "median": 8.334096,
-                            "q3": 8.5650895,
+                            "q3": 8.565089500000001,
                             "max": 9.399846
                         },
                         {
                             "cluster_value": "Kupffer cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
-                            "median": 4.9580584,
+                            "median": 4.9580584000000005,
                             "q3": 5.982147,
                             "max": 8.346775
                         },
@@ -1428,7 +1412,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 4.2916174
+                            "max": 4.291617400000001
                         },
                         {
                             "cluster_value": "microglial cell",
@@ -1436,7 +1420,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 3.7701569
+                            "max": 3.7701568999999995
                         },
                         {
                             "cluster_value": "mesenchymal stem cell of adipose",
@@ -1444,7 +1428,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 3.9288733
+                            "max": 3.9288733000000002
                         },
                         {
                             "cluster_value": "mesenchymal stem cell",
@@ -1460,7 +1444,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 4.3510866
+                            "max": 4.3510865999999995
                         },
                         {
                             "cluster_value": "macrophage",
@@ -1468,7 +1452,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 4.394454
+                            "max": 4.3944540000000005
                         },
                         {
                             "cluster_value": "mature natural killer cell",
@@ -1479,12 +1463,12 @@
                             "max": 1.7202513
                         },
                         {
-                            "cluster_value": "nan",
+                            "cluster_value": "natural killer cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 7.531169
+                            "max": 6.683352
                         },
                         {
                             "cluster_value": "lymphocyte",
@@ -1543,22 +1527,6 @@
                             "max": 2.9033546
                         },
                         {
-                            "cluster_value": "natural killer cell",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 6.683352
-                        },
-                        {
-                            "cluster_value": "keratinocyte stem cell",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 1.6778239
-                        },
-                        {
                             "cluster_value": "neuron",
                             "min": 0.6931472,
                             "q1": 0.6931472,
@@ -1567,12 +1535,28 @@
                             "max": 2.2684057
                         },
                         {
+                            "cluster_value": "keratinocyte stem cell",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 0.6931472,
+                            "max": 1.6778238999999997
+                        },
+                        {
+                            "cluster_value": "precursor B cell",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 0.6931472,
+                            "max": 3.772529
+                        },
+                        {
                             "cluster_value": "stromal cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 4.5446024
+                            "max": 4.5446024000000005
                         },
                         {
                             "cluster_value": "stem cell of epidermis",
@@ -1580,7 +1564,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 1.5155116
+                            "max": 1.5155116000000002
                         },
                         {
                             "cluster_value": "smooth muscle cell",
@@ -1596,7 +1580,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 1.6449621
+                            "max": 1.6449620999999999
                         },
                         {
                             "cluster_value": "skeletal muscle satellite cell",
@@ -1604,7 +1588,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 1.1518506
+                            "max": 1.1518506000000002
                         },
                         {
                             "cluster_value": "regulatory T cell",
@@ -1612,7 +1596,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.031585
+                            "max": 2.0315849999999998
                         },
                         {
                             "cluster_value": "professional antigen presenting cell",
@@ -1623,20 +1607,20 @@
                             "max": 0.6931472
                         },
                         {
-                            "cluster_value": "precursor B cell",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 3.772529
-                        },
-                        {
                             "cluster_value": "pre-natural killer cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
                             "max": 1.1921151
+                        },
+                        {
+                            "cluster_value": "oligodendrocyte",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 0.6931472,
+                            "max": 3.492471
                         },
                         {
                             "cluster_value": "pancreatic stellate cell",
@@ -1684,7 +1668,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 1.7683244
+                            "max": 1.7683243999999998
                         },
                         {
                             "cluster_value": "oligodendrocyte precursor cell",
@@ -1692,15 +1676,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 1.827788
-                        },
-                        {
-                            "cluster_value": "oligodendrocyte",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 3.492471
+                            "max": 1.8277880000000002
                         },
                         {
                             "cluster_value": "kidney collecting duct epithelial cell",
@@ -1711,15 +1687,15 @@
                             "max": 2.197396
                         },
                         {
-                            "cluster_value": "keratinocyte",
+                            "cluster_value": "immature natural killer cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 0.6931472
+                            "max": 1.98341
                         },
                         {
-                            "cluster_value": "Bergmann glial cell",
+                            "cluster_value": "keratinocyte",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
@@ -1732,7 +1708,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 1.5259422
+                            "max": 1.5259421999999998
                         },
                         {
                             "cluster_value": "classical monocyte",
@@ -1740,7 +1716,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 1.2917304
+                            "max": 1.2917303999999998
                         },
                         {
                             "cluster_value": "ciliated columnar cell of tracheobronchial tree",
@@ -1879,12 +1855,12 @@
                             "max": 8.996893
                         },
                         {
-                            "cluster_value": "immature natural killer cell",
+                            "cluster_value": "Bergmann glial cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 1.98341
+                            "max": 0.6931472
                         },
                         {
                             "cluster_value": "fibroblast",
@@ -1908,7 +1884,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.9462628
+                            "max": 2.9462627999999995
                         },
                         {
                             "cluster_value": "immature B cell",
@@ -1972,7 +1948,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 3.9280384
+                            "max": 3.9280383999999997
                         },
                         {
                             "cluster_value": "epithelial cell of lung",
@@ -1988,7 +1964,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.181481
+                            "max": 2.1814810000000002
                         },
                         {
                             "cluster_value": "epithelial cell",
@@ -2012,7 +1988,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.487687
+                            "max": 2.4876869999999998
                         },
                         {
                             "cluster_value": "enterocyte of epithelium of large intestine",
@@ -2028,7 +2004,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.7017276
+                            "max": 2.7017276000000003
                         }
                     ]
                 }
@@ -2080,20 +2056,12 @@
                             "max": 6.0749154
                         },
                         {
-                            "cluster_value": "megakaryocyte-erythroid progenitor cell",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.8145208749999999,
-                            "max": 5.266868
-                        },
-                        {
-                            "cluster_value": "naive B cell",
+                            "cluster_value": "mature natural killer cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 7.4509015
+                            "max": 1.653641
                         },
                         {
                             "cluster_value": "myofibroblast cell",
@@ -2141,15 +2109,23 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 5.1464825
+                            "max": 5.146482499999999
                         },
                         {
-                            "cluster_value": "mature natural killer cell",
+                            "cluster_value": "megakaryocyte-erythroid progenitor cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 1.653641
+                            "q3": 0.8145208749999999,
+                            "max": 5.266868
+                        },
+                        {
+                            "cluster_value": "macrophage",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 2.9515685,
+                            "max": 9.533180999999999
                         },
                         {
                             "cluster_value": "natural killer cell",
@@ -2158,14 +2134,6 @@
                             "median": 0.6931472,
                             "q3": 0.6931472,
                             "max": 6.889877
-                        },
-                        {
-                            "cluster_value": "macrophage",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 2.9515684999999996,
-                            "max": 9.533181
                         },
                         {
                             "cluster_value": "lymphocyte",
@@ -2181,7 +2149,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 6.665492
+                            "max": 6.6654919999999995
                         },
                         {
                             "cluster_value": "luminal epithelial cell of mammary gland",
@@ -2216,12 +2184,20 @@
                             "max": 2.597409
                         },
                         {
-                            "cluster_value": "nan",
+                            "cluster_value": "kidney collecting duct epithelial cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 1.525477475,
-                            "max": 9.551636
+                            "q3": 1.2718256000000001,
+                            "max": 4.3687987
+                        },
+                        {
+                            "cluster_value": "naive B cell",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 0.6931472,
+                            "max": 7.4509015
                         },
                         {
                             "cluster_value": "neuron",
@@ -2232,12 +2208,12 @@
                             "max": 4.9096556
                         },
                         {
-                            "cluster_value": "keratinocyte stem cell",
+                            "cluster_value": "keratinocyte",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 4.08817
+                            "max": 2.5714054
                         },
                         {
                             "cluster_value": "precursor B cell",
@@ -2269,14 +2245,14 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.9646004750000001,
-                            "max": 3.9870946
+                            "max": 3.9870946000000003
                         },
                         {
                             "cluster_value": "skeletal muscle satellite stem cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 1.2224069499999999,
+                            "q3": 1.22240695,
                             "max": 3.4294617
                         },
                         {
@@ -2293,14 +2269,14 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.3894575
+                            "max": 2.3894575000000002
                         },
                         {
                             "cluster_value": "professional antigen presenting cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 0.8105375,
+                            "q3": 0.8105374999999999,
                             "max": 6.0646424
                         },
                         {
@@ -2348,7 +2324,7 @@
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 0.9254619,
+                            "q3": 0.9254619000000001,
                             "max": 3.9624352
                         },
                         {
@@ -2365,7 +2341,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 4.353564
+                            "max": 4.3535639999999995
                         },
                         {
                             "cluster_value": "oligodendrocyte precursor cell",
@@ -2373,31 +2349,15 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.8422203
+                            "max": 2.8422202999999997
                         },
                         {
-                            "cluster_value": "kidney collecting duct epithelial cell",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 1.2718256,
-                            "max": 4.3687987
-                        },
-                        {
-                            "cluster_value": "keratinocyte",
+                            "cluster_value": "keratinocyte stem cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.5714054
-                        },
-                        {
-                            "cluster_value": "Bergmann glial cell",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 5.139753
+                            "max": 4.08817
                         },
                         {
                             "cluster_value": "immature natural killer cell",
@@ -2408,12 +2368,20 @@
                             "max": 3.09258
                         },
                         {
-                            "cluster_value": "common lymphoid progenitor",
+                            "cluster_value": "Bergmann glial cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 4.652882
+                            "max": 5.139753
+                        },
+                        {
+                            "cluster_value": "basophil",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 0.6931472,
+                            "max": 4.691625599999999
                         },
                         {
                             "cluster_value": "classical monocyte",
@@ -2421,7 +2389,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 5.694469
+                            "max": 5.694469000000001
                         },
                         {
                             "cluster_value": "ciliated columnar cell of tracheobronchial tree",
@@ -2429,14 +2397,14 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 3.6481304
+                            "max": 3.6481303999999994
                         },
                         {
                             "cluster_value": "cardiac muscle cell",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 1.1940821,
+                            "q3": 1.1940821000000001,
                             "max": 2.5647748
                         },
                         {
@@ -2453,7 +2421,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 6.9522657
+                            "max": 6.952265700000001
                         },
                         {
                             "cluster_value": "bladder urothelial cell",
@@ -2472,20 +2440,20 @@
                             "max": 2.458743
                         },
                         {
-                            "cluster_value": "basophil",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 4.6916256
-                        },
-                        {
                             "cluster_value": "basal cell of epidermis",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
                             "max": 6.1318135
+                        },
+                        {
+                            "cluster_value": "endocardial cell",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 1.1213412,
+                            "max": 3.2642632000000003
                         },
                         {
                             "cluster_value": "basal cell",
@@ -2509,7 +2477,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 5.070669
+                            "max": 5.0706690000000005
                         },
                         {
                             "cluster_value": "Slamf1-positive multipotent progenitor cell",
@@ -2533,7 +2501,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 1.170023275,
-                            "max": 2.2508972
+                            "max": 2.2508972000000003
                         },
                         {
                             "cluster_value": "Brush cell of epithelium proper of large intestine",
@@ -2544,12 +2512,12 @@
                             "max": 1.5277755
                         },
                         {
-                            "cluster_value": "endocardial cell",
+                            "cluster_value": "common lymphoid progenitor",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 1.1213412,
-                            "max": 3.2642632
+                            "q3": 0.6931472,
+                            "max": 4.652882
                         },
                         {
                             "cluster_value": "endothelial cell",
@@ -2557,23 +2525,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 7.971432
-                        },
-                        {
-                            "cluster_value": "endothelial cell of hepatic sinusoid",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 1.467482775,
-                            "max": 4.849433
-                        },
-                        {
-                            "cluster_value": "granulocyte",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 0.6931472,
-                            "max": 7.222495
+                            "max": 7.971432000000001
                         },
                         {
                             "cluster_value": "immature T cell",
@@ -2581,7 +2533,15 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 5.4602284
+                            "max": 5.460228400000001
+                        },
+                        {
+                            "cluster_value": "fibroblast",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 1.0222360000000001,
+                            "max": 5.8532305000000004
                         },
                         {
                             "cluster_value": "immature NK T cell",
@@ -2589,7 +2549,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 1.6195114,
-                            "max": 2.6711128
+                            "max": 2.6711127999999995
                         },
                         {
                             "cluster_value": "immature B cell",
@@ -2597,15 +2557,15 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 3.1477518
+                            "max": 3.1477517999999995
                         },
                         {
                             "cluster_value": "hepatocyte",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 0.9220522499999999,
-                            "max": 4.4505076
+                            "q3": 0.92205225,
+                            "max": 4.450507599999999
                         },
                         {
                             "cluster_value": "hematopoietic precursor cell",
@@ -2613,7 +2573,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 5.1409717
+                            "max": 5.140971700000001
                         },
                         {
                             "cluster_value": "granulocytopoietic cell",
@@ -2632,20 +2592,12 @@
                             "max": 5.916684
                         },
                         {
-                            "cluster_value": "fibroblast",
-                            "min": 0.6931472,
-                            "q1": 0.6931472,
-                            "median": 0.6931472,
-                            "q3": 1.022236,
-                            "max": 5.8532305
-                        },
-                        {
-                            "cluster_value": "enterocyte of epithelium of large intestine",
+                            "cluster_value": "granulocyte",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 8.495363
+                            "max": 7.222494999999999
                         },
                         {
                             "cluster_value": "erythrocyte",
@@ -2656,11 +2608,19 @@
                             "max": 8.351754
                         },
                         {
+                            "cluster_value": "endothelial cell of hepatic sinusoid",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 1.4674827750000001,
+                            "max": 4.849433
+                        },
+                        {
                             "cluster_value": "epithelial cell of proximal tubule",
                             "min": 0.6931472,
                             "q1": 0.6931472,
                             "median": 0.6931472,
-                            "q3": 1.2158988000000002,
+                            "q3": 1.2158988,
                             "max": 2.9543486
                         },
                         {
@@ -2669,7 +2629,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 2.2858493
+                            "max": 2.2858492999999998
                         },
                         {
                             "cluster_value": "epithelial cell of large intestine",
@@ -2677,7 +2637,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 3.896285
+                            "max": 3.8962849999999998
                         },
                         {
                             "cluster_value": "epithelial cell",
@@ -2685,7 +2645,7 @@
                             "q1": 0.6931472,
                             "median": 0.6931472,
                             "q3": 0.6931472,
-                            "max": 6.175302
+                            "max": 6.175301999999999
                         },
                         {
                             "cluster_value": "epidermal cell",
@@ -2702,6 +2662,14 @@
                             "median": 0.6931472,
                             "q3": 0.6931472,
                             "max": 2.396425
+                        },
+                        {
+                            "cluster_value": "enterocyte of epithelium of large intestine",
+                            "min": 0.6931472,
+                            "q1": 0.6931472,
+                            "median": 0.6931472,
+                            "q3": 0.6931472,
+                            "max": 8.495363000000001
                         },
                         {
                             "cluster_value": "type B pancreatic cell",
