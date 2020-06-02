@@ -14,26 +14,38 @@ import NavigationPanel from "./components/NavigationPanel";
 import DataSummaryPanel from "./components/DataSummaryPanel";
 import LegendPanel from "./components/LegendPanel";
 import ControlPanel from "./components/ControlPanel";
-import data from "./data/lunaData.json";
 import axios from "axios";
 import { LunaConfig } from "./utils/LunaConfig";
+import { LunaData } from "./utils/LunaData";
 import "./App.css";
 
 @observer
 class Luna extends React.Component<{}, {}> {
   @observable mapState!: MapState;
+  @observable dataLoaded = false;
+  lunaData?: LunaData;
 
   constructor(props: any) {
     super(props);
     this.getColorValue = this.getColorValue.bind(this);
     this.getColorList = this.getColorList.bind(this);
     this.getElevationValue = this.getElevationValue.bind(this);
+  }
+
+  componentDidMount() {
     axios({
       method: "get",
-      url: "data/lunaConfig.json"
+      url: "data/lunaConfig.json",
     })
-     .then(res => this.initLunaConfig(res.data))
-     .catch(error => console.log(error));
+      .then((res) => this.initLunaConfig(res.data))
+      .catch((error) => console.log(error));
+
+    axios({
+      method: "get",
+      url: "data/lunaData.json",
+    })
+      .then((res) => this.initLunaData(res.data))
+      .catch((error) => console.log(error));
   }
 
   initLunaConfig(json: any) {
@@ -41,11 +53,17 @@ class Luna extends React.Component<{}, {}> {
     this.mapState = new MapState(lunaConfig);
   }
 
+  initLunaData(json: any) {
+    this.lunaData = json;
+    console.log("Got luna data!");
+    this.dataLoaded = true;
+  }
+
   /**
    * Gets Color List, based on Current Vignette
    */
   getColorList() {
-    try {    
+    try {
       if (this.mapState.clusterIsSelected()) {
         let colorList = [
           [0, 0, 255, 255],
@@ -56,8 +74,7 @@ class Luna extends React.Component<{}, {}> {
       } else {
         return this.mapState.getColorListByFormat(MapState.RBA);
       }
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   getColorDomainMax() {
@@ -159,7 +176,8 @@ class Luna extends React.Component<{}, {}> {
   }
 
   render() {
-    if (this.mapState != null) {
+    let data: any = this.lunaData;
+    if (this.mapState != null && this.dataLoaded === true) {
       let colorList = this.getColorList();
       let colorDomainMax = this.getColorDomainMax();
       const layer = new HexagonLayer({
@@ -178,39 +196,42 @@ class Luna extends React.Component<{}, {}> {
         autoHighlight: true,
       });
 
-    return (
-      <div>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h6">Luna: Single Cell Viewer</Typography>
-          </Toolbar>
-        </AppBar>
-        <LegendPanel mapState={this.mapState} />
-        <Grid container spacing={3}>
-          <Grid id="left-column" item xs={3}>
-            <div id="left-column-content">
-              <DataSummaryPanel mapState={this.mapState} />
-              <ControlPanel mapState={this.mapState} />
-              <NavigationPanel />
-              <div id="tooltip"></div>
-            </div>
+      return (
+        <div>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography variant="h6">Luna: Single Cell Viewer</Typography>
+            </Toolbar>
+          </AppBar>
+          <LegendPanel mapState={this.mapState} />
+          <Grid container spacing={3}>
+            <Grid id="left-column" item xs={3}>
+              <div id="left-column-content">
+                <DataSummaryPanel mapState={this.mapState} />
+                <ControlPanel mapState={this.mapState} />
+                <NavigationPanel />
+                <div id="tooltip"></div>
+              </div>
+            </Grid>
+            <Grid item xs={9}>
+              <div id="map" />
+              <DeckGL
+                effects={[]}
+                controller={true}
+                initialViewState={this.mapState.viewState}
+                layers={[layer]}
+                width={"100%"}
+                height={"100%"}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={9}>
-            <div id="map" />
-            <DeckGL
-              effects={[]}
-              controller={true}
-              initialViewState={this.mapState.viewState}
-              layers={[layer]}
-              width={"100%"}
-              height={"100%"}
-            />
-          </Grid>
-        </Grid>
-      </div>
-    );
+        </div>
+      );
     } else {
-      return <div>Loading...</div>
+      return (
+        <div>
+          <img alt="loading" src="img/loading.gif"/>
+        </div>);
     }
   }
 }
