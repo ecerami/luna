@@ -33,6 +33,7 @@ class Luna extends React.Component<{}, {}> {
   }
 
   componentDidMount() {
+    //  Get the configuration file via axios
     axios({
       method: "get",
       url: "data/lunaConfig.json",
@@ -40,6 +41,7 @@ class Luna extends React.Component<{}, {}> {
       .then((res) => this.initLunaConfig(res.data))
       .catch((error) => console.log(error));
 
+    //  Get the actual data via axios
     axios({
       method: "get",
       url: "data/lunaData.json",
@@ -48,14 +50,19 @@ class Luna extends React.Component<{}, {}> {
       .catch((error) => console.log(error));
   }
 
+  /**
+   * Init the Luna Config
+   */
   initLunaConfig(json: any) {
     let lunaConfig: LunaConfig = json;
     this.mapState = new MapState(lunaConfig);
   }
 
+  /**
+   * Init the Luna Data
+   */
   initLunaData(json: any) {
     this.lunaData = json;
-    console.log("Got luna data!");
     this.dataLoaded = true;
   }
 
@@ -63,72 +70,59 @@ class Luna extends React.Component<{}, {}> {
    * Gets Color List, based on Current Vignette
    */
   getColorList() {
-    try {
-      if (this.mapState.clusterIsSelected()) {
-        let colorList = [
-          [0, 0, 255, 255],
-          [100, 100, 100, 255],
-          [255, 0, 0, 255],
-        ];
-        return colorList;
-      } else {
-        return this.mapState.getColorListByFormat(MapState.RBA);
-      }
-    } catch (e) {}
+    return this.mapState.getColorListByFormat(MapState.RBA);
   }
 
+  /**
+   * Gets the Color Domain Max, based on the Current Vignette
+   */
   getColorDomainMax() {
     if (this.mapState != null && this.mapState.vignetteHasBeenSelected()) {
-      if (this.mapState.clusterIsSelected()) {
-        return 10;
-      } else {
         let currentVignette = this.mapState.getCurrentVignette();
         let colorBy = currentVignette.color_by;
         if (colorBy === MapState.GENE_EXPRESSION) {
           return this.mapState.getCurrentTargetGeneMaxExpression();
-        }
       }
     }
     return 0;
   }
 
   /**
-   * Gets the Color Value for Set of Points
-   */
+   * Gets the Color Value for Set of Points.
+   * Color is based on an average of expression values.
+  */
   getColorValue(dataList: any) {
     if (this.mapState != null && this.mapState.vignetteHasBeenSelected()) {
-      if (this.mapState.clusterIsSelected()) {
-        let clusterTargetReached = false;
-        let clusterCounter = new ClusterCounter(
-          dataList,
-          this.mapState.clusterCategorySelected
-        );
-        let rankedClusterList = clusterCounter.getClusterCountsRanked();
-        rankedClusterList.forEach((value) => {
-          if (value.clusterName === this.mapState.clusterNameSelected) {
-            clusterTargetReached = true;
-          }
-        });
-        if (clusterTargetReached) {
-          return 10;
-        } else {
-          return 1;
-        }
-      } else {
         let targetGene = this.mapState.getCurrentTargetGene();
         if (targetGene != null) {
+          let cell: LunaData = dataList[0];
+          let geneIndex = this.getGeneIndex(cell, targetGene);
           let expressionAverage = 0.0;
           for (let i = 0; i < dataList.length; i++) {
-            expressionAverage += parseFloat(dataList[i][targetGene]);
+            let cell: LunaData = dataList[i];
+            expressionAverage += parseFloat(cell.genes[geneIndex].value);
           }
           return (
             this.mapState.getCurrentTargetGeneMaxExpression() -
             expressionAverage / dataList.length
           );
         }
-      }
     }
     return 0;
+  }
+
+  /**
+   * Helper method to identify the gene index
+   */
+  private getGeneIndex(cell: LunaData, targetGene: string) {
+    let geneIndex = -1;
+    for (let i = 0; i < cell.genes.length; i++) {
+      let gene = cell.genes[i];
+      if (gene.gene === targetGene) {
+        geneIndex = i;
+      }
+    }
+    return geneIndex;
   }
 
   /**
@@ -180,6 +174,8 @@ class Luna extends React.Component<{}, {}> {
     if (this.mapState != null && this.dataLoaded === true) {
       let colorList = this.getColorList();
       let colorDomainMax = this.getColorDomainMax();
+
+      // Init the Deck.gl Hexagon Layer
       const layer = new HexagonLayer({
         id: "column-layer",
         data,
