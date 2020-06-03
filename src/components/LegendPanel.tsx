@@ -80,7 +80,11 @@ class LegendPanel extends React.Component<LegendPanelProps> {
     return clusterReactList;
   }
 
-  addClusterRow(clusterReactList: any[], currentCluster: ClusterList, clusterKey: string) {
+  addClusterRow(
+    clusterReactList: any[],
+    currentCluster: ClusterList,
+    clusterKey: string
+  ) {
     clusterReactList.push(
       this.addRow(
         clusterKey,
@@ -117,7 +121,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
                 onMouseOver={() => this.selectCluster(clusterKey, label)}
                 onMouseOut={() => this.unSelectCluster(clusterKey, label)}
               > */}
-                {truncatedLabel}
+              {truncatedLabel}
               {/* </a> */}
             </span>
           </td>
