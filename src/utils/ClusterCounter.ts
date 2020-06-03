@@ -1,8 +1,5 @@
 import ClusterCount from "./ClusterCount";
-
-interface Points {
-  [key: string]: any;
-}
+import { LunaData } from "./LunaData";
 
 /**
  * Counts Number of Cells/Points in each cluster.
@@ -15,25 +12,27 @@ class ClusterCounter {
   /**
    * Constructor.
    */
-  constructor(points: Points, targetCluster: string) {
-    this.countClusters(points, targetCluster);
+  constructor(points: Array<LunaData>, targetClusterName: string) {
+    this.countClusters(points, targetClusterName);
     this.rankClusters();
   }
 
   /**
    * Counts number of cells/points in each cluster.
    */
-  private countClusters(points: Points, targetCluster: string) {
+  private countClusters(points: Array<LunaData>, targetClusterName: string) {
     for (let key in points) {
-      //console.log(points[key]["position"]);
-      let currentCluster = points[key][targetCluster];
-      if (currentCluster !== undefined) {
-        this.totalNumPoints += 1;
-        let currentCount = this.clusterCounts.get(currentCluster);
-        if (currentCount !== undefined) {
-          this.clusterCounts.set(currentCluster, currentCount + 1);
-        } else {
-          this.clusterCounts.set(currentCluster, 1);
+      this.totalNumPoints += 1;
+      let point = points[key];
+      for (let clusterKey in point.clusters) {
+        let currentCluster = point.clusters[clusterKey];
+        if (currentCluster.name === targetClusterName) {
+          let currentCount = this.clusterCounts.get(currentCluster.value);
+          if (currentCount !== undefined) {
+            this.clusterCounts.set(currentCluster.value, currentCount + 1);
+          } else {
+            this.clusterCounts.set(currentCluster.value, 1);
+          }
         }
       }
     }
@@ -53,14 +52,14 @@ class ClusterCounter {
         this.clusterCountsRanked.push(clusterCount);
       }
     });
-    this.clusterCountsRanked.sort((n1,n2) => {
-        if (n1.numCells > n2.numCells) {
-            return -1;
-        } else if (n1.numCells < n2.numCells) {
-            return 1;
-        } else {
-            return 0;
-        }
+    this.clusterCountsRanked.sort((n1, n2) => {
+      if (n1.numCells > n2.numCells) {
+        return -1;
+      } else if (n1.numCells < n2.numCells) {
+        return 1;
+      } else {
+        return 0;
+      }
     });
   }
 

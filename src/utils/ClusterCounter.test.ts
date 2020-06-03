@@ -1,4 +1,5 @@
 import ClusterCounter from "./ClusterCounter";
+import { LunaData } from "./LunaData";
 
 test("verify that cluster counter works", () => {
   let points = createSimulatedPoints();
@@ -20,17 +21,41 @@ test("verify that cluster counter works", () => {
  * Simulated Points Data
  */
 function createSimulatedPoints(): object {
-  let point1 = {
-    cell_ontology_class: "C1",
-    clusters_leiden: "L1",
+  let point1: LunaData = {
+    clusters: [
+      {
+        name: "cell_ontology_class",
+        value: "C1",
+      },
+      {
+        name: "clusters_leiden",
+        value: "L1",
+      },
+    ],
   };
-  let point2 = {
-    cell_ontology_class: "C1",
-    clusters_leiden: "L1",
+  let point2: LunaData = {
+    clusters: [
+      {
+        name: "cell_ontology_class",
+        value: "C1",
+      },
+      {
+        name: "clusters_leiden",
+        value: "L1",
+      },
+    ],
   };
-  let point3 = {
-    cell_ontology_class: "C2",
-    clusters_leiden: "L1",
+  let point3: LunaData = {
+    clusters: [
+      {
+        name: "cell_ontology_class",
+        value: "C2",
+      },
+      {
+        name: "clusters_leiden",
+        value: "L1",
+      },
+    ],
   };
   let points = {
     1: point1,

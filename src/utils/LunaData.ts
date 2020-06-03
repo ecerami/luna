@@ -1,5 +1,5 @@
 export interface LunaData {
-    position: number[];
+    position?: number[];
     screenCoord?: number[];
     clusters: Cluster[];
     genes:    Gene[];
