@@ -217,7 +217,7 @@ class Luna extends React.Component<{}, {}> {
                 initialViewState={this.mapState.viewState}
                 layers={[layer]}
                 width={"100%"}
-                height={"100%"}
+                height={"800px"}
               />
             </Grid>
           </Grid>

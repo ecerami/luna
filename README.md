@@ -23,6 +23,12 @@ The buildLuna.py script takes these two files and generates a set of JSON files 
 
 ## To Run
 
+Note:  Currently tested via yarn 1.21.1, node 8.12.0
+
+### `yarn install`
+
+Adds all the dependencies.
+
 ### `yarn start`
 
 Runs the app in the development mode.<br />
