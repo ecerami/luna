@@ -25,7 +25,7 @@ The buildLuna.py script takes these two files and generates a set of JSON files 
 
 Note:  Currently tested via yarn 1.21.1, node 8.12.0
 
-### `yarn install`
+### `yarn add package.json`
 
 Adds all the dependencies.
 
