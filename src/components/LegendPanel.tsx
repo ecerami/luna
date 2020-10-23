@@ -15,28 +15,22 @@ class LegendPanel extends React.Component<LegendPanelProps> {
   }
 
   render() {
-    if (this.props.mapState.vignetteHasBeenSelected()) {
-      return (
-        <div id="legend">
-          <br />
-          {this.getExpressionLegend()}
-          <hr />
-          <table>
-            <tbody>{this.getClusters()}</tbody>
-          </table>
-        </div>
-      );
-    } else {
-      return <span />;
-    }
+    // return (
+    //   <div id="legend">
+    //     <br />
+    //     {this.getExpressionLegend()}
+    //     <hr />
+    //   </div>
+    // );
+    return (<div></div>)
   }
 
   selectCluster(clusterCategory: string, clusterName: string) {
-    this.props.mapState.setClusterSelected(clusterCategory, clusterName);
+    //this.props.mapState.setClusterSelected(clusterCategory, clusterName);
   }
 
   unSelectCluster(clusterCategory: string, clusterName: string) {
-    this.props.mapState.unsetClusterSelected();
+    //this.props.mapState.unsetClusterSelected();
   }
 
   getExpressionLegend() {
@@ -49,35 +43,13 @@ class LegendPanel extends React.Component<LegendPanelProps> {
         <tbody>
           <tr>
             <td>
-              <b>{this.props.mapState.getCurrentTargetGene()}</b>
+              {/* <b>{this.props.mapState.getCurrentTargetGene()}</b> */}
             </td>
             <td style={tdStyle}>{legend}</td>
           </tr>
         </tbody>
       </table>
     );
-  }
-
-  getClusters() {
-    // Get the current cluster list associated with the current vignette
-    let clusterList = this.props.mapState.getClusterList();
-    let clusterReactList: any = [];
-    let count = 0;
-    if (clusterList !== undefined) {
-      for (let clusterKey in clusterList) {
-        //  For now, we only support the 0th cluster list
-        if (count === 0) {
-          let currentClusterList = clusterList[clusterKey].cluster_list;
-          // Iterate through each cluster item
-          for (let clusterKey2 in currentClusterList) {
-            let currentCluster = currentClusterList[clusterKey2];
-            this.addClusterRow(clusterReactList, currentCluster, clusterKey);
-          }
-        }
-        count += 1;
-      }
-    }
-    return clusterReactList;
   }
 
   addClusterRow(

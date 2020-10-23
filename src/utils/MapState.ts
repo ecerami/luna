@@ -2,8 +2,7 @@
  * Encapsualates Map State.
  */
 import { observable } from "mobx";
-import { FlyToInterpolator } from "@deck.gl/core";
-import { LunaConfig } from "./LunaConfig";
+import axios from "axios";
 let colormap = require("colormap");
 
 class MapState {
@@ -13,21 +12,24 @@ class MapState {
   static RBA = "rba"
   static COLOR_BLACK = "black"
 
-  lunaConfig: LunaConfig;
   viewState: any;
   @observable hexBinRadius = MapState.HEX_BIN_RADIUS_DEFAULT;
   @observable elevationScale = MapState.ELEVATION_SCALE_DEFAULT;
   @observable checked3D = false;
   @observable clusterCategorySelected = "";
   @observable clusterNameSelected = "";
-  @observable private vignetteSelected = -1;
+  @observable currentGeneText = "";
+  @observable colorBySelected = "none";
+  @observable selectedGene?:string = undefined;
+  @observable geneList: Array<string> = [];
+  geneExpressionValuesMap: Map<string, Array<number>> = new Map<string, Array<number>>();
+  // private geneExpressionMaxMap: Map<string, number> = {};
 
-  constructor(config: LunaConfig) {
-    this.lunaConfig = config;
+  constructor() {
     this.viewState = {
-      longitude: this.lunaConfig.center_x,
-      latitude: this.lunaConfig.center_y,
-      zoom: this.lunaConfig.default_zoom,
+      longitude: 0,
+      latitude: 0,
+      zoom: 4,
       pitch: 0,
       bearing: 0,
       transitionDuration: 0,
@@ -35,85 +37,40 @@ class MapState {
     };
   }
 
-  vignetteHasBeenSelected() {
-    if (this.vignetteSelected > -1) {
-      return true;
+  /**
+   * Add a new gene to the state.
+   * @param gene
+   */
+  addGene(gene: string) {
+    if (this.geneList.includes(gene)) {
+      this.colorBySelected = gene;
+      this.selectedGene = gene;
+      this.hexBinHack();  
     } else {
-      return false;
+      this.loadExpressionData(gene);
     }
   }
 
-  getVignetteSelected() {
-    return this.vignetteSelected;
-  }
-
-  setVignetteSelected(index: number) {
-    this.vignetteSelected = index;
-    this.flyToNewLocation()
-  }
-
-  clusterIsSelected() {
-    if (this.clusterCategorySelected !== "") {
-      return true;
+  setColorBySelected(colorBySelected: string) {
+    this.colorBySelected = colorBySelected;
+    if (colorBySelected === "none") {
+      this.selectedGene = undefined;
     } else {
-      return false;
+      this.selectedGene = colorBySelected;
+      this.hexBinHack();
     }
-  }
 
-  setClusterSelected(clusterCategory: string, clusterName: string) {
-    this.clusterCategorySelected = clusterCategory;
-    this.clusterNameSelected = clusterName;
-    this.hexBinHack();
-  }
-
-  unsetClusterSelected() {
-    this.clusterCategorySelected = "";
-    this.clusterNameSelected = "";
-    this.hexBinHack();
-  }
-
-  getCurrentTargetGene() {
-    if (this.vignetteHasBeenSelected()) {
-      let currentVignette = this.getCurrentVignette();
-      let colorBy = currentVignette.color_by;
-      if (colorBy === MapState.GENE_EXPRESSION) {
-        let targetGene = currentVignette.color_key;
-        return targetGene;
-      }
-    }
-  }
-
-  getClusterList() {
-    if (this.vignetteHasBeenSelected()) {
-      let currentVignette = this.getCurrentVignette();
-      let clusterList = currentVignette.clusters;
-      return clusterList;
-    }
   }
 
   getCurrentTargetGeneMaxExpression() {
-    if (this.vignetteHasBeenSelected()) {
-      let geneStats = this.lunaConfig.gene_stats;
-      let targetGene = this.getCurrentTargetGene();
-      if (targetGene !== undefined) {
-        for (let geneStatKey in geneStats) {
-          let geneStat = geneStats[geneStatKey];
-          if (geneStat.gene === targetGene) {
-            return geneStat.max_expression;
-          }
-        }
-      }
-    }
-    return 0.0;
+    // TODO:  CALCULATE MAX EXPRESSION ON SERVER SIDE
+    return 10.0;
   }
 
   getColorListByFormat(format: string) {
-    if (this.vignetteHasBeenSelected()) {
-      let currentVignette = this.getCurrentVignette();
-      let colorBy = currentVignette.color_by;
-      if (colorBy === MapState.GENE_EXPRESSION) {
+    if (this.selectedGene !== undefined) {
         let colorList = colormap({
-          colormap: currentVignette.color_map,
+          colormap: "density",
           nshades: 20,
           format: format,
           alpha: 1,
@@ -126,62 +83,40 @@ class MapState {
           }
         }
         return colorList;
-      }
     } else {
       return [MapState.COLOR_BLACK];
     }
   }
 
-  getCurrentVignette() {
-    return this.lunaConfig.vignettes[this.vignetteSelected];
-  }
-
-  flyToNewLocation() {
-    let center_x = this.lunaConfig.center_x;
-    let center_y = this.lunaConfig.center_y;
-    let zoom = this.lunaConfig.default_zoom;
-    let pitch = 0;
-    this.elevationScale = MapState.ELEVATION_SCALE_DEFAULT;
-    this.checked3D = false;
-    if (this.vignetteHasBeenSelected()) {
-        let currentVignette = this.getCurrentVignette();
-        if (currentVignette.center_x) {
-            center_x = currentVignette.center_x
-        }
-        if (currentVignette.center_y) {
-            center_y = currentVignette.center_y
-        }
-        if (currentVignette.zoom) {
-            zoom = currentVignette.zoom
-        }
-        if (currentVignette.pitch) {
-            pitch = currentVignette.pitch
-        }
-        if (currentVignette.three_d) {
-            this.checked3D = currentVignette.three_d
-        }
-        if (currentVignette.hex_bin_size) {
-            this.hexBinRadius = currentVignette.hex_bin_size
-        }
-        if (currentVignette.elevation_scale) {
-            this.elevationScale = currentVignette.elevation_scale
-        }        
-    }
-    this.viewState = {
-        ...this.viewState,
-        longitude: center_x,
-        latitude: center_y,
-        zoom: zoom,
-        pitch: pitch,
-        transitionDuration: 2000,
-        transitionInterpolator: new FlyToInterpolator(),
-    };
-    this.hexBinHack();
-  }
-
+  // TODO:  ADD A +/- FLIP BIT
   private hexBinHack() {
     this.hexBinRadius = this.hexBinRadius + 1;
   }
+
+  loadExpressionData(gene: string) {
+    // TODO:  REPLACE HTTP CONSTANT
+    let geneURL = "http://127.0.0.1:5000/expression/" + gene + ".json"
+    axios({
+      method: "get",
+      url: geneURL,
+    })
+      .then((res) => this.initExpressionData(gene, res.data))
+      .catch((error) => console.log(error));
+  }  
+
+  /**
+   * Download Expression Data for Specified Gene.
+   * @param gene Gene Symbol.
+   * @param json JSON Content.
+   */
+  initExpressionData(gene: string, json: any) {
+    console.log(json);
+    this.geneExpressionValuesMap.set(this.currentGeneText, json);
+    this.selectedGene = gene;
+    this.geneList.push(gene);
+    this.colorBySelected = gene;
+    this.hexBinHack();
+  }  
 }
 
 export default MapState;

@@ -1,5 +1,7 @@
+// TODO:  CLEAN THIS ALL UP
 export interface LunaData {
     position?: number[];
+    index_id: number;
     screenCoord?: number[];
     clusters: Cluster[];
     genes:    Gene[];
