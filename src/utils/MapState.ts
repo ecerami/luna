@@ -7,14 +7,16 @@ import Luna from "../Luna";
 let colormap = require("colormap");
 
 class MapState {
-  static HEX_BIN_RADIUS_DEFAULT = 7000;
+  static HEX_BIN_RADIUS_DEFAULT = 10;
+  static HEX_BIN_RADIUS_SCALE = 1000;
   static ELEVATION_SCALE_DEFAULT = 200;
   static GENE_EXPRESSION = "gene_expression"
   static RBA = "rba"
   static COLOR_BLACK = "black"
 
   viewState: any;
-  @observable hexBinRadius = MapState.HEX_BIN_RADIUS_DEFAULT;
+  @observable hexBinRadiusSliderValue = MapState.HEX_BIN_RADIUS_DEFAULT;
+  @observable hexBinRadius = MapState.HEX_BIN_RADIUS_DEFAULT * MapState.HEX_BIN_RADIUS_SCALE;
   @observable elevationScale = MapState.ELEVATION_SCALE_DEFAULT;
   @observable checked3D = false;
   @observable clusterCategorySelected = "";

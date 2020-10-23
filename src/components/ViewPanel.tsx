@@ -29,7 +29,8 @@ class ControlPanel extends React.Component<ControlPanelProps> {
   }
 
   handleRadiusChange(event: any, newValue: any) {
-    this.props.mapState.hexBinRadius = newValue;
+    this.props.mapState.hexBinRadiusSliderValue = newValue;
+    this.props.mapState.hexBinRadius = newValue * MapState.HEX_BIN_RADIUS_SCALE;
   }
 
   handleElevationChange(event: any, newValue: any) {
@@ -67,10 +68,10 @@ class ControlPanel extends React.Component<ControlPanelProps> {
           <Typography>Hex Bin radius:</Typography>
           <Slider
             onChange={this.handleRadiusChange}
-            value={this.props.mapState.hexBinRadius}
-            min={0}
-            max={30000}
-            step={500}
+            value={this.props.mapState.hexBinRadiusSliderValue}
+            min={5}
+            max={200}
+            step={10}
             valueLabelDisplay="auto"
           />
           <FormControlLabel
