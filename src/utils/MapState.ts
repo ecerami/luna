@@ -3,6 +3,7 @@
  */
 import { observable } from "mobx";
 import axios from "axios";
+import Luna from "../Luna";
 let colormap = require("colormap");
 
 class MapState {
@@ -23,7 +24,8 @@ class MapState {
   @observable selectedGene?:string = undefined;
   @observable geneList: Array<string> = [];
   geneExpressionValuesMap: Map<string, Array<number>> = new Map<string, Array<number>>();
-  // private geneExpressionMaxMap: Map<string, number> = {};
+  private geneExpressionMaxMap: Map<string, number> = new Map<string, number>();
+  private flipBit = 1;
 
   constructor() {
     this.viewState = {
@@ -51,6 +53,10 @@ class MapState {
     }
   }
 
+  /**
+   * Update the Color Section.
+   * @param colorBySelected Color Selected Option.
+   */
   setColorBySelected(colorBySelected: string) {
     this.colorBySelected = colorBySelected;
     if (colorBySelected === "none") {
@@ -59,14 +65,28 @@ class MapState {
       this.selectedGene = colorBySelected;
       this.hexBinHack();
     }
-
   }
 
-  getCurrentTargetGeneMaxExpression() {
-    // TODO:  CALCULATE MAX EXPRESSION ON SERVER SIDE
-    return 10.0;
+  /**
+   * Get the Max Expression of the Currently Selected Gene.
+   */
+  getSelectedGeneMaxExpression(): number {
+    if (this.selectedGene !== undefined) {
+      let maxExpression = this.geneExpressionMaxMap.get(this.selectedGene)
+      if (maxExpression === undefined) {
+        return 0.0
+      } else {
+        return maxExpression;
+      }
+    } else {
+      return 0.0
+    }
   }
 
+  /**
+   * Get the Color List.
+   * @param format Color Format.
+   */
   getColorListByFormat(format: string) {
     if (this.selectedGene !== undefined) {
         let colorList = colormap({
@@ -88,14 +108,16 @@ class MapState {
     }
   }
 
-  // TODO:  ADD A +/- FLIP BIT
+  /**
+   * HexBin Hack to Force Re-coloring of Deck.gl.
+   */
   private hexBinHack() {
-    this.hexBinRadius = this.hexBinRadius + 1;
+    this.hexBinRadius = this.hexBinRadius + this.flipBit;
+    this.flipBit = this.flipBit * -1;
   }
 
   loadExpressionData(gene: string) {
-    // TODO:  REPLACE HTTP CONSTANT
-    let geneURL = "http://127.0.0.1:5000/expression/" + gene + ".json"
+    let geneURL = Luna.BASE_URL + "/expression/" + gene + ".json"
     axios({
       method: "get",
       url: geneURL,
@@ -111,7 +133,8 @@ class MapState {
    */
   initExpressionData(gene: string, json: any) {
     console.log(json);
-    this.geneExpressionValuesMap.set(this.currentGeneText, json);
+    this.geneExpressionValuesMap.set(gene, json["cells"]);
+    this.geneExpressionMaxMap.set(gene, json["max_expression"])
     this.selectedGene = gene;
     this.geneList.push(gene);
     this.colorBySelected = gene;

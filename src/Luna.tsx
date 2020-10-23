@@ -18,6 +18,7 @@ import "./App.css";
 
 @observer
 class Luna extends React.Component<{}, {}> {
+  static BASE_URL = "http://127.0.0.1:5000";
   @observable mapState!: MapState;
   @observable dataLoaded = false;
   lunaData?: LunaData;
@@ -33,10 +34,9 @@ class Luna extends React.Component<{}, {}> {
    * Get the Initial Data via Web API.
    */
   componentDidMount() {
-    // TODO:  REPLACE BASE URL WITH CONSTANT
     axios({
       method: "get",
-      url: "http://127.0.0.1:5000/umap.json",
+      url: Luna.BASE_URL + "/umap.json",
     })
       .then((res) => this.initLunaData(res.data))
       .catch((error) => console.log(error));
@@ -62,7 +62,7 @@ class Luna extends React.Component<{}, {}> {
    * Get the Color Domain Max, based on Current Selection.
    */
   getColorDomainMax() {
-    return 10;
+    return this.mapState.getSelectedGeneMaxExpression();
   }
 
   /**
@@ -82,9 +82,8 @@ class Luna extends React.Component<{}, {}> {
             expressionAverage += currentValue;
           }
         }
-
-        // TODO:  USE EXPRESSION MAX HERE
-        let color = 10 - (expressionAverage / dataList.length);
+        let color = this.mapState.getSelectedGeneMaxExpression() 
+          - (expressionAverage / dataList.length);
         return color;
     } else {
       return 0;
@@ -97,8 +96,7 @@ class Luna extends React.Component<{}, {}> {
   getElevationValue(dataList: any) {
     let elevation = this.getColorValue(dataList);
     if (elevation > 0) {
-      // TODO:  USE EXPRESSION MAX HERE
-      elevation = this.mapState.getCurrentTargetGeneMaxExpression() - elevation;
+      elevation = this.mapState.getSelectedGeneMaxExpression() - elevation;
     }
     return elevation;
   }
@@ -111,7 +109,6 @@ class Luna extends React.Component<{}, {}> {
   //   const el = document.getElementById("tooltip");
   //   if (el != null) {
   //     if (object) {
-  //       //  TODO:  Replace with Pull-down menu Option?
   //       let clusterCounter = new ClusterCounter(
   //         info.object.points,
   //         "cell_ontology_class"

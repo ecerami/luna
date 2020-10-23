@@ -41,7 +41,6 @@ class ControlPanel extends React.Component<ControlPanelProps> {
   }
 
   handleColorBySelectChange(event: any, newValue: any) {
-    console.log(newValue.props.value);
     this.props.mapState.setColorBySelected(newValue.props.value);
   }
 

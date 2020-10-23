@@ -2,7 +2,6 @@ import React from "react";
 import { observer } from "mobx-react";
 import MapState from "../utils/MapState";
 import { VictoryBoxPlot, VictoryGroup } from "victory";
-import { ClusterList } from "../utils/LunaConfig";
 
 interface LegendPanelProps {
   mapState: MapState;
@@ -52,58 +51,58 @@ class LegendPanel extends React.Component<LegendPanelProps> {
     );
   }
 
-  addClusterRow(
-    clusterReactList: any[],
-    currentCluster: ClusterList,
-    clusterKey: string
-  ) {
-    clusterReactList.push(
-      this.addRow(
-        clusterKey,
-        currentCluster.cluster_value,
-        currentCluster.min,
-        currentCluster.median,
-        currentCluster.max,
-        currentCluster.q1,
-        currentCluster.q3
-      )
-    );
-  }
+  // addClusterRow(
+  //   clusterReactList: any[],
+  //   currentCluster: ClusterList,
+  //   clusterKey: string
+  // ) {
+  //   clusterReactList.push(
+  //     this.addRow(
+  //       clusterKey,
+  //       currentCluster.cluster_value,
+  //       currentCluster.min,
+  //       currentCluster.median,
+  //       currentCluster.max,
+  //       currentCluster.q1,
+  //       currentCluster.q3
+  //     )
+  //   );
+  // }
 
-  addRow(
-    clusterKey: string,
-    label: string,
-    min: number,
-    median: number,
-    max: number,
-    q1: number,
-    q3: number
-  ) {
-    let tdStyle = {
-      width: "150px",
-    };
-    let truncatedLabel = this.truncateLabel(label);
-    if (q3 - q1 > 0.0001) {
-      return (
-        <tr>
-          <td>
-            <span className="cluster-label">
-              {/* <a
-                href="#"
-                onMouseOver={() => this.selectCluster(clusterKey, label)}
-                onMouseOut={() => this.unSelectCluster(clusterKey, label)}
-              > */}
-              {truncatedLabel}
-              {/* </a> */}
-            </span>
-          </td>
-          <td style={tdStyle}>
-            {this.getVictoryBoxPlot(label, min, median, max, q1, q3)}
-          </td>
-        </tr>
-      );
-    }
-  }
+  // addRow(
+  //   clusterKey: string,
+  //   label: string,
+  //   min: number,
+  //   median: number,
+  //   max: number,
+  //   q1: number,
+  //   q3: number
+  // ) {
+  //   let tdStyle = {
+  //     width: "150px",
+  //   };
+  //   let truncatedLabel = this.truncateLabel(label);
+  //   if (q3 - q1 > 0.0001) {
+  //     return (
+  //       <tr>
+  //         <td>
+  //           <span className="cluster-label">
+  //             {/* <a
+  //               href="#"
+  //               onMouseOver={() => this.selectCluster(clusterKey, label)}
+  //               onMouseOut={() => this.unSelectCluster(clusterKey, label)}
+  //             > */}
+  //             {truncatedLabel}
+  //             {/* </a> */}
+  //           </span>
+  //         </td>
+  //         <td style={tdStyle}>
+  //           {this.getVictoryBoxPlot(label, min, median, max, q1, q3)}
+  //         </td>
+  //       </tr>
+  //     );
+  //   }
+  // }
 
   private getVictoryBoxPlot(
     label: string,
@@ -120,7 +119,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
           horizontal
           boxWidth={40}
           domain={{
-            y: [0, this.props.mapState.getCurrentTargetGeneMaxExpression()],
+            y: [0, this.props.mapState.getSelectedGeneMaxExpression()],
           }}
         />
       </VictoryGroup>
@@ -140,27 +139,27 @@ class LegendPanel extends React.Component<LegendPanelProps> {
   getLegend() {
     let legend: any = [];
 
-    //  Get current color map and max gene expression
-    let colorList = this.props.mapState.getColorListByFormat("hex");
-    colorList = colorList.reverse();
-    let index = 0;
-    let maxGeneExpression = Math.round(
-      this.props.mapState.getCurrentTargetGeneMaxExpression()
-    );
+    // //  Get current color map and max gene expression
+    // let colorList = this.props.mapState.getColorListByFormat("hex");
+    // colorList = colorList.reverse();
+    // let index = 0;
+    // let maxGeneExpression = Math.round(
+    //   this.props.mapState.getCurrentTargetGeneMaxExpression()
+    // );
 
-    // Iterate through the color map
-    for (let color in colorList) {
-      let currentColor: string = colorList[color];
-      currentColor = currentColor.toString();
-      if (index === 0) {
-        legend.push(this.getColorBox(currentColor, index, 0));
-      } else if (index === colorList.length - 1) {
-        legend.push(this.getColorBox(currentColor, index, maxGeneExpression));
-      } else {
-        legend.push(this.getColorBox(currentColor, index));
-      }
-      index += 1;
-    }
+    // // Iterate through the color map
+    // for (let color in colorList) {
+    //   let currentColor: string = colorList[color];
+    //   currentColor = currentColor.toString();
+    //   if (index === 0) {
+    //     legend.push(this.getColorBox(currentColor, index, 0));
+    //   } else if (index === colorList.length - 1) {
+    //     legend.push(this.getColorBox(currentColor, index, maxGeneExpression));
+    //   } else {
+    //     legend.push(this.getColorBox(currentColor, index));
+    //   }
+    //   index += 1;
+    // }
     return legend;
   }
 
