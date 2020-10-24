@@ -21,6 +21,7 @@ class MapState {
   @observable checked3D = false;
   @observable clusterCategorySelected = "";
   @observable clusterNameSelected = "";
+  @observable clusterList: Array<string> = new Array<string>();
   @observable currentGeneText = "";
   @observable colorBySelected = "none";
   @observable selectedGene?:string = undefined;
@@ -93,7 +94,7 @@ class MapState {
     if (this.selectedGene !== undefined) {
         let colorList = colormap({
           colormap: "density",
-          nshades: 20,
+          nshades: 10,
           format: format,
           alpha: 1,
         });

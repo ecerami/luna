@@ -47,8 +47,21 @@ class Luna extends React.Component<{}, {}> {
    */
   initLunaData(json: any) {
     this.lunaData = json;
-    this.dataLoaded = true;
+    axios({
+      method: "get",
+      url: Luna.BASE_URL + "/clusters.json",
+    })
+      .then((res) => this.initClusterList(res.data))
+      .catch((error) => console.log(error));
     this.mapState = new MapState();
+  }
+
+  /**
+   * Init Cluster List
+   */
+  initClusterList(json: any) {
+    this.dataLoaded = true;
+    this.mapState.clusterList = json;      
   }
 
   /**
@@ -164,12 +177,12 @@ class Luna extends React.Component<{}, {}> {
               <Typography variant="h6">Luna: Single Cell Viewer</Typography>
             </Toolbar>
           </AppBar>
-          <LegendPanel mapState={this.mapState} />
           <Grid container spacing={3}>
             <Grid id="left-column" item xs={3}>
               <div id="left-column-content">
                 <DataSummaryPanel mapState={this.mapState} />
                 <ControlPanel mapState={this.mapState} />
+                <LegendPanel mapState={this.mapState} />
                 <NavigationPanel />
                 <div id="tooltip"></div>
               </div>
