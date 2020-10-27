@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
-import MapState from "../utils/MapState";
+import LunaState from "../utils/LunaState";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import { TextRotationAngledown } from "@material-ui/icons";
 
 interface LegendPanelProps {
-  mapState: MapState;
+  mapState: LunaState;
 }
 
 @observer

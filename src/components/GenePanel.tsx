@@ -9,10 +9,10 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import Grid from '@material-ui/core/Grid';
-import MapState from "../utils/MapState";
+import LunaState from "../utils/LunaState";
 
 interface DataSummaryPanelProps {
-  mapState: MapState;
+  mapState: LunaState;
 }
 
 @observer

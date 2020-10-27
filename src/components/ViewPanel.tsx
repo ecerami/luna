@@ -8,13 +8,13 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Slider from "@material-ui/core/Slider";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import MapState from "../utils/MapState";
+import LunaState from "../utils/LunaState";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 
 interface ControlPanelProps {
-    mapState: MapState;
+    mapState: LunaState;
 }
 
 @observer
@@ -30,7 +30,7 @@ class ControlPanel extends React.Component<ControlPanelProps> {
 
   handleRadiusChange(event: any, newValue: any) {
     this.props.mapState.hexBinRadiusSliderValue = newValue;
-    this.props.mapState.hexBinRadius = newValue * MapState.HEX_BIN_RADIUS_SCALE;
+    this.props.mapState.hexBinRadius = newValue * LunaState.HEX_BIN_RADIUS_SCALE;
   }
 
   handleElevationChange(event: any, newValue: any) {

@@ -7,7 +7,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import MapState from "./utils/MapState";
+import LunaState from "./utils/LunaState";
 import NavigationPanel from "./components/NavigationPanel";
 import CategoryPicker from "./components/CategoryPicker";
 import DataSummaryPanel from "./components/GenePanel";
@@ -20,7 +20,7 @@ import "./App.css";
 @observer
 class Luna extends React.Component<{}, {}> {
   static BASE_URL = "http://127.0.0.1:5000";
-  @observable mapState!: MapState;
+  @observable mapState!: LunaState;
   @observable dataLoaded = false;
   lunaData?: LunaData;
 
@@ -54,7 +54,7 @@ class Luna extends React.Component<{}, {}> {
     })
       .then((res) => this.initClusterList(res.data))
       .catch((error) => console.log(error));
-    this.mapState = new MapState();
+    this.mapState = new LunaState();
   }
 
   /**
@@ -69,7 +69,7 @@ class Luna extends React.Component<{}, {}> {
    * Get Color List, based on Current Selection.
    */
   getColorList() {
-    return this.mapState.getColorListByFormat(MapState.RBA);
+    return this.mapState.getColorListByFormat(LunaState.RBA);
   }
 
   /**

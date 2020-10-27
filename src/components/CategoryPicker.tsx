@@ -5,12 +5,12 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import MapState from "../utils/MapState";
+import LunaState from "../utils/LunaState";
 import { Button } from '@material-ui/core';
 import { observable } from "mobx";
 
 interface CategoryPickerProps {
-    mapState: MapState;
+    mapState: LunaState;
 }
 
 @observer
