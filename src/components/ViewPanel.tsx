@@ -114,7 +114,7 @@ class ControlPanel extends React.Component<ControlPanelProps> {
         </MenuItem>
       );
     }
-    for (let clusterKey of this.props.mapState.clusterList) {
+    for (let clusterKey of this.props.mapState.clusterState.clusterList) {
       menuItems.push(
         <MenuItem key={"color_by_" + clusterKey} value={"cluster_" + clusterKey}>
           Cluster:  { clusterKey }

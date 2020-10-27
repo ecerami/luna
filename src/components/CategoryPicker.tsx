@@ -7,7 +7,6 @@ import Switch from '@material-ui/core/Switch';import DialogTitle from '@material
 import Dialog from '@material-ui/core/Dialog';
 import LunaState from "../state/LunaState";
 import { Button } from '@material-ui/core';
-import { observable } from "mobx";
 
 interface CategoryPickerProps {
     mapState: LunaState;
@@ -18,32 +17,33 @@ class CategoryPicker extends React.Component<CategoryPickerProps> {
     numSwitches = 125;
     maxActiveSwitches = 12;
     numActiveSwitches = 0;
-    @observable showCategoryPickerDialog = true;
-    @observable categorySwitchList: Array<boolean> = [];
 
     constructor(props: CategoryPickerProps) {
         super(props);
-        for (let i = 0; i < this.numSwitches; i++) {
-            this.categorySwitchList.push(false);
-        }
         this.handleChange = this.handleChange.bind(this);
         this.handleButtonClick = this.handleButtonClick.bind(this);
     }
 
     handleChange(event: any, index: number) {
-        console.log(index);
-        var currentSwitchState = this.categorySwitchList[index];
-        if (currentSwitchState === true) {
-            this.categorySwitchList[index] = ! this.categorySwitchList[index];
-            this.numActiveSwitches -=1;
-        } else if (this.numActiveSwitches < this.maxActiveSwitches) {
-            this.categorySwitchList[index] = ! this.categorySwitchList[index];
-            this.numActiveSwitches +=1;
+        let clusterKey = this.props.mapState.clusterState.selectedClusterKey;
+        if (clusterKey) {
+            let uniqueValuesSelectedList = 
+                this.props.mapState.clusterState.uniqueCategoriesSelectedMap.get(clusterKey);
+            if (uniqueValuesSelectedList) {
+                var currentSwitchState = uniqueValuesSelectedList[index];
+                if (currentSwitchState === true) {
+                    uniqueValuesSelectedList[index] = ! uniqueValuesSelectedList[index];
+                    this.numActiveSwitches -=1;
+                } else if (this.numActiveSwitches < this.maxActiveSwitches) {
+                    uniqueValuesSelectedList[index] = ! uniqueValuesSelectedList[index];
+                    this.numActiveSwitches +=1;
+                }
+            }
         }
     }
 
     handleButtonClick(event: any) {
-        this.showCategoryPickerDialog = false;
+        this.props.mapState.clusterState.showClusterDialogPicker = false;
     }
 
     render() {
@@ -53,7 +53,8 @@ class CategoryPicker extends React.Component<CategoryPickerProps> {
         }
         let switches = this.createCategorySwitches();
         return (
-            <Dialog aria-labelledby="simple-dialog-title" open={this.showCategoryPickerDialog}>
+            <Dialog aria-labelledby="simple-dialog-title"
+                open={this.props.mapState.clusterState.showClusterDialogPicker}>
                 <div style={style}>
                     <DialogTitle id="simple-dialog-title">Select Clusters for Display</DialogTitle>
                     <p>Select up to 12 clusters below.
@@ -76,17 +77,26 @@ class CategoryPicker extends React.Component<CategoryPickerProps> {
 
     createCategorySwitches() {
         let switches: Array<any> = [];
-        for (let i = 0; i < this.numSwitches; i++) {
-            let name = "option " + i;
-            let checkedOption = this.categorySwitchList[i];
-            if (checkedOption !== undefined) {
-                switches.push(<FormControlLabel
-                    control={<Switch 
-                        checked={checkedOption} 
-                        name={name} 
-                        onChange={(e) => this.handleChange(e, i)}/>}
-                    label={name}
-                />)
+        let clusterState = this.props.mapState.clusterState;
+        let clusterKey = this.props.mapState.clusterState.selectedClusterKey;
+        if (clusterKey) {
+            let uniqueValuesList = clusterState.uniqueCategoriesMap.get(clusterKey)
+            let uniqueValuesSelectedList = clusterState.uniqueCategoriesSelectedMap.get(clusterKey);
+            if (uniqueValuesList && uniqueValuesSelectedList) {
+                for (let i=0; i<uniqueValuesList.length; i++) {
+                    let uniqueValue = uniqueValuesList[i];
+                    let name = "option " + i;
+                    let checkedOption = uniqueValuesSelectedList[i];
+                    if (checkedOption !== undefined) {
+                        switches.push(<FormControlLabel
+                            control={<Switch 
+                                checked={checkedOption} 
+                                name={name} 
+                                onChange={(e) => this.handleChange(e, i)}/>}
+                            label={uniqueValue}
+                        />)
+                    }
+                }
             }
         }
         return switches;

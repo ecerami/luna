@@ -47,7 +47,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
     let legend: Array<any> = [];
     if (this.props.mapState.selectedGene !== undefined) {
       return this.getGeneLegend(legend);
-    } else if (this.props.mapState.selectedCluster !== undefined) {
+    } else if (this.props.mapState.clusterState.selectedClusterKey !== undefined) {
       return this.getClusterLegend(legend);
     } else {
       return (<div></div>);
@@ -72,22 +72,17 @@ class LegendPanel extends React.Component<LegendPanelProps> {
   }
 
   private getClusterLegend(legend: any[]) {
-    console.log("Get Cluster Legend");
     let colorList = this.props.mapState.getColorListByFormat("hex");
-    console.log(colorList);
-    let clusterKey = this.props.mapState.selectedCluster;
-    if (clusterKey !== undefined) {
-      console.log("Cluster Key " + clusterKey);
-      let uniqueCategoryList = this.props.mapState.clusterCategoriesMap.get(clusterKey)
+    let clusterKey = this.props.mapState.clusterState.selectedClusterKey;
+    if (clusterKey) {
+      let uniqueCategoryList = this.props.mapState.clusterState.uniqueCategoriesMap.get(clusterKey)
       let index = 0;
-      console.log(uniqueCategoryList);
-      if (uniqueCategoryList !== undefined) {
+      if (uniqueCategoryList) {
         for (let color in colorList) {
           let currentColor: string = colorList[color];
           currentColor = currentColor.toString();
           let category = uniqueCategoryList[index];
-          console.log("Category: " + category);
-          if (category !== undefined) {
+          if (category) {
             legend.push(this.getColorBox(currentColor, category, index));
           }
           index += 1;

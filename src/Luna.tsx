@@ -62,7 +62,7 @@ class Luna extends React.Component<{}, {}> {
    */
   initClusterList(json: any) {
     this.dataLoaded = true;
-    this.mapState.clusterList = json;      
+    this.mapState.clusterState.clusterList = json;      
   }
 
   /**
@@ -86,9 +86,9 @@ class Luna extends React.Component<{}, {}> {
   getColorValue(dataList: any) {
     let selectedGene = this.mapState.selectedGene;
     let expressionAverage = 0.0;
-    if (selectedGene !== undefined) {
+    if (selectedGene) {
         let expressionVector = this.mapState.geneExpressionValuesMap.get(selectedGene);
-        if (expressionVector !== undefined) {
+        if (expressionVector) {
           for (let i = 0; i < dataList.length; i++) {
             let cell: LunaData = dataList[i];
             let cell_index_id: number = cell.index_id;

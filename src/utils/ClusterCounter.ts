@@ -28,7 +28,7 @@ class ClusterCounter {
         let currentCluster = point.clusters[clusterKey];
         if (currentCluster.name === targetClusterName) {
           let currentCount = this.clusterCounts.get(currentCluster.value);
-          if (currentCount !== undefined) {
+          if (currentCount) {
             this.clusterCounts.set(currentCluster.value, currentCount + 1);
           } else {
             this.clusterCounts.set(currentCluster.value, 1);
@@ -43,7 +43,7 @@ class ClusterCounter {
    */
   private rankClusters() {
     this.clusterCounts.forEach((count: number, key: string) => {
-      if (count !== undefined) {
+      if (count) {
         let clusterCount = new ClusterCount(
           key,
           count,
