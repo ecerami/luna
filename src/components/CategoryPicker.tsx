@@ -5,7 +5,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import LunaState from "../utils/LunaState";
+import LunaState from "../state/LunaState";
 import { Button } from '@material-ui/core';
 import { observable } from "mobx";
 

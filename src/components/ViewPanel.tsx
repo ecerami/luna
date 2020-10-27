@@ -8,7 +8,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Slider from "@material-ui/core/Slider";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import LunaState from "../utils/LunaState";
+import LunaState from "../state/LunaState";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
