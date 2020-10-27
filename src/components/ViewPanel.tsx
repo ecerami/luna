@@ -109,14 +109,14 @@ class ControlPanel extends React.Component<ControlPanelProps> {
     );    
     for (let gene of this.props.mapState.geneList) {
       menuItems.push(
-        <MenuItem key={"color_by_" + gene} value={gene}>
+        <MenuItem key={"color_by_" + gene} value={"gene_" + gene}>
           Gene:  { gene }
         </MenuItem>
       );
     }
     for (let clusterKey of this.props.mapState.clusterList) {
       menuItems.push(
-        <MenuItem key={"color_by_" + clusterKey} value={clusterKey}>
+        <MenuItem key={"color_by_" + clusterKey} value={"cluster_" + clusterKey}>
           Cluster:  { clusterKey }
         </MenuItem>
       );

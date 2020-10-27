@@ -45,7 +45,16 @@ class LegendPanel extends React.Component<LegendPanelProps> {
  
   getLegend() {
     let legend: Array<any> = [];
-    //  Get current color map and max gene expression
+    if (this.props.mapState.selectedGene !== undefined) {
+      return this.getGeneLegend(legend);
+    } else if (this.props.mapState.selectedCluster !== undefined) {
+      return this.getClusterLegend(legend);
+    } else {
+      return (<div></div>);
+    }
+  }
+
+  private getGeneLegend(legend: any[]) {
     let colorList = this.props.mapState.getColorListByFormat("hex");
     colorList = colorList.reverse();
     let index = 0;
@@ -53,18 +62,42 @@ class LegendPanel extends React.Component<LegendPanelProps> {
       this.props.mapState.getSelectedGeneMaxExpression()
     );
     let tick = maxGeneExpression / colorList.length;
-
-    // Iterate through the color map
     for (let color in colorList) {
       let currentColor: string = colorList[color];
       currentColor = currentColor.toString();
-      legend.push(this.getColorBox(currentColor, index*tick, index))
+      legend.push(this.getColorBox(currentColor, (index * tick).toFixed(2), index));
       index += 1;
     }
     return legend;
   }
 
-  private getColorBox(currentColor: any, tickValue: number, index: number) {
+  private getClusterLegend(legend: any[]) {
+    console.log("Get Cluster Legend");
+    let colorList = this.props.mapState.getColorListByFormat("hex");
+    console.log(colorList);
+    let clusterKey = this.props.mapState.selectedCluster;
+    if (clusterKey !== undefined) {
+      console.log("Cluster Key " + clusterKey);
+      let uniqueCategoryList = this.props.mapState.clusterCategoriesMap.get(clusterKey)
+      let index = 0;
+      console.log(uniqueCategoryList);
+      if (uniqueCategoryList !== undefined) {
+        for (let color in colorList) {
+          let currentColor: string = colorList[color];
+          currentColor = currentColor.toString();
+          let category = uniqueCategoryList[index];
+          console.log("Category: " + category);
+          if (category !== undefined) {
+            legend.push(this.getColorBox(currentColor, category, index));
+          }
+          index += 1;
+        }
+      }
+    }
+    return legend;
+  }  
+
+  private getColorBox(currentColor: any, categoryValue: string, index: number) {
     //  Style for CSS Box with Specific Background Color
     let boxStyle = {
       width: "50px",
@@ -79,7 +112,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
 
     return (
       <tr>
-        <td>{tickValue.toFixed(2)}</td>
+        <td>{ categoryValue }</td>
         <td>
           <div key={key1}>
             <span key={key2} style={boxStyle}></span>

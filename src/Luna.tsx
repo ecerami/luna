@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import MapState from "./utils/MapState";
 import NavigationPanel from "./components/NavigationPanel";
+import CategoryPicker from "./components/CategoryPicker";
 import DataSummaryPanel from "./components/GenePanel";
 import LegendPanel from "./components/LegendPanel";
 import ControlPanel from "./components/ViewPanel";
@@ -172,6 +173,7 @@ class Luna extends React.Component<{}, {}> {
 
       return (
         <div>
+          <CategoryPicker mapState={this.mapState}/>
           <AppBar position="static">
             <Toolbar>
               <Typography variant="h6">Luna: Single Cell Viewer</Typography>
