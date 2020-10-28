@@ -6,8 +6,6 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Grid from '@material-ui/core/Grid';
-import { TextRotationAngledown } from "@material-ui/icons";
 
 interface LegendPanelProps {
   mapState: LunaState;
@@ -32,7 +30,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
             <Typography>Legend</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className="legend">
-                <table>
+                <table id="legend">
                 { legend }
                 </table>
           </ExpansionPanelDetails>
@@ -72,20 +70,23 @@ class LegendPanel extends React.Component<LegendPanelProps> {
   }
 
   private getClusterLegend(legend: any[]) {
-    let colorList = this.props.mapState.getColorListByFormat("hex");
+    let clusterState = this.props.mapState.clusterState;
+    let colorList = clusterState.getColorListByFormat("hex");
     let clusterKey = this.props.mapState.clusterState.selectedClusterKey;
-    if (clusterKey) {
-      let uniqueCategoryList = this.props.mapState.clusterState.uniqueCategoriesMap.get(clusterKey)
-      let index = 0;
-      if (uniqueCategoryList) {
-        for (let color in colorList) {
-          let currentColor: string = colorList[color];
-          currentColor = currentColor.toString();
-          let category = uniqueCategoryList[index];
-          if (category) {
-            legend.push(this.getColorBox(currentColor, category, index));
+    let colorIndex = 0;
+    if (clusterKey && colorList.length > 0) {
+      let uniqueCategoryList = clusterState.uniqueCategoriesMap.get(clusterKey)
+      let uniqueCategorySelectedList = clusterState.uniqueCategoriesSelectedMap.get(clusterKey)
+      if (uniqueCategoryList && uniqueCategorySelectedList) {
+        for (let i=0; i< uniqueCategoryList.length; i++) {
+          let categoryValue = uniqueCategoryList[i];
+          let categorySelected = uniqueCategorySelectedList[i];
+          if (categorySelected) {
+            let currentColor: string = colorList[colorIndex];
+            currentColor = currentColor.toString();
+            legend.push(this.getColorBox(currentColor, categoryValue, i));
           }
-          index += 1;
+          colorIndex +=1;
         }
       }
     }

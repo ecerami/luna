@@ -4,7 +4,9 @@
 import { observable } from "mobx";
 import axios from "axios";
 import Luna from "../Luna";
+import LunaState from "../state/LunaState";
 let colormap = require("colormap");
+const colorbrewer = require('colorbrewer');
 
 class ClusterState {
   // List of all clusters
@@ -41,7 +43,27 @@ class ClusterState {
    * Get the Color List.
    * @param format Color Format.
    */
-  getColorListByFormat(format: string) {}
+  getColorListByFormat(format: string) {
+    return colorbrewer.Paired[12]
+  }
+
+  /**
+   * Count Number of Colors, based on Number of Selected Categories.
+   */
+  countColors() {
+    let numColors = 0;
+    if (this.uniqueCategoriesSelectedMap && this.selectedClusterKey) {
+      let selectedList = this.uniqueCategoriesSelectedMap.get(this.selectedClusterKey)
+      if (selectedList) {
+        for (let selectedCategory of selectedList) {
+          if (selectedCategory === true) {
+            numColors +=1;
+          }
+        }
+      }
+    }
+    return numColors;
+  }
 
   /**
    * Load Data for Specified Cluster.

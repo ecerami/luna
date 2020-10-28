@@ -22,27 +22,6 @@ body {
   margin-top:10px;
 }
 
-.cluster1 {
-  margin-top:5px;
-  padding:5px;
-  background-color: #646464;
-  color:white;
-}
-
-.cluster2 {
-  margin-top:5px;
-  padding:5px;
-  background-color: #377EB8;
-  color:white;
-}
-
-.cluster3 {
-  margin-top:5px;
-  padding:5px;
-  background-color: #E41A1C;
-  color:white;
-}
-
 .control{
   flex-direction: column !important;
 }
@@ -56,42 +35,7 @@ body {
   display: none;
 }
 
-#legend {
-  overflow-y:auto;
-  position: fixed;
-  top: 100px; right: 10px;
-  margin: auto;
-  width: 300px;
-  height: 200px;
-  opacity: 0.7;
-  z-index: 99;
-  
-  color: black;
-  background: white;
-  padding-top: 0px;
-  padding-left: 10px;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
-  border-radius: 8px;
-  -moz-box-shadow: 0 0 18px rgba(0, 0, 0, 0.9);
-  -webkit-box-shadow: 0 0 18px rgba(0, 0, 0, 0.9);
-  -box-shadow: 0 0 18px rgba(0, 0, 0, 0.9);
-}
-
-.legend-tick-min {
-  font-size: 10px;
-  position: relative;
-  top: -15px;
-  left: 14px;
-}
-
-.legend-tick-max {
-  font-size: 10px;
-  position: relative;
-  top: -15px;
-  left: -20px;
-}
-
-.cluster-label {
-  font-size: 12px;
+#legend td {
+  vertical-align: top;
+  padding-bottom: 10px;
 }

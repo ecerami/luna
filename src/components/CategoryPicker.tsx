@@ -14,7 +14,6 @@ interface CategoryPickerProps {
 
 @observer
 class CategoryPicker extends React.Component<CategoryPickerProps> {
-    numSwitches = 125;
     maxActiveSwitches = 12;
     numActiveSwitches = 0;
 
@@ -77,6 +76,7 @@ class CategoryPicker extends React.Component<CategoryPickerProps> {
 
     createCategorySwitches() {
         let switches: Array<any> = [];
+        this.numActiveSwitches = 0;
         let clusterState = this.props.mapState.clusterState;
         let clusterKey = this.props.mapState.clusterState.selectedClusterKey;
         if (clusterKey) {
@@ -88,6 +88,9 @@ class CategoryPicker extends React.Component<CategoryPickerProps> {
                     let name = "option " + i;
                     let checkedOption = uniqueValuesSelectedList[i];
                     if (checkedOption !== undefined) {
+                        if (checkedOption === true) {
+                            this.numActiveSwitches +=1;
+                        }
                         switches.push(<FormControlLabel
                             control={<Switch 
                                 checked={checkedOption} 
