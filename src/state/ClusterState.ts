@@ -39,6 +39,8 @@ class ClusterState {
   // Show/Hide the Dialog Picker
   @observable showClusterDialogPicker = false;
 
+  static OTHER_COLOR = "#bbbbbb";
+
   /**
    * Get the Color List.
    * @param format Color Format.

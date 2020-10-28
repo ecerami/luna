@@ -1,11 +1,13 @@
 import React from "react";
 import { observer } from "mobx-react";
 import LunaState from "../state/LunaState";
+import ClusterState from "../state/ClusterState";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Button from "@material-ui/core/Button";
 
 interface LegendPanelProps {
   mapState: LunaState;
@@ -15,6 +17,7 @@ interface LegendPanelProps {
 class LegendPanel extends React.Component<LegendPanelProps> {
   constructor(props: LegendPanelProps) {
     super(props);
+    this.handleLegendButtonClick = this.handleLegendButtonClick.bind(this);
   }
 
   render() {
@@ -41,6 +44,10 @@ class LegendPanel extends React.Component<LegendPanelProps> {
     }
   }
  
+  handleLegendButtonClick(event: any) {
+    this.props.mapState.clusterState.showClusterDialogPicker = true;
+  }
+
   getLegend() {
     let legend: Array<any> = [];
     if (this.props.mapState.selectedGene !== undefined) {
@@ -73,8 +80,12 @@ class LegendPanel extends React.Component<LegendPanelProps> {
     let clusterState = this.props.mapState.clusterState;
     let colorList = clusterState.getColorListByFormat("hex");
     let clusterKey = this.props.mapState.clusterState.selectedClusterKey;
+    let numLegendItems = this.getNumLegendItems();
     let colorIndex = 0;
-    if (clusterKey && colorList.length > 0) {
+    if (clusterKey) {
+      legend.push(this.getLegendControls());
+    }
+    if (clusterKey && numLegendItems > 0) {
       let uniqueCategoryList = clusterState.uniqueCategoriesMap.get(clusterKey)
       let uniqueCategorySelectedList = clusterState.uniqueCategoriesSelectedMap.get(clusterKey)
       if (uniqueCategoryList && uniqueCategorySelectedList) {
@@ -85,13 +96,49 @@ class LegendPanel extends React.Component<LegendPanelProps> {
             let currentColor: string = colorList[colorIndex];
             currentColor = currentColor.toString();
             legend.push(this.getColorBox(currentColor, categoryValue, i));
+            colorIndex +=1;
           }
-          colorIndex +=1;
+        }
+        if (numLegendItems < uniqueCategoryList.length) {
+          legend.push(this.getColorBox(ClusterState.OTHER_COLOR, "Other", 10000));  
         }
       }
     }
     return legend;
-  }  
+  }
+  
+  private getNumLegendItems() {
+    let numLegendItems = 0;
+    let clusterState = this.props.mapState.clusterState;
+    let clusterKey = this.props.mapState.clusterState.selectedClusterKey;
+    if (clusterKey) {
+      let uniqueCategoryList = clusterState.uniqueCategoriesMap.get(clusterKey)
+      let uniqueCategorySelectedList = clusterState.uniqueCategoriesSelectedMap.get(clusterKey)
+      if (uniqueCategoryList && uniqueCategorySelectedList) {
+        for (let i=0; i< uniqueCategoryList.length; i++) {
+          let categorySelected = uniqueCategorySelectedList[i];
+          if (categorySelected === true) {
+            numLegendItems+=1;
+          }
+        }
+      }
+    }
+    return numLegendItems;
+  }
+
+  private getLegendControls() {
+    let style = {
+      paddingBottom: "20px"
+    }
+    return(
+      <div style={style}>
+      <Button variant="contained"
+        size="small"
+        color="primary" 
+        onClick={this.handleLegendButtonClick}>Edit Clusters</Button>
+      </div> 
+    )
+  }
 
   private getColorBox(currentColor: any, categoryValue: string, index: number) {
     //  Style for CSS Box with Specific Background Color

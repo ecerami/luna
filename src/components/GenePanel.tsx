@@ -53,6 +53,7 @@ class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
                 </Grid>
                 <Grid item xs={3}>
                   <Button variant="contained"
+                    color="primary"
                     onClick={this.handleGeneButtonClick}>Add</Button>
                 </Grid>
               </Grid>

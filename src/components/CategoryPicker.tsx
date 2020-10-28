@@ -14,7 +14,7 @@ interface CategoryPickerProps {
 
 @observer
 class CategoryPicker extends React.Component<CategoryPickerProps> {
-    maxActiveSwitches = 12;
+    maxActiveSwitches = 8;
     numActiveSwitches = 0;
 
     constructor(props: CategoryPickerProps) {
@@ -48,7 +48,8 @@ class CategoryPicker extends React.Component<CategoryPickerProps> {
     render() {
         var style = {
             marginLeft: "20px",
-            marginRight: "20px"
+            marginRight: "20px",
+            marginBottom: "20px"
         }
         let switches = this.createCategorySwitches();
         return (
@@ -56,13 +57,13 @@ class CategoryPicker extends React.Component<CategoryPickerProps> {
                 open={this.props.mapState.clusterState.showClusterDialogPicker}>
                 <div style={style}>
                     <DialogTitle id="simple-dialog-title">Select Clusters for Display</DialogTitle>
-                    <p>Select up to 12 clusters below.
+                    <p>Select up to {this.maxActiveSwitches} clusters below.
                     &nbsp;&nbsp;
                     <Button 
                         size="small" 
                         onClick={this.handleButtonClick}
                         variant="contained"
-                        color="primary">Submit</Button>
+                        color="primary">Done</Button>
                     </p>
                     <FormControl component="fieldset">
                         <FormGroup>
