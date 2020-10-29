@@ -76,7 +76,7 @@ class Luna extends React.Component<{}, {}> {
    * Get the Color Domain Max, based on Current Selection.
    */
   getColorDomainMax() {
-    return this.mapState.getSelectedGeneMaxExpression();
+    return this.mapState.geneState.getSelectedGeneMaxExpression();
   }
 
   /**
@@ -84,10 +84,10 @@ class Luna extends React.Component<{}, {}> {
    * Color is based on an average of expression values.
   */
   getColorValue(dataList: any) {
-    let selectedGene = this.mapState.selectedGene;
+    let selectedGene = this.mapState.geneState.selectedGene;
     let expressionAverage = 0.0;
     if (selectedGene) {
-        let expressionVector = this.mapState.geneExpressionValuesMap.get(selectedGene);
+        let expressionVector = this.mapState.geneState.geneExpressionValuesMap.get(selectedGene);
         if (expressionVector) {
           for (let i = 0; i < dataList.length; i++) {
             let cell: LunaData = dataList[i];
@@ -96,7 +96,7 @@ class Luna extends React.Component<{}, {}> {
             expressionAverage += currentValue;
           }
         }
-        let color = this.mapState.getSelectedGeneMaxExpression() 
+        let color = this.mapState.geneState.getSelectedGeneMaxExpression() 
           - (expressionAverage / dataList.length);
         return color;
     } else {
@@ -110,7 +110,7 @@ class Luna extends React.Component<{}, {}> {
   getElevationValue(dataList: any) {
     let elevation = this.getColorValue(dataList);
     if (elevation > 0) {
-      elevation = this.mapState.getSelectedGeneMaxExpression() - elevation;
+      elevation = this.mapState.geneState.getSelectedGeneMaxExpression() - elevation;
     }
     return elevation;
   }

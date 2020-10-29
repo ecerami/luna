@@ -50,7 +50,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
 
   getLegend() {
     let legend: Array<any> = [];
-    if (this.props.mapState.selectedGene !== undefined) {
+    if (this.props.mapState.geneState.selectedGene !== undefined) {
       return this.getGeneLegend(legend);
     } else if (this.props.mapState.clusterState.selectedClusterKey !== undefined) {
       return this.getClusterLegend(legend);
@@ -64,7 +64,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
     colorList = colorList.reverse();
     let index = 0;
     let maxGeneExpression = Math.ceil(
-      this.props.mapState.getSelectedGeneMaxExpression()
+      this.props.mapState.geneState.getSelectedGeneMaxExpression()
     );
     let tick = maxGeneExpression / colorList.length;
     for (let color in colorList) {

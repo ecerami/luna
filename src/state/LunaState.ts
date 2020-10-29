@@ -1,10 +1,9 @@
 /**
  * Encapsualates Luna State.
- */
+*/
 import { observable } from "mobx";
-import axios from "axios";
-import Luna from "../Luna";
 import ClusterState from "./ClusterState";
+import GeneState from "./GeneState";
 let colormap = require("colormap");
 
 class LunaState {
@@ -17,16 +16,13 @@ class LunaState {
 
   viewState: any;
   @observable clusterState: ClusterState = new ClusterState();
+  @observable geneState: GeneState = new GeneState(this);
   @observable hexBinRadiusSliderValue = LunaState.HEX_BIN_RADIUS_DEFAULT;
   @observable hexBinRadius = LunaState.HEX_BIN_RADIUS_DEFAULT * LunaState.HEX_BIN_RADIUS_SCALE;
   @observable elevationScale = LunaState.ELEVATION_SCALE_DEFAULT;
   @observable checked3D = false;
   @observable currentGeneText = "";
   @observable colorBySelected = "none";
-  @observable selectedGene?:string = undefined;
-  @observable geneList: Array<string> = [];
-  @observable geneExpressionValuesMap: Map<string, Array<number>> = new Map<string, Array<number>>();
-  private geneExpressionMaxMap: Map<string, number> = new Map<string, number>();
   private flipBit = 1;
 
   constructor() {
@@ -40,20 +36,6 @@ class LunaState {
       transitionInterpolator: null,
     };
   }
-  
-  /**
-   * Add a new gene to the state.
-   * @param gene
-   */
-  addGene(gene: string) {
-    if (this.geneList.includes(gene)) {
-      this.colorBySelected = gene;
-      this.selectedGene = gene;
-      this.hexBinHack();  
-    } else {
-      this.loadExpressionData(gene);
-    }
-  }
 
   /**
    * Update the Color Section.
@@ -62,15 +44,15 @@ class LunaState {
   setColorBySelected(colorBySelected: string) {
     this.colorBySelected = colorBySelected;
     if (colorBySelected === "none") {
-      this.selectedGene = undefined;
+      this.geneState.selectedGene = undefined;
       this.clusterState.selectedClusterKey = undefined;
     } else if (colorBySelected.startsWith("gene_")) {
       colorBySelected = colorBySelected.replace("gene_", "")
-      this.selectedGene = colorBySelected;
+      this.geneState.selectedGene = colorBySelected;
       this.clusterState.selectedClusterKey = undefined;
       this.hexBinHack();
     } else {
-      this.selectedGene = undefined;
+      this.geneState.selectedGene = undefined;
       colorBySelected = colorBySelected.replace("cluster_", "")
       this.clusterState.selectedClusterKey = colorBySelected;
       if (! this.clusterState.clusterValuesMap.has(colorBySelected)) {
@@ -82,27 +64,11 @@ class LunaState {
   }
 
   /**
-   * Get the Max Expression of the Currently Selected Gene.
-   */
-  getSelectedGeneMaxExpression(): number {
-    if (this.selectedGene) {
-      let maxExpression = this.geneExpressionMaxMap.get(this.selectedGene)
-      if (maxExpression === undefined) {
-        return 0.0
-      } else {
-        return maxExpression;
-      }
-    } else {
-      return 0.0
-    }
-  }
-
-  /**
    * Get the Color List.
    * @param format Color Format.
    */
   getColorListByFormat(format: string) {
-    if (this.selectedGene) {
+    if (this.geneState.selectedGene) {
         let colorList = colormap({
           colormap: "density",
           nshades: 10,
@@ -127,34 +93,10 @@ class LunaState {
   /**
    * HexBin Hack to Force Re-coloring of Deck.gl.
    */
-  private hexBinHack() {
+  hexBinHack() {
     this.hexBinRadius = this.hexBinRadius + this.flipBit;
     this.flipBit = this.flipBit * -1;
   }
-
-  loadExpressionData(gene: string) {
-    let geneURL = Luna.BASE_URL + "/expression/" + gene + ".json"
-    axios({
-      method: "get",
-      url: geneURL,
-    })
-      .then((res) => this.initExpressionData(gene, res.data))
-      .catch((error) => console.log(error));
-  }  
-
-  /**
-   * Init Expression Data for Specified Gene.
-   * @param gene Gene Symbol.
-   * @param json JSON Content.
-   */
-  initExpressionData(gene: string, json: any) {
-    this.geneExpressionMaxMap.set(gene, json["max_expression"])
-    this.geneExpressionValuesMap.set(gene, json["ordered_values"]);
-    this.selectedGene = gene;
-    this.geneList.push(gene);
-    this.colorBySelected = "gene_" + gene;
-    this.hexBinHack();
-  }  
 }
 
 export default LunaState;

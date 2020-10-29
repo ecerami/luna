@@ -107,7 +107,7 @@ class ControlPanel extends React.Component<ControlPanelProps> {
         None
       </MenuItem>
     );    
-    for (let gene of this.props.mapState.geneList) {
+    for (let gene of this.props.mapState.geneState.geneList) {
       menuItems.push(
         <MenuItem key={"color_by_" + gene} value={"gene_" + gene}>
           Gene:  { gene }

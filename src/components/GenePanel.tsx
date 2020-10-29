@@ -24,7 +24,7 @@ class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
   }
 
   handleGeneButtonClick(event: any) {
-    this.props.mapState.addGene(this.props.mapState.currentGeneText);
+    this.props.mapState.geneState.addGene(this.props.mapState.currentGeneText);
   }
 
   handleGeneTextUpdate(event: any) {

@@ -1,11 +1,9 @@
 /**
- * Encapsualates Cluster State.
- */
+ * Encapsulates Cluster State.
+*/
 import { observable } from "mobx";
 import axios from "axios";
 import Luna from "../Luna";
-import LunaState from "../state/LunaState";
-let colormap = require("colormap");
 const colorbrewer = require('colorbrewer');
 
 class ClusterState {
@@ -21,7 +19,8 @@ class ClusterState {
   // The currently selected cluster
   @observable selectedClusterKey?: string = undefined;
 
-  // The list of unique values for each cluster, sorted alphabetically;  indexed by Cluster Key
+  // The list of unique values for each cluster, sorted alphabetically;
+  // indexed by Cluster Key
   @observable uniqueCategoriesMap: Map<string, Array<string>> = new Map<
     string,
     Array<string>
