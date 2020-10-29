@@ -42,9 +42,8 @@ class ClusterState {
 
   /**
    * Get the Color List.
-   * @param format Color Format.
    */
-  getColorListByFormat(format: string) {
+  getColorList() {
     return colorbrewer.Paired[12]
   }
 

@@ -69,7 +69,8 @@ class Luna extends React.Component<{}, {}> {
    * Get Color List, based on Current Selection.
    */
   getColorList() {
-    return this.mapState.getColorListByFormat(LunaState.RBA);
+    let colorList = this.mapState.getColorListByFormat(LunaState.RBA);
+    return colorList;
   }
 
   /**

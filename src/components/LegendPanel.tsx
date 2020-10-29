@@ -78,7 +78,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
 
   private getClusterLegend(legend: any[]) {
     let clusterState = this.props.mapState.clusterState;
-    let colorList = clusterState.getColorListByFormat("hex");
+    let colorList = clusterState.getColorList();
     let clusterKey = this.props.mapState.clusterState.selectedClusterKey;
     let numLegendItems = this.getNumLegendItems();
     let colorIndex = 0;

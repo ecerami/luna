@@ -5,6 +5,7 @@ import { observable } from "mobx";
 import ClusterState from "./ClusterState";
 import GeneState from "./GeneState";
 let colormap = require("colormap");
+const colorbrewer = require('colorbrewer');
 
 class LunaState {
   static HEX_BIN_RADIUS_DEFAULT = 10;
@@ -46,6 +47,7 @@ class LunaState {
     if (colorBySelected === "none") {
       this.geneState.selectedGene = undefined;
       this.clusterState.selectedClusterKey = undefined;
+      this.hexBinHack();
     } else if (colorBySelected.startsWith("gene_")) {
       colorBySelected = colorBySelected.replace("gene_", "")
       this.geneState.selectedGene = colorBySelected;
@@ -67,26 +69,34 @@ class LunaState {
    * Get the Color List.
    * @param format Color Format.
    */
-  getColorListByFormat(format: string) {
+  getColorListByFormat(format: string): any {
+    let colorList = new Array<string>();
     if (this.geneState.selectedGene) {
-        let colorList = colormap({
-          colormap: "density",
-          nshades: 10,
-          format: format,
-          alpha: 1,
-        });
-
-        // Adjust alpha channel
-        if (format === LunaState.RBA) {
-          for (let colorKey in colorList) {
-            colorList[colorKey][3] = 255;
-          }
-        }
-        return colorList;
+        colorList = colorbrewer.Blues[9].reverse();      
+        colorList = colorList.slice(0, 7);
     } else if (this.clusterState.selectedClusterKey !== undefined) {
-        return [LunaState.COLOR_BLACK];  
+      colorList = this.clusterState.getColorList();
     } else {
-      return [LunaState.COLOR_BLACK];
+      colorList.push(LunaState.COLOR_BLACK);
+    }
+
+    if (format === "hex") {
+      return colorList;
+    } else {
+      let colorRgbList = [];
+      for (let currentColor of colorList) {
+        colorRgbList.push(this.hexToRgb(currentColor))
+      }
+      return colorRgbList;
+    }
+  }
+
+  hexToRgb(hex: string) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    if (result !== null) {
+      return [ parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16), 255]
+    } else {
+      return [0, 0, 0, 255];
     }
   }
 
