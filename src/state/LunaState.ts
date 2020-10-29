@@ -63,9 +63,11 @@ class LunaState {
     this.colorBySelected = colorBySelected;
     if (colorBySelected === "none") {
       this.selectedGene = undefined;
+      this.clusterState.selectedClusterKey = undefined;
     } else if (colorBySelected.startsWith("gene_")) {
       colorBySelected = colorBySelected.replace("gene_", "")
       this.selectedGene = colorBySelected;
+      this.clusterState.selectedClusterKey = undefined;
       this.hexBinHack();
     } else {
       this.selectedGene = undefined;
