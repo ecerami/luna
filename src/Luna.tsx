@@ -62,47 +62,86 @@ class Luna extends React.Component<{}, {}> {
    */
   initClusterList(json: any) {
     this.dataLoaded = true;
-    this.mapState.clusterState.clusterList = json;      
+    this.mapState.clusterState.clusterList = json;
   }
 
   /**
    * Get Color List, based on Current Selection.
    */
   getColorList() {
-    let colorList = this.mapState.getColorListByFormat(LunaState.RBA);
-    return colorList;
+    console.log(this.mapState.getColorListByFormat(LunaState.RBA))
+    return this.mapState.getColorListByFormat(LunaState.RBA);
   }
 
   /**
    * Get the Color Domain Max, based on Current Selection.
    */
   getColorDomainMax() {
-    return this.mapState.geneState.getSelectedGeneMaxExpression();
+    let colorDomainMax = 0;
+    if (this.mapState.geneState.selectedGene !== undefined) {
+      colorDomainMax = this.mapState.geneState.getSelectedGeneMaxExpression();
+    } else if (this.mapState.clusterState.selectedClusterKey !== undefined) {
+      colorDomainMax = this.mapState.clusterState.countColors() + 1;
+    }
+    console.log("Color Domain Max:  " + colorDomainMax);
+    return colorDomainMax;
   }
 
   /**
    * Get the Color Value for Set of Points.
-   * Color is based on an average of expression values.
-  */
+   * For genes, the color is based on an average of expression values.
+   * For clusters, the color is based on majority vote.
+   */
   getColorValue(dataList: any) {
     let selectedGene = this.mapState.geneState.selectedGene;
-    let expressionAverage = 0.0;
+    let selectedClusterKey = this.mapState.clusterState.selectedClusterKey;
     if (selectedGene) {
-        let expressionVector = this.mapState.geneState.geneExpressionValuesMap.get(selectedGene);
-        if (expressionVector) {
-          for (let i = 0; i < dataList.length; i++) {
-            let cell: LunaData = dataList[i];
-            let cell_index_id: number = cell.index_id;
-            let currentValue = expressionVector[cell_index_id];
-            expressionAverage += currentValue;
-          }
-        }
-        let color = this.mapState.geneState.getSelectedGeneMaxExpression() 
-          - (expressionAverage / dataList.length);
-        return color;
+      return this.getGeneColor(selectedGene, dataList);
+    } else if (selectedClusterKey) {
+      return this.getClusterColor(selectedClusterKey, dataList);
     } else {
-      return 0;
+      return 0.0;
     }
+  }
+
+  /**
+   * Get color based on majority vote.
+   */
+  getClusterColor(selectedClusterKey: string, dataList: any) {
+    // let clusterVector = this.mapState.clusterState.clusterValuesMap.get(
+    //   selectedClusterKey
+    // );
+    // // TODO:  FIGURE OUT MAJORITY VOTE HERE....
+    // if (clusterVector) {
+    //   for (let i = 0; i < dataList.length; i++) {
+    //     let cell: LunaData = dataList[i];
+    //     let cell_index_id: number = cell.index_id;
+    //     let currentCategory = clusterVector[cell_index_id];
+    //   }
+    // }
+    return Math.floor(Math.random() * 4);
+  }
+
+  /**
+   * Get Color based on Average Gene Expression.
+   */
+  getGeneColor(selectedGene: string, dataList: any) {
+    let expressionAverage = 0.0;
+    let expressionVector = this.mapState.geneState.geneExpressionValuesMap.get(
+      selectedGene
+    );
+    if (expressionVector) {
+      for (let i = 0; i < dataList.length; i++) {
+        let cell: LunaData = dataList[i];
+        let cell_index_id: number = cell.index_id;
+        let currentValue = expressionVector[cell_index_id];
+        expressionAverage += currentValue;
+      }
+    }
+    return (
+      this.mapState.geneState.getSelectedGeneMaxExpression() -
+      (expressionAverage / dataList.length)
+    );
   }
 
   /**
@@ -111,7 +150,8 @@ class Luna extends React.Component<{}, {}> {
   getElevationValue(dataList: any) {
     let elevation = this.getColorValue(dataList);
     if (elevation > 0) {
-      elevation = this.mapState.geneState.getSelectedGeneMaxExpression() - elevation;
+      elevation =
+        this.mapState.geneState.getSelectedGeneMaxExpression() - elevation;
     }
     return elevation;
   }
@@ -174,7 +214,7 @@ class Luna extends React.Component<{}, {}> {
 
       return (
         <div>
-          <CategoryPicker mapState={this.mapState}/>
+          <CategoryPicker mapState={this.mapState} />
           <AppBar position="static">
             <Toolbar>
               <Typography variant="h6">Luna: Single Cell Viewer</Typography>
@@ -207,8 +247,9 @@ class Luna extends React.Component<{}, {}> {
     } else {
       return (
         <div>
-          <img alt="loading" src="img/loading.gif"/>
-        </div>);
+          <img alt="loading" src="img/loading.gif" />
+        </div>
+      );
     }
   }
 }

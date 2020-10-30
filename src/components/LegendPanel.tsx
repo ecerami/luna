@@ -21,7 +21,8 @@ class LegendPanel extends React.Component<LegendPanelProps> {
   }
 
   render() {
-    let legend = this.getLegend()
+    let legend = this.getLegend();
+    let legendControl = this.getLegendControls();
     if (this.props.mapState != null) {
       return (
         <ExpansionPanel defaultExpanded={false}>
@@ -30,11 +31,14 @@ class LegendPanel extends React.Component<LegendPanelProps> {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography>Legend</Typography>
+          <Typography>Legend</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className="legend">
+                { legendControl }
                 <table id="legend">
-                { legend }
+                  <tbody>
+                    { legend }
+                  </tbody>
                 </table>
           </ExpansionPanelDetails>
         </ExpansionPanel>
@@ -54,8 +58,6 @@ class LegendPanel extends React.Component<LegendPanelProps> {
       return this.getGeneLegend(legend);
     } else if (this.props.mapState.clusterState.selectedClusterKey !== undefined) {
       return this.getClusterLegend(legend);
-    } else {
-      return (<div></div>);
     }
   }
 
@@ -82,9 +84,6 @@ class LegendPanel extends React.Component<LegendPanelProps> {
     let clusterKey = this.props.mapState.clusterState.selectedClusterKey;
     let numLegendItems = this.getNumLegendItems();
     let colorIndex = 0;
-    if (clusterKey) {
-      legend.push(this.getLegendControls());
-    }
     if (clusterKey && numLegendItems > 0) {
       let uniqueCategoryList = clusterState.uniqueCategoriesMap.get(clusterKey)
       let uniqueCategorySelectedList = clusterState.uniqueCategoriesSelectedMap.get(clusterKey)
@@ -127,17 +126,19 @@ class LegendPanel extends React.Component<LegendPanelProps> {
   }
 
   private getLegendControls() {
-    let style = {
-      paddingBottom: "20px"
-    }
-    return(
-      <div style={style}>
-      <Button variant="contained"
-        size="small"
-        color="primary" 
-        onClick={this.handleLegendButtonClick}>Edit Clusters</Button>
-      </div> 
-    )
+    if (this.props.mapState.clusterState.selectedClusterKey) {
+      let style = {
+        paddingBottom: "20px",
+      }
+      return(
+        <div style={style}>
+         <Button variant="contained"
+          size="small"
+          color="primary" 
+          onClick={this.handleLegendButtonClick}>Edit Clusters</Button>
+        </div>
+      )
+    };
   }
 
   private getColorBox(currentColor: any, categoryValue: string, index: number) {
@@ -150,15 +151,18 @@ class LegendPanel extends React.Component<LegendPanelProps> {
     };
 
     // Keys required by React
-    let key1 = "legend_box_a" + index;
-    let key2 = "legend_box_b" + index;
+    let key1 = "legend_box_tr_" + index;
+    let key2 = "legend_box_td1_" + index;
+    let key3 = "legend_box_td2_" + index;
+    let key4 = "legend_box_a_" + index;
+    let key5 = "legend_box_b_" + index;
 
     return (
-      <tr>
-        <td>{ categoryValue }</td>
-        <td>
-          <div key={key1}>
-            <span key={key2} style={boxStyle}></span>
+      <tr key={key1}>
+        <td key={key2}>{ categoryValue }</td>
+        <td key={key3}>
+          <div key={key4}>
+            <span key={key5} style={boxStyle}></span>
           </div>
         </td>
       </tr>

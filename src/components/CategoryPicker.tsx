@@ -87,12 +87,14 @@ class CategoryPicker extends React.Component<CategoryPickerProps> {
                 for (let i=0; i<uniqueValuesList.length; i++) {
                     let uniqueValue = uniqueValuesList[i];
                     let name = "option " + i;
+                    let key = "category_picker_option_" + i;
                     let checkedOption = uniqueValuesSelectedList[i];
                     if (checkedOption !== undefined) {
                         if (checkedOption === true) {
                             this.numActiveSwitches +=1;
                         }
                         switches.push(<FormControlLabel
+                            key={key}
                             control={<Switch 
                                 checked={checkedOption} 
                                 name={name} 

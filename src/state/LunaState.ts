@@ -1,25 +1,26 @@
 /**
  * Encapsualates Luna State.
-*/
+ */
 import { observable } from "mobx";
 import ClusterState from "./ClusterState";
 import GeneState from "./GeneState";
 let colormap = require("colormap");
-const colorbrewer = require('colorbrewer');
+const colorbrewer = require("colorbrewer");
 
 class LunaState {
   static HEX_BIN_RADIUS_DEFAULT = 10;
   static HEX_BIN_RADIUS_SCALE = 1000;
   static ELEVATION_SCALE_DEFAULT = 200;
-  static GENE_EXPRESSION = "gene_expression"
-  static RBA = "rba"
-  static COLOR_BLACK = "black"
+  static GENE_EXPRESSION = "gene_expression";
+  static RBA = "rba";
+  static COLOR_BLACK = "black";
 
   viewState: any;
   @observable clusterState: ClusterState = new ClusterState();
   @observable geneState: GeneState = new GeneState(this);
   @observable hexBinRadiusSliderValue = LunaState.HEX_BIN_RADIUS_DEFAULT;
-  @observable hexBinRadius = LunaState.HEX_BIN_RADIUS_DEFAULT * LunaState.HEX_BIN_RADIUS_SCALE;
+  @observable hexBinRadius =
+    LunaState.HEX_BIN_RADIUS_DEFAULT * LunaState.HEX_BIN_RADIUS_SCALE;
   @observable elevationScale = LunaState.ELEVATION_SCALE_DEFAULT;
   @observable checked3D = false;
   @observable currentGeneText = "";
@@ -49,19 +50,18 @@ class LunaState {
       this.clusterState.selectedClusterKey = undefined;
       this.hexBinHack();
     } else if (colorBySelected.startsWith("gene_")) {
-      colorBySelected = colorBySelected.replace("gene_", "")
+      colorBySelected = colorBySelected.replace("gene_", "");
       this.geneState.selectedGene = colorBySelected;
       this.clusterState.selectedClusterKey = undefined;
       this.hexBinHack();
     } else {
       this.geneState.selectedGene = undefined;
-      colorBySelected = colorBySelected.replace("cluster_", "")
+      colorBySelected = colorBySelected.replace("cluster_", "");
       this.clusterState.selectedClusterKey = colorBySelected;
-      if (! this.clusterState.clusterValuesMap.has(colorBySelected)) {
+      if (!this.clusterState.clusterValuesMap.has(colorBySelected)) {
         this.clusterState.loadClusterData(colorBySelected);
-      } else {
-        this.hexBinHack();
       }
+      this.hexBinHack();
     }
   }
 
@@ -72,9 +72,8 @@ class LunaState {
   getColorListByFormat(format: string): any {
     let colorList = new Array<string>();
     if (this.geneState.selectedGene) {
-        colorList = colorbrewer.Blues[9].reverse();      
-        colorList = colorList.slice(0, 7);
-    } else if (this.clusterState.selectedClusterKey !== undefined) {
+      colorList = colorbrewer.Blues[9].reverse();
+    } else if (this.clusterState.selectedClusterKey) {
       colorList = this.clusterState.getColorList();
     } else {
       colorList.push(LunaState.COLOR_BLACK);
@@ -85,7 +84,7 @@ class LunaState {
     } else {
       let colorRgbList = [];
       for (let currentColor of colorList) {
-        colorRgbList.push(this.hexToRgb(currentColor))
+        colorRgbList.push(this.hexToRgb(currentColor));
       }
       return colorRgbList;
     }
@@ -94,7 +93,12 @@ class LunaState {
   hexToRgb(hex: string) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     if (result !== null) {
-      return [ parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16), 255]
+      return [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16),
+        255,
+      ];
     } else {
       return [0, 0, 0, 255];
     }
