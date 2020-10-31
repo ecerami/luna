@@ -72,7 +72,8 @@ class LunaState {
   getColorListByFormat(format: string): any {
     let colorList = new Array<string>();
     if (this.geneState.selectedGene) {
-      colorList = colorbrewer.Blues[9].reverse();
+      colorList = colorbrewer.Blues[6];
+      colorList.reverse();
     } else if (this.clusterState.selectedClusterKey) {
       colorList = this.clusterState.getColorList();
     } else {

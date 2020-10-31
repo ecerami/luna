@@ -119,7 +119,7 @@ class Luna extends React.Component<{}, {}> {
     //     let currentCategory = clusterVector[cell_index_id];
     //   }
     // }
-    return Math.floor(Math.random() * 4);
+    return 1.0;
   }
 
   /**
@@ -138,16 +138,14 @@ class Luna extends React.Component<{}, {}> {
         expressionAverage += currentValue;
       }
     }
-    return (
-      this.mapState.geneState.getSelectedGeneMaxExpression() -
-      (expressionAverage / dataList.length)
-    );
+    return (expressionAverage / dataList.length);
   }
 
   /**
    * Get the Elevation Value for a Set of Points
    */
   getElevationValue(dataList: any) {
+    // TODO:  FIX THIS SO THAT WE DON'T END UP WITH NEGATIVE ELEVATIONS!!!!
     let elevation = this.getColorValue(dataList);
     if (elevation > 0) {
       elevation =
@@ -202,9 +200,9 @@ class Luna extends React.Component<{}, {}> {
         pickable: true,
         extruded: this.mapState.checked3D,
         radius: this.mapState.hexBinRadius,
-        elevationScale: this.mapState.elevationScale,
-        elevationDomain: [0, colorDomainMax + 1],
-        getElevationValue: this.getElevationValue,
+        //elevationScale: this.mapState.elevationScale,
+        //elevationDomain: [0, colorDomainMax + 1],
+        //getElevationValue: this.getElevationValue,
         getColorValue: this.getColorValue,
         colorDomain: [0, colorDomainMax],
         colorRange: colorList,

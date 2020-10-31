@@ -35,6 +35,10 @@ class ClusterState {
     Array<boolean>
   > = new Map<string, Array<boolean>>();
 
+  // Quick Look up of Category Value to Color Index
+  @observable categoryToColorIndex: Map <string, Map<string, number>> = 
+    new Map<string, Map<string, number>>();
+
   // Show/Hide the Dialog Picker
   @observable showClusterDialogPicker = false;
 
@@ -44,25 +48,20 @@ class ClusterState {
    * Get the Color List.
    */
   getColorList() {
-    return colorbrewer.Paired[12]
+    return colorbrewer.Paired[9]
   }
 
   /**
    * Count Number of Colors, based on Number of Selected Categories.
    */
   countColors() {
-    let numColors = 0;
-    if (this.uniqueCategoriesSelectedMap && this.selectedClusterKey) {
-      let selectedList = this.uniqueCategoriesSelectedMap.get(this.selectedClusterKey)
-      if (selectedList) {
-        for (let selectedCategory of selectedList) {
-          if (selectedCategory === true) {
-            numColors +=1;
-          }
-        }
+    if (this.selectedClusterKey) {
+      let categoryLookUp = this.categoryToColorIndex.get(this.selectedClusterKey);
+      if (categoryLookUp) {
+        return categoryLookUp.size;
       }
     }
-    return numColors;
+    return 1;
   }
 
   /**
@@ -92,6 +91,9 @@ class ClusterState {
     }
     this.uniqueCategoriesSelectedMap.set(clusterKey, selectedList);
     this.clusterValuesMap.set(clusterKey, json["ordered_values"]);
+
+    let colorLookUp = new Map<string, number>();
+    this.categoryToColorIndex.set(clusterKey, colorLookUp);
     this.showClusterDialogPicker = true;
   }   
 }

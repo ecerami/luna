@@ -37,6 +37,38 @@ class CategoryPicker extends React.Component<CategoryPickerProps> {
                     uniqueValuesSelectedList[index] = ! uniqueValuesSelectedList[index];
                     this.numActiveSwitches +=1;
                 }
+                this.updateColorLookupMap();
+            }
+        }
+    }
+
+    // Update the Color Lookup Map.
+    // For example, cluster1 = 2 color index
+    // cluster2 = -1 means that the cluster is associated with the default other color.
+    updateColorLookupMap() {
+        let clusterKey = this.props.mapState.clusterState.selectedClusterKey;
+        if (clusterKey) {
+            let uniqueValuesSelectedList = 
+                this.props.mapState.clusterState.uniqueCategoriesSelectedMap.get(clusterKey);
+            if (uniqueValuesSelectedList) {        
+                let categoryToColorIndex = this.props.mapState.clusterState.categoryToColorIndex.get(clusterKey);
+                let clusterList = this.props.mapState.clusterState.uniqueCategoriesMap.get(clusterKey);
+                if (categoryToColorIndex && clusterList) {
+                    let colorIndex = 0;
+                    for (let i=0; i<clusterList.length; i++) {
+                        let categoryName = clusterList[i];
+                        let categorySelected = uniqueValuesSelectedList[i];
+                        if (categorySelected === true) {
+                            console.log("Active:  " + categoryName + " color index:  " + colorIndex);
+                            categoryToColorIndex.set(categoryName, colorIndex);
+                            colorIndex +=1;
+                        } else {
+                            if (categoryToColorIndex.has(categoryName)) {
+                                categoryToColorIndex.delete(categoryName);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

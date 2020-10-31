@@ -35,8 +35,12 @@ body {
   display: none;
 }
 
-#legend td {
+.legend td {
   vertical-align: top;
   padding-bottom: 10px;
   padding-right: 5px;
+}
+
+.legend {
+  flex-direction: column;
 }
