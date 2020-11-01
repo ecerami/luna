@@ -48,13 +48,19 @@ class ClusterState {
    * Get the Color List.
    */
   getColorList() {
-    return colorbrewer.Paired[9]
+    let colorList = colorbrewer.Paired[9]
+    let numColors = this.getNumColors();
+    colorList = colorList.slice(0, numColors);
+
+    // Add the default/other color
+    // colorList.push(ClusterState.OTHER_COLOR);
+    return colorList;
   }
 
   /**
    * Count Number of Colors, based on Number of Selected Categories.
    */
-  countColors() {
+  getNumColors() {
     if (this.selectedClusterKey) {
       let categoryLookUp = this.categoryToColorIndex.get(this.selectedClusterKey);
       if (categoryLookUp) {
@@ -91,7 +97,6 @@ class ClusterState {
     }
     this.uniqueCategoriesSelectedMap.set(clusterKey, selectedList);
     this.clusterValuesMap.set(clusterKey, json["ordered_values"]);
-
     let colorLookUp = new Map<string, number>();
     this.categoryToColorIndex.set(clusterKey, colorLookUp);
     this.showClusterDialogPicker = true;

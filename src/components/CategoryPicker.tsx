@@ -38,6 +38,7 @@ class CategoryPicker extends React.Component<CategoryPickerProps> {
                     this.numActiveSwitches +=1;
                 }
                 this.updateColorLookupMap();
+                this.props.mapState.hexBinHack();
             }
         }
     }

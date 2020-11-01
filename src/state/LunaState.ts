@@ -8,7 +8,7 @@ let colormap = require("colormap");
 const colorbrewer = require("colorbrewer");
 
 class LunaState {
-  static HEX_BIN_RADIUS_DEFAULT = 10;
+  static HEX_BIN_RADIUS_DEFAULT = 100;
   static HEX_BIN_RADIUS_SCALE = 1000;
   static ELEVATION_SCALE_DEFAULT = 200;
   static GENE_EXPRESSION = "gene_expression";

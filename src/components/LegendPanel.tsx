@@ -99,7 +99,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
           }
         }
         if (numLegendItems < uniqueCategoryList.length) {
-          legend.push(this.getColorBox(ClusterState.OTHER_COLOR, "Other", 10000));  
+          legend.push(this.getColorBox(ClusterState.OTHER_COLOR, "Other/Default", 10000));  
         }
       }
     }
@@ -107,22 +107,14 @@ class LegendPanel extends React.Component<LegendPanelProps> {
   }
   
   private getNumLegendItems() {
-    let numLegendItems = 0;
-    let clusterState = this.props.mapState.clusterState;
     let clusterKey = this.props.mapState.clusterState.selectedClusterKey;
     if (clusterKey) {
-      let uniqueCategoryList = clusterState.uniqueCategoriesMap.get(clusterKey)
-      let uniqueCategorySelectedList = clusterState.uniqueCategoriesSelectedMap.get(clusterKey)
-      if (uniqueCategoryList && uniqueCategorySelectedList) {
-        for (let i=0; i< uniqueCategoryList.length; i++) {
-          let categorySelected = uniqueCategorySelectedList[i];
-          if (categorySelected === true) {
-            numLegendItems+=1;
-          }
-        }
+      let categoryToColorIndex = this.props.mapState.clusterState.categoryToColorIndex.get(clusterKey);
+      if (categoryToColorIndex) {
+        return categoryToColorIndex.size;
       }
     }
-    return numLegendItems;
+    return 0;
   }
 
   private getLegendControls() {

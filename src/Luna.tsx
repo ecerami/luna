@@ -81,7 +81,7 @@ class Luna extends React.Component<{}, {}> {
     if (this.mapState.geneState.selectedGene !== undefined) {
       colorDomainMax = this.mapState.geneState.getSelectedGeneMaxExpression();
     } else if (this.mapState.clusterState.selectedClusterKey !== undefined) {
-      colorDomainMax = this.mapState.clusterState.countColors() + 1;
+      colorDomainMax = this.mapState.clusterState.getColorList().length;
     }
     console.log("Color Domain Max:  " + colorDomainMax);
     return colorDomainMax;
@@ -108,18 +108,43 @@ class Luna extends React.Component<{}, {}> {
    * Get color based on majority vote.
    */
   getClusterColor(selectedClusterKey: string, dataList: any) {
-    // let clusterVector = this.mapState.clusterState.clusterValuesMap.get(
-    //   selectedClusterKey
-    // );
-    // // TODO:  FIGURE OUT MAJORITY VOTE HERE....
-    // if (clusterVector) {
-    //   for (let i = 0; i < dataList.length; i++) {
-    //     let cell: LunaData = dataList[i];
-    //     let cell_index_id: number = cell.index_id;
-    //     let currentCategory = clusterVector[cell_index_id];
-    //   }
-    // }
-    return 1.0;
+    let clusterVector = this.mapState.clusterState.clusterValuesMap.get(
+      selectedClusterKey
+    );
+    let voteMap: Map<string, number>  = new Map<string, number>();
+    if (clusterVector) {
+      for (let i = 0; i < dataList.length; i++) {
+        let cell: LunaData = dataList[i];
+        let cell_index_id: number = cell.index_id;
+        let currentCategory = clusterVector[cell_index_id];
+        if (voteMap.has(currentCategory)) {
+          let currentNumVotes = voteMap.get(currentCategory);
+          if (currentNumVotes !== undefined) {
+            voteMap.set(currentCategory, currentNumVotes+1);
+          }
+        } else {
+          voteMap.set(currentCategory, 1);
+        }
+      }
+      let winningCategory;
+      let maxVotes = 0;
+      voteMap.forEach((value: number, key: string) => {
+        if (value > maxVotes) {
+          maxVotes = value;
+          winningCategory = key;
+        }
+      });
+      let categoryToColorIndex = this.mapState.clusterState.categoryToColorIndex.get(selectedClusterKey);
+      if (categoryToColorIndex && winningCategory) {
+        let colorIndex = categoryToColorIndex.get(winningCategory);
+        console.log("Winner:  " + winningCategory + ", Color Index:  " + colorIndex);
+        if (colorIndex) {
+          return colorIndex;
+        }
+      }
+    }
+    console.log("No winner:  " + (this.mapState.clusterState.getColorList().length-1))
+    return this.mapState.clusterState.getColorList().length - 1;
   }
 
   /**
