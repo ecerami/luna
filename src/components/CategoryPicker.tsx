@@ -24,6 +24,9 @@ class CategoryPicker extends React.Component<CategoryPickerProps> {
     }
 
     handleChange(event: any, index: number) {
+
+        // REPLACE ALL THIS WITH ONE CALL TO setCategoryActive()
+
         let clusterKey = this.props.mapState.clusterState.selectedClusterKey;
         if (clusterKey) {
             let uniqueValuesSelectedList = 
