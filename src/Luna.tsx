@@ -29,7 +29,8 @@ class Luna extends React.Component<{}, {}> {
 		super(props);
 		this.getColorValue = this.getColorValue.bind(this);
 		this.getColorList = this.getColorList.bind(this);
-		this.getElevationValue = this.getElevationValue.bind(this);
+    this.getElevationValue = this.getElevationValue.bind(this);
+    this.setTooltip = this.setTooltip.bind(this);
 	}
 
 	/**
@@ -157,38 +158,38 @@ class Luna extends React.Component<{}, {}> {
 		// return elevation;
 	}
 
-	// TODO:  FIX TOOLTIPS BELOW
-	// setTooltip(info: any, event: any) {
-	//   let object = info.object;
-	//   let x = info.x;
-	//   let y = info.y;
-	//   const el = document.getElementById("tooltip");
-	//   if (el != null) {
-	//     if (object) {
-	//       let clusterCounter = new ClusterCounter(
-	//         info.object.points,
-	//         "cell_ontology_class"
-	//       );
-	//       let rankedClusterList = clusterCounter.getClusterCountsRanked();
-	//       let clusterHtml = "<table>";
-	//       rankedClusterList.forEach((value) => {
-	//         let clusterName = StringUtils.truncateOrPadString(value.clusterName);
-	//         clusterHtml += "<tr>";
-	//         clusterHtml += "<td>" + clusterName + "</td>";
-	//         clusterHtml += "<td>N=" + value.numCells + "</td>";
-	//         clusterHtml +=
-	//           "<td>" + (100.0 * value.percentage).toFixed(0) + "%</td>";
-	//         clusterHtml += "</tr>";
-	//       });
-	//       el.innerHTML = clusterHtml;
-	//       el.style.display = "block";
-	//       el.style.left = x + 100 + "px";
-	//       el.style.top = y + 50 + "px";
-	//     } else {
-	//       el.style.display = "none";
-	//     }
-	//   }
-	// }
+	setTooltip(info: any, event: any) {
+	  let object = info.object;
+	  let x = info.x;
+	  let y = info.y;
+    const el = document.getElementById("tooltip");
+    let showToolTip = false;
+	  if (el != null) {
+	    if (object) {
+        let points = info.object.points;
+        let cellIndexList = new Array<number>();
+        for (let i = 0; i < points.length; i++) {
+          cellIndexList.push(points[i].index_id);
+        }
+        let selectedAnnotationKey = this.lunaState.annotationState.selectedAnnotationKey;
+        if (selectedAnnotationKey) {
+          let cellAnnotation = this.lunaState.annotationState.cellAnnotationMap.get(selectedAnnotationKey);
+          if (cellAnnotation) {
+            showToolTip = true;
+            let html = "Number of Cells: " + points.length;
+            html += "<br>" + cellAnnotation.getMostFrequentCategory(cellIndexList);
+            el.innerHTML = html;
+            el.style.display = "block";
+            el.style.left = x + 465 + "px";
+            el.style.top = y + 50 + "px";
+          }
+        }
+      }
+      if (showToolTip === false) {
+	      el.style.display = "none";
+	    }
+	  }
+	}
 
 	render() {
 		let data: any = this.lunaData;
@@ -209,7 +210,7 @@ class Luna extends React.Component<{}, {}> {
 				getColorValue: this.getColorValue,
 				colorDomain: [0, colorDomainMax],
 				colorRange: colorList,
-				//onHover: this.setTooltip,
+				onHover: this.setTooltip,
 				autoHighlight: true,
 			});
 
