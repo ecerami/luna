@@ -14,7 +14,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 
 interface ControlPanelProps {
-    mapState: LunaState;
+    lunaState: LunaState;
 }
 
 @observer
@@ -29,20 +29,20 @@ class ControlPanel extends React.Component<ControlPanelProps> {
   }
 
   handleRadiusChange(event: any, newValue: any) {
-    this.props.mapState.hexBinRadiusSliderValue = newValue;
-    this.props.mapState.hexBinRadius = newValue * LunaState.HEX_BIN_RADIUS_SCALE;
+    this.props.lunaState.hexBinRadiusSliderValue = newValue;
+    this.props.lunaState.hexBinRadius = newValue * LunaState.HEX_BIN_RADIUS_SCALE;
   }
 
   handleElevationChange(event: any, newValue: any) {
-    this.props.mapState.elevationScale = newValue;
+    this.props.lunaState.elevationScale = newValue;
   }
 
   handle3DChange(event: any, newValue: any) {
-    this.props.mapState.checked3D = newValue;
+    this.props.lunaState.checked3D = newValue;
   }
 
   handleColorBySelectChange(event: any, newValue: any) {
-    this.props.mapState.setColorBySelected(newValue.props.value);
+    this.props.lunaState.setColorBySelected(newValue.props.value);
   }
 
   render() {
@@ -60,7 +60,7 @@ class ControlPanel extends React.Component<ControlPanelProps> {
           <InputLabel id="colorBySelectLabel">Color by:</InputLabel>
           <Select id="colorBySelect" 
             labelId="colorBySelectLabel"
-            value={this.props.mapState.colorBySelected}
+            value={this.props.lunaState.colorBySelected}
             onChange={this.handleColorBySelectChange}>
             { colorByMenuItems }
           </Select>
@@ -68,7 +68,7 @@ class ControlPanel extends React.Component<ControlPanelProps> {
           <Typography>Hex Bin radius:</Typography>
           <Slider
             onChange={this.handleRadiusChange}
-            value={this.props.mapState.hexBinRadiusSliderValue}
+            value={this.props.lunaState.hexBinRadiusSliderValue}
             min={5}
             max={200}
             step={10}
@@ -77,7 +77,7 @@ class ControlPanel extends React.Component<ControlPanelProps> {
           <FormControlLabel
             control={
               <Switch
-                checked={this.props.mapState.checked3D}
+                checked={this.props.lunaState.checked3D}
                 onChange={this.handle3DChange}
                 name="checked3d"
                 color="primary"
@@ -88,8 +88,8 @@ class ControlPanel extends React.Component<ControlPanelProps> {
           <Typography>Elevation Scale:</Typography>
           <Slider
             onChange={this.handleElevationChange}
-            value={this.props.mapState.elevationScale}
-            disabled={!this.props.mapState.checked3D}
+            value={this.props.lunaState.elevationScale}
+            disabled={!this.props.lunaState.checked3D}
             min={1}
             max={1000}
             step={1}
@@ -107,14 +107,14 @@ class ControlPanel extends React.Component<ControlPanelProps> {
         None
       </MenuItem>
     );    
-    for (let gene of this.props.mapState.geneState.geneList) {
+    for (let gene of this.props.lunaState.geneState.geneList) {
       menuItems.push(
         <MenuItem key={"color_by_" + gene} value={"gene_" + gene}>
           Gene:  { gene }
         </MenuItem>
       );
     }
-    for (let clusterKey of this.props.mapState.clusterState.clusterList) {
+    for (let clusterKey of this.props.lunaState.annotationState.annotationKeyList) {
       menuItems.push(
         <MenuItem key={"color_by_" + clusterKey} value={"cluster_" + clusterKey}>
           Cluster:  { clusterKey }

@@ -1,4 +1,6 @@
 import ColorUtil from "./ColorUtil";
+import { observable } from "mobx";
+const colorbrewer = require("colorbrewer");
 
 /**
  * Encapsulates Cell Annotations.
@@ -7,8 +9,6 @@ import ColorUtil from "./ColorUtil";
  * example, cell X is derived from a lung tissue, or cell X is derived
  * from a male subject, etc.
  */
-const colorbrewer = require("colorbrewer");
-
 class CellAnnotation {
 	public static readonly DEFAULT_MAX_ACTIVE_CATEGORIES = 8;
 	public static readonly OTHER_DEFAULT_COLOR = "#bbbbbb";
@@ -17,13 +17,13 @@ class CellAnnotation {
 	private orderedValueList: Array<string>;
 	private uniqueCategoryList: Array<string>;
 	private uniqueCategorySet: Set<string>;
-	private categoryActiveSet: Set<string>;
 	private activeColorListHex: Array<string>;
 	private activeColorListRGB: Array<Array<number>>;
 	private categoryToColorIndexMap: Map<string, number>;
 	private maxActiveCategories = CellAnnotation.DEFAULT_MAX_ACTIVE_CATEGORIES;
 	private colorScheme = "Paired";
 	private validColorSchemes: Array<string>;
+	@observable private categoryActiveSet: Set<string>;
 
 	/**
 	 * Constructor.
@@ -41,8 +41,10 @@ class CellAnnotation {
 		this.orderedValueList = orderedValueList;
 		this.uniqueCategoryList = uniqueCategoryList;
 		this.categoryActiveSet = new Set<string>();
-		this.uniqueCategorySet = new Set<string>();
 
+		//  Always add default category
+		this.uniqueCategorySet = new Set<string>();
+		this.uniqueCategoryList.push(CellAnnotation.OTHER_DEFAULT_KEY);
 		for (let category of this.uniqueCategoryList) {
 			this.uniqueCategorySet.add(category);
 		}
@@ -51,8 +53,11 @@ class CellAnnotation {
 		this.activeColorListRGB = [];
 		this.categoryToColorIndexMap = new Map();
 		this.maxActiveCategories = maxActiveCategories;
-		this.updateActiveColorList();
 		this.validColorSchemes = ["Paired", "Set1", "Set3"];
+
+		//  Activate the default category
+		this.setCategoryActive(CellAnnotation.OTHER_DEFAULT_KEY, true);
+		this.updateActiveColorList();
 	}
 
 	/**
@@ -71,8 +76,8 @@ class CellAnnotation {
 			} else if (activeState === false) {
 				if (this.categoryActiveSet.has(category)) {
 					this.categoryActiveSet.delete(category);
+					success = true;
 				}
-				success = true;
 			}
 		}
 		if (success) {
@@ -159,19 +164,19 @@ class CellAnnotation {
 	 * Gets color index, based on majority vote.
 	 */
 	public getColorIndex(cellIdList: Array<number>) {
-        let winningCategory = this.getMostFrequentCategory(cellIdList);
-        if (winningCategory && this.isCategoryActive(winningCategory)) {
-            return this.categoryToColorIndexMap.get(winningCategory)
-        } else {
-            return this.activeColorListHex.length -1;
+		let winningCategory = this.getMostFrequentCategory(cellIdList);
+		if (winningCategory && this.isCategoryActive(winningCategory)) {
+			return this.categoryToColorIndexMap.get(winningCategory);
+		} else {
+			return this.activeColorListHex.length - 1;
 		}
-    }
-    
-    /**
-     * Gets Most Frequent Category in the Cell ID List.
-     * @param cellIdList Cell ID List.
-     */
-    public getMostFrequentCategory(cellIdList: Array<number>) {
+	}
+
+	/**
+	 * Gets Most Frequent Category in the Cell ID List.
+	 * @param cellIdList Cell ID List.
+	 */
+	public getMostFrequentCategory(cellIdList: Array<number>) {
 		let voteMap: Map<string, number> = new Map<string, number>();
 		for (let i = 0; i < cellIdList.length; i++) {
 			let cell_index_id: number = cellIdList[i];
@@ -186,30 +191,30 @@ class CellAnnotation {
 			}
 		}
 		return this.getWinningCategory(voteMap);
-    }
+	}
 
-    /**
-     * Gets the Winning Category.
-     * @param voteMap VoteMap.
-     */
-    private getWinningCategory(voteMap: Map<string, number>) {
-        let winningCategory = undefined;
-        let maxVotes = 0;
-        voteMap.forEach((value: number, key: string) => {
-            if (value > maxVotes) {
-                maxVotes = value;
-                winningCategory = key;
-            }
-        });
-        return winningCategory;
-    }
+	/**
+	 * Gets the Winning Category.
+	 * @param voteMap VoteMap.
+	 */
+	private getWinningCategory(voteMap: Map<string, number>) {
+		let winningCategory = undefined;
+		let maxVotes = 0;
+		voteMap.forEach((value: number, key: string) => {
+			if (value > maxVotes) {
+				maxVotes = value;
+				winningCategory = key;
+			}
+		});
+		return winningCategory;
+	}
 
 	/**
 	 * Updates the Active Color List, based on Active Categories.
 	 */
 	private updateActiveColorList() {
 		this.activeColorListHex = colorbrewer[this.colorScheme][9];
-		this.activeColorListHex = this.activeColorListHex.slice(0, this.categoryActiveSet.size);
+		this.activeColorListHex = this.activeColorListHex.slice(0, this.categoryActiveSet.size - 1);
 
 		// Add the default/other color
 		this.activeColorListHex.push(CellAnnotation.OTHER_DEFAULT_COLOR);
@@ -234,10 +239,6 @@ class CellAnnotation {
 				this.categoryToColorIndexMap.set(category, colorIndex++);
 			}
 		}
-		this.categoryToColorIndexMap.set(
-			CellAnnotation.OTHER_DEFAULT_KEY,
-			this.activeColorListHex.length-1
-		);
 	}
 }
 

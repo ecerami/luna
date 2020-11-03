@@ -4,32 +4,36 @@ test("verify state changes for cell annotation", () => {
 	let orderedValueList: Array<string> = ["a", "a", "b", "a", "d", "c", "c"];
 	let uniqueCategoryList: Array<string> = ["a", "b", "c", "d"];
 
-	let annotation = new CellAnnotation("tissue", orderedValueList, uniqueCategoryList, 3);
+	let annotation = new CellAnnotation("tissue", orderedValueList, uniqueCategoryList, 4);
 
-	//  Verify four categories
-	expect(annotation.getUniqueCategoryList().length).toBe(4);
+	//  Verify five categories (4+default)
+    expect(annotation.getUniqueCategoryList().length).toBe(5);
+    
+    //  Verify that default is active
+    expect(annotation.isCategoryActive(CellAnnotation.OTHER_DEFAULT_KEY)).toBe(true);
+	expect(annotation.getNumActiveCategories()).toBe(1);
 
 	//  Verify that I can only set three categories to active
 	expect(annotation.setCategoryActive("a", true)).toBe(true);
-	expect(annotation.getNumActiveCategories()).toBe(1);
+	expect(annotation.getNumActiveCategories()).toBe(2);
 	expect(annotation.isCategoryActive("a")).toBe(true);
 	expect(annotation.isCategoryActive("b")).toBe(false);
 	expect(annotation.setCategoryActive("b", true)).toBe(true);
-	expect(annotation.getNumActiveCategories()).toBe(2);
+	expect(annotation.getNumActiveCategories()).toBe(3);
 	expect(annotation.setCategoryActive("c", true)).toBe(true);
-	expect(annotation.getNumActiveCategories()).toBe(3);
+	expect(annotation.getNumActiveCategories()).toBe(4);
 	expect(annotation.setCategoryActive("d", true)).toBe(false);
-	expect(annotation.getNumActiveCategories()).toBe(3);
+	expect(annotation.getNumActiveCategories()).toBe(4);
 
 	//  Now try to inactivate c, and activate d
 	expect(annotation.setCategoryActive("c", false)).toBe(true);
-	expect(annotation.getNumActiveCategories()).toBe(2);
-	expect(annotation.setCategoryActive("d", true)).toBe(true);
 	expect(annotation.getNumActiveCategories()).toBe(3);
+	expect(annotation.setCategoryActive("d", true)).toBe(true);
+	expect(annotation.getNumActiveCategories()).toBe(4);
 
 	// Now try with categories that don't exist
 	expect(annotation.setCategoryActive("z", true)).toBe(false);
-	expect(annotation.getNumActiveCategories()).toBe(3);
+	expect(annotation.getNumActiveCategories()).toBe(4);
 });
 
 test("verify active color changes", () => {
