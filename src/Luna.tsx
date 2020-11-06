@@ -17,8 +17,7 @@ import ControlPanel from "./components/ViewPanel";
 import axios from "axios";
 import { LunaData } from "./utils/LunaData";
 import NightsStayIcon from '@material-ui/icons/NightsStay';
-
-import "./App.css";
+import "./css/Luna.css";
 
 @observer
 class Luna extends React.Component<{}, {}> {
