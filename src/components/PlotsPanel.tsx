@@ -7,13 +7,16 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
 import LunaState from "../state/LunaState";
+import Luna from "../Luna";
 
 interface PlotsPanelProps {
 	lunaState: LunaState;
 }
 
+/**
+ * Plots Panel.
+ */
 @observer
 class PlotsPanel extends React.Component<PlotsPanelProps> {
 	constructor(props: PlotsPanelProps) {
@@ -62,16 +65,25 @@ class PlotsPanel extends React.Component<PlotsPanelProps> {
 		);
 	}
 
+	/**
+	 * Handles Change to Gene Parameter.
+	 */
 	handleGeneChange(event: any, newValue: any) {
 		console.log(newValue.props.value);
 		this.props.lunaState.plotByGene = newValue.props.value;
 	}
 
+	/**
+	 * Handles Change to Category Parameter.
+	 */
 	handleCategoryChange(event: any, newValue: any) {
 		console.log(newValue.props.value);
 		this.props.lunaState.plotByCategory = newValue.props.value;
 	}
 
+	/**
+	 * Gets Category Menu Items.
+	 */
 	getCategoryMenuItems() {
 		let menuItems: Array<any> = [];
 		menuItems.push(
@@ -89,6 +101,9 @@ class PlotsPanel extends React.Component<PlotsPanelProps> {
 		return menuItems;
 	}
 
+	/**
+	 * Gets Gene Menu Items.
+	 */
 	getGeneMenuItems() {
 		let menuItems: Array<any> = [];
 		menuItems.push(
@@ -106,13 +121,17 @@ class PlotsPanel extends React.Component<PlotsPanelProps> {
 		return menuItems;
 	}
 
+	/**
+	 * Gets the Plot Image Tag.
+	 */
 	getPlotImgTag() {
 		if (
 			this.props.lunaState.plotByCategory !== LunaState.NONE &&
 			this.props.lunaState.plotByGene !== LunaState.NONE
 		) {
 			let plotUrl =
-				"http://127.0.0.1:5000/boxplot/" +
+				Luna.BASE_URL +
+				"/boxplot/" +
 				this.props.lunaState.plotByGene +
 				"/" +
 				this.props.lunaState.plotByCategory +
