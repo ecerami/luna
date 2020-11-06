@@ -7,19 +7,16 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Slider from "@material-ui/core/Slider";
 import LunaState from "../state/LunaState";
+import ComponentProps from "./ComponentProps";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
-interface ControlPanelProps {
-    lunaState: LunaState;
-}
-
 @observer
-class ControlPanel extends React.Component<ControlPanelProps> {
+class ControlPanel extends React.Component<ComponentProps> {
 
-  constructor(props: ControlPanelProps) {
+  constructor(props: ComponentProps) {
     super(props);
     this.handleRadiusChange = this.handleRadiusChange.bind(this);
     this.handleElevationChange = this.handleElevationChange.bind(this);

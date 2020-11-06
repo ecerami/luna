@@ -231,9 +231,9 @@ class Luna extends React.Component<{}, {}> {
 					<Grid container spacing={3}>
 						<Grid id="left-column" item xs={3}>
 							<div id="left-column-content">
-								<DataSummaryPanel mapState={this.lunaState} />
+								<DataSummaryPanel lunaState={this.lunaState} />
 								<ControlPanel lunaState={this.lunaState} />
-								<LegendPanel mapState={this.lunaState} />
+								<LegendPanel lunaState={this.lunaState} />
 								<NavigationPanel />
 								<div id="tooltip"></div>
 							</div>

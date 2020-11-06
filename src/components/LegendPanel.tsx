@@ -1,6 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react";
 import LunaState from "../state/LunaState";
+import ComponentProps from "./ComponentProps";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
@@ -9,16 +10,12 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Button from "@material-ui/core/Button";
 import BrushIcon from '@material-ui/icons/Brush';
 
-interface LegendPanelProps {
-	mapState: LunaState;
-}
-
 /**
  * Legend Panel for Gene Expression and Annotations.
  */
 @observer
-class LegendPanel extends React.Component<LegendPanelProps> {
-	constructor(props: LegendPanelProps) {
+class LegendPanel extends React.Component<ComponentProps> {
+	constructor(props: ComponentProps) {
 		super(props);
 		this.handleLegendButtonClick = this.handleLegendButtonClick.bind(this);
 	}
@@ -26,7 +23,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
 	render() {
 		let legend = this.getLegend();
 		let legendControl = this.getLegendControls();
-		if (this.props.mapState != null) {
+		if (this.props.lunaState != null) {
 			return (
 				<ExpansionPanel defaultExpanded={false}>
 					<ExpansionPanelSummary
@@ -53,16 +50,16 @@ class LegendPanel extends React.Component<LegendPanelProps> {
    * Shows the Category Picker Component.
    */
 	handleLegendButtonClick(event: any) {
-		this.props.mapState.annotationState.showAnnotationDialogPicker = true;
+		this.props.lunaState.annotationState.showAnnotationDialogPicker = true;
 	}
 
   /**
    * Gets the Gene or Annotation Legend.
    */
 	getLegend() {
-		if (this.props.mapState.geneState.selectedGene !== undefined) {
+		if (this.props.lunaState.geneState.selectedGene !== undefined) {
 			return this.getGeneLegend();
-		} else if (this.props.mapState.annotationState.selectedAnnotationKey !== undefined) {
+		} else if (this.props.lunaState.annotationState.selectedAnnotationKey !== undefined) {
 			return this.getAnnotationLegend();
 		}
 		return <div></div>;
@@ -73,11 +70,11 @@ class LegendPanel extends React.Component<LegendPanelProps> {
    */
 	private getGeneLegend() {
 		let legend: Array<any> = [];
-		let colorList = this.props.mapState.getColorListByFormat("hex");
+		let colorList = this.props.lunaState.getColorListByFormat("hex");
 		colorList = colorList.reverse();
 		let index = 0;
 		let maxGeneExpression = Math.ceil(
-			this.props.mapState.geneState.getSelectedGeneMaxExpression()
+			this.props.lunaState.geneState.getSelectedGeneMaxExpression()
 		);
 		let tick = maxGeneExpression / colorList.length;
 		for (let color in colorList) {
@@ -94,7 +91,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
    */
 	private getAnnotationLegend() {
 		let legend: Array<any> = [];
-		let annotationState = this.props.mapState.annotationState;
+		let annotationState = this.props.lunaState.annotationState;
 		let annotationKey = annotationState.selectedAnnotationKey;
 		if (annotationKey) {
 			let cellAnnotation = annotationState.cellAnnotationMap.get(annotationKey);
@@ -118,7 +115,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
 	 * Gets the Edit Categories Button.
 	 */
 	private getLegendControls() {
-		if (this.props.mapState.annotationState.selectedAnnotationKey) {
+		if (this.props.lunaState.annotationState.selectedAnnotationKey) {
 			let style = {
 				paddingBottom: "20px",
 			};
@@ -130,7 +127,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
 						color="primary"
 						onClick={this.handleLegendButtonClick}
 					>
-						Edit Categories:  {this.props.mapState.annotationState.selectedAnnotationKey}
+						Edit Categories:  {this.props.lunaState.annotationState.selectedAnnotationKey}
 					</Button>
 				</div>
 			);

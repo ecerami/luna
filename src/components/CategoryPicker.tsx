@@ -6,22 +6,18 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
-import LunaState from "../state/LunaState";
+import ComponentProps from "./ComponentProps";
 import { Button } from "@material-ui/core";
 import CellAnnotation from "../utils/CellAnnotation";
 
-interface CategoryPickerProps {
-	lunaState: LunaState;
-}
-
 @observer
-class CategoryPicker extends React.Component<CategoryPickerProps> {
+class CategoryPicker extends React.Component<ComponentProps> {
 
     /**
      * Constructor.
-     * @param props CategoryPickerProps
+     * @param props ComponentProps
      */
-	constructor(props: CategoryPickerProps) {
+	constructor(props: ComponentProps) {
 		super(props);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleButtonClick = this.handleButtonClick.bind(this);

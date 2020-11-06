@@ -8,19 +8,17 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import LunaState from "../state/LunaState";
+import ComponentProps from "./ComponentProps";
 import Luna from "../Luna";
 import BarChartIcon from '@material-ui/icons/BarChart';
 
-interface PlotsPanelProps {
-	lunaState: LunaState;
-}
 
 /**
  * Plots Panel.
  */
 @observer
-class PlotsPanel extends React.Component<PlotsPanelProps> {
-	constructor(props: PlotsPanelProps) {
+class PlotsPanel extends React.Component<ComponentProps> {
+	constructor(props: ComponentProps) {
 		super(props);
 		this.handleCategoryChange = this.handleCategoryChange.bind(this);
 		this.handleGeneChange = this.handleGeneChange.bind(this);

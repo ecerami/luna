@@ -9,31 +9,27 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import Grid from '@material-ui/core/Grid';
-import LunaState from "../state/LunaState";
+import ComponentProps from "./ComponentProps";
 import BlurOnIcon from '@material-ui/icons/BlurOn';
 
-interface DataSummaryPanelProps {
-  mapState: LunaState;
-}
-
 @observer
-class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
-  constructor(props: DataSummaryPanelProps) {
+class DataSummaryPanel extends React.Component<ComponentProps> {
+  constructor(props: ComponentProps) {
     super(props);
     this.handleGeneButtonClick = this.handleGeneButtonClick.bind(this);
     this.handleGeneTextUpdate = this.handleGeneTextUpdate.bind(this);
   }
 
   handleGeneButtonClick(event: any) {
-    this.props.mapState.geneState.addGene(this.props.mapState.currentGeneText);
+    this.props.lunaState.geneState.addGene(this.props.lunaState.currentGeneText);
   }
 
   handleGeneTextUpdate(event: any) {
-    this.props.mapState.currentGeneText = event.target.value;
+    this.props.lunaState.currentGeneText = event.target.value;
   }  
 
   render() {
-    if (this.props.mapState != null) {
+    if (this.props.lunaState != null) {
       return (
         <ExpansionPanel defaultExpanded={true}>
           <ExpansionPanelSummary
@@ -48,7 +44,7 @@ class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
               <Grid container alignItems="center" spacing={4}>
                 <Grid item xs={8}>
                   <TextField id="target_gene"
-                    value={this.props.mapState.currentGeneText}
+                    value={this.props.lunaState.currentGeneText}
                     onChange={this.handleGeneTextUpdate}
                     label="Gene" />
                 </Grid>
