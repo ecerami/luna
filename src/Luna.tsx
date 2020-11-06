@@ -16,6 +16,7 @@ import LegendPanel from "./components/LegendPanel";
 import ControlPanel from "./components/ViewPanel";
 import axios from "axios";
 import { LunaData } from "./utils/LunaData";
+import NightsStayIcon from '@material-ui/icons/NightsStay';
 
 import "./App.css";
 
@@ -225,7 +226,7 @@ class Luna extends React.Component<{}, {}> {
 					<CategoryPicker lunaState={this.lunaState} />
 					<AppBar position="static">
 						<Toolbar>
-							<Typography variant="h6">Luna: Single Cell Viewer</Typography>
+            <NightsStayIcon/>&nbsp;<Typography variant="h6">Luna: Single Cell Viewer</Typography>
 						</Toolbar>
 					</AppBar>
 					<Grid container spacing={3}>

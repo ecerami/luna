@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import Grid from '@material-ui/core/Grid';
 import LunaState from "../state/LunaState";
+import BlurOnIcon from '@material-ui/icons/BlurOn';
 
 interface DataSummaryPanelProps {
   mapState: LunaState;
@@ -40,7 +41,7 @@ class DataSummaryPanel extends React.Component<DataSummaryPanelProps> {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography>Genes</Typography>
+          <BlurOnIcon/>&nbsp;<Typography>Genes</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className="control">
             <FormControl>

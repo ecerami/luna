@@ -6,12 +6,11 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Slider from "@material-ui/core/Slider";
-import Switch from "@material-ui/core/Switch";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import LunaState from "../state/LunaState";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 interface ControlPanelProps {
     lunaState: LunaState;
@@ -67,7 +66,7 @@ class ControlPanel extends React.Component<ControlPanelProps> {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography>View</Typography>
+        <VisibilityIcon/>&nbsp;<Typography>View</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="control">
           <InputLabel id="colorBySelectLabel">Color by:</InputLabel>

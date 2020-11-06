@@ -9,6 +9,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import LunaState from "../state/LunaState";
 import Luna from "../Luna";
+import BarChartIcon from '@material-ui/icons/BarChart';
 
 interface PlotsPanelProps {
 	lunaState: LunaState;
@@ -36,7 +37,7 @@ class PlotsPanel extends React.Component<PlotsPanelProps> {
 					aria-controls="panel1a-content"
 					id="panel1a-header"
 				>
-					<Typography>Plots</Typography>
+				<BarChartIcon/>&nbsp;<Typography>Plots</Typography>
 				</ExpansionPanelSummary>
 				<ExpansionPanelDetails className="control">
 					<Typography>Gene:</Typography>

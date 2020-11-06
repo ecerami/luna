@@ -7,6 +7,7 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Button from "@material-ui/core/Button";
+import BrushIcon from '@material-ui/icons/Brush';
 
 interface LegendPanelProps {
 	mapState: LunaState;
@@ -33,7 +34,7 @@ class LegendPanel extends React.Component<LegendPanelProps> {
 						aria-controls="panel1a-content"
 						id="panel1a-header"
 					>
-						<Typography>Legend</Typography>
+					<BrushIcon/>&nbsp;<Typography>Legend</Typography>
 					</ExpansionPanelSummary>
 					<ExpansionPanelDetails className="legend">
 						{legendControl}

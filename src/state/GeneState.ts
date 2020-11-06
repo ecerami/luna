@@ -21,7 +21,7 @@ class GeneState {
   }
 
   /**
-   * Add a new gene to the state.
+   * Adds a new gene to the state.
    * @param gene
    */
   addGene(gene: string) {
@@ -35,7 +35,7 @@ class GeneState {
   }
 
   /**
-   * Get the Max Expression of the Currently Selected Gene.
+   * Gets the Max Expression of the Currently Selected Gene.
    */
   getSelectedGeneMaxExpression(): number {
     if (this.selectedGene) {
@@ -50,6 +50,10 @@ class GeneState {
     }
   }
 
+  /**
+   * Loads Expression Data for Specified Gene.
+   * @param gene Gene Symbol.
+   */
   loadExpressionData(gene: string) {
     let geneURL = Luna.BASE_URL + "/expression/" + gene + ".json";
     axios({
@@ -61,7 +65,7 @@ class GeneState {
   }
 
   /**
-   * Init Expression Data for Specified Gene.
+   * Inits Expression Data for Specified Gene.
    * @param gene Gene Symbol.
    * @param json JSON Content.
    */
