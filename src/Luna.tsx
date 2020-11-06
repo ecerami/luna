@@ -11,6 +11,7 @@ import LunaState from "./state/LunaState";
 import NavigationPanel from "./components/NavigationPanel";
 import CategoryPicker from "./components/CategoryPicker";
 import DataSummaryPanel from "./components/GenePanel";
+import PlotsPanel from "./components/PlotsPanel";
 import LegendPanel from "./components/LegendPanel";
 import ControlPanel from "./components/ViewPanel";
 import axios from "axios";
@@ -29,8 +30,8 @@ class Luna extends React.Component<{}, {}> {
 		super(props);
 		this.getColorValue = this.getColorValue.bind(this);
 		this.getColorList = this.getColorList.bind(this);
-    this.getElevationValue = this.getElevationValue.bind(this);
-    this.setTooltip = this.setTooltip.bind(this);
+		this.getElevationValue = this.getElevationValue.bind(this);
+		this.setTooltip = this.setTooltip.bind(this);
 	}
 
 	/**
@@ -113,16 +114,18 @@ class Luna extends React.Component<{}, {}> {
 	 * Gets color based on majority vote.
 	 */
 	getAnnotationColor(selectedAnnotationKey: string, dataList: any) {
-    let cellIndexList = new Array<number>();
+		let cellIndexList = new Array<number>();
 		for (let i = 0; i < dataList.length; i++) {
 			cellIndexList.push(dataList[i].index_id);
-    }
-    let cellAnnotation = this.lunaState.annotationState.cellAnnotationMap.get(selectedAnnotationKey);
-    if (cellAnnotation) {
-      return cellAnnotation.getColorIndex(cellIndexList);
-    } else {
-      return 0;
-    }
+		}
+		let cellAnnotation = this.lunaState.annotationState.cellAnnotationMap.get(
+			selectedAnnotationKey
+		);
+		if (cellAnnotation) {
+			return cellAnnotation.getColorIndex(cellIndexList);
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -149,46 +152,49 @@ class Luna extends React.Component<{}, {}> {
 	 * Get the Elevation Value for a Set of Points
 	 */
 	getElevationValue(dataList: any) {
-		// TODO:  FIX THIS SO THAT WE DON'T END UP WITH NEGATIVE ELEVATIONS!!!!
-		// let elevation = this.getColorValue(dataList);
-		// if (elevation > 0) {
-		//   elevation =
-		//     this.mapState.geneState.getSelectedGeneMaxExpression() - elevation;
-		// }
-		// return elevation;
+		if (this.lunaState.elevationBySelected !== "none") {
+			let elevation =
+				this.lunaState.geneState.getSelectedGeneMaxExpression() -
+				this.getGeneColor(this.lunaState.elevationBySelected, dataList);
+			return elevation;
+		} else {
+			return 1.0;
+		}
 	}
 
 	setTooltip(info: any, event: any) {
-	  let object = info.object;
-	  let x = info.x;
-	  let y = info.y;
-    const el = document.getElementById("tooltip");
-    let showToolTip = false;
-	  if (el != null) {
-	    if (object) {
-        let points = info.object.points;
-        let cellIndexList = new Array<number>();
-        for (let i = 0; i < points.length; i++) {
-          cellIndexList.push(points[i].index_id);
-        }
-        let selectedAnnotationKey = this.lunaState.annotationState.selectedAnnotationKey;
-        if (selectedAnnotationKey) {
-          let cellAnnotation = this.lunaState.annotationState.cellAnnotationMap.get(selectedAnnotationKey);
-          if (cellAnnotation) {
-            showToolTip = true;
-            let html = "Number of Cells: " + points.length;
-            html += "<br>" + cellAnnotation.getMostFrequentCategory(cellIndexList);
-            el.innerHTML = html;
-            el.style.display = "block";
-            el.style.left = x + 465 + "px";
-            el.style.top = y + 50 + "px";
-          }
-        }
-      }
-      if (showToolTip === false) {
-	      el.style.display = "none";
-	    }
-	  }
+		let object = info.object;
+		let x = info.x;
+		let y = info.y;
+		const el = document.getElementById("tooltip");
+		let showToolTip = false;
+		if (el != null) {
+			if (object) {
+				let points = info.object.points;
+				let cellIndexList = new Array<number>();
+				for (let i = 0; i < points.length; i++) {
+					cellIndexList.push(points[i].index_id);
+				}
+				let selectedAnnotationKey = this.lunaState.annotationState.selectedAnnotationKey;
+				if (selectedAnnotationKey) {
+					let cellAnnotation = this.lunaState.annotationState.cellAnnotationMap.get(
+						selectedAnnotationKey
+					);
+					if (cellAnnotation) {
+						showToolTip = true;
+						let html = "Number of Cells: " + points.length;
+						html += "<br>" + cellAnnotation.getMostFrequentCategory(cellIndexList);
+						el.innerHTML = html;
+						el.style.display = "block";
+						el.style.left = x + 465 + "px";
+						el.style.top = y + 50 + "px";
+					}
+				}
+			}
+			if (showToolTip === false) {
+				el.style.display = "none";
+			}
+		}
 	}
 
 	render() {
@@ -204,9 +210,9 @@ class Luna extends React.Component<{}, {}> {
 				pickable: true,
 				extruded: this.lunaState.checked3D,
 				radius: this.lunaState.hexBinRadius,
-				//elevationScale: this.mapState.elevationScale,
-				//elevationDomain: [0, colorDomainMax + 1],
-				//getElevationValue: this.getElevationValue,
+				elevationScale: this.lunaState.elevationScale,
+				elevationDomain: [0, 10],
+				getElevationValue: this.getElevationValue,
 				getColorValue: this.getColorValue,
 				colorDomain: [0, colorDomainMax],
 				colorRange: colorList,
@@ -232,7 +238,7 @@ class Luna extends React.Component<{}, {}> {
 								<div id="tooltip"></div>
 							</div>
 						</Grid>
-						<Grid item xs={9}>
+						<Grid item xs={6}>
 							<div id="map" />
 							<DeckGL
 								effects={[]}
@@ -243,6 +249,11 @@ class Luna extends React.Component<{}, {}> {
 								height={"800px"}
 							/>
 						</Grid>
+						<Grid id="right-column" item xs={3}>
+							<div id="right-column-content">
+                <PlotsPanel lunaState={this.lunaState}/>
+							</div>
+						</Grid>            
 					</Grid>
 				</div>
 			);

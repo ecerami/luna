@@ -13,7 +13,8 @@ class LunaState {
 	static ELEVATION_SCALE_DEFAULT = 200;
 	static GENE_EXPRESSION = "gene_expression";
 	static RBA = "rba";
-	static COLOR_BLACK = "black";
+  static COLOR_BLACK = "black";
+  static NONE = "none";
 
 	viewState: any;
 	@observable annotationState: AnnotationState = new AnnotationState();
@@ -23,7 +24,10 @@ class LunaState {
 	@observable elevationScale = LunaState.ELEVATION_SCALE_DEFAULT;
 	@observable checked3D = false;
 	@observable currentGeneText = "";
-	@observable colorBySelected = "none";
+  @observable colorBySelected = LunaState.NONE;
+  @observable elevationBySelected = LunaState.NONE;
+  @observable plotByCategory = LunaState.NONE;
+  @observable plotByGene = LunaState.NONE;
 	private flipBit = 1;
 
 	constructor() {

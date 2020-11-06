@@ -26,6 +26,7 @@ class ControlPanel extends React.Component<ControlPanelProps> {
     this.handleElevationChange = this.handleElevationChange.bind(this);
     this.handle3DChange = this.handle3DChange.bind(this);
     this.handleColorBySelectChange = this.handleColorBySelectChange.bind(this);
+    this.handleElevationBySelectChange = this.handleElevationBySelectChange.bind(this);
   }
 
   handleRadiusChange(event: any, newValue: any) {
@@ -45,8 +46,20 @@ class ControlPanel extends React.Component<ControlPanelProps> {
     this.props.lunaState.setColorBySelected(newValue.props.value);
   }
 
+  handleElevationBySelectChange(event: any, newValue: any) {
+    this.props.lunaState.elevationBySelected = newValue.props.value;
+    console.log(this.props.lunaState.elevationBySelected);
+    if (this.props.lunaState.elevationBySelected === "none") {
+      this.props.lunaState.checked3D = false;
+    } else {
+      this.props.lunaState.checked3D = true;
+    }
+    this.props.lunaState.hexBinHack();
+  }  
+
   render() {
     let colorByMenuItems = this.getColorByMenuItems();
+    let elevationByMenuItems = this.getElevationByMenuItems();
     return (
       <ExpansionPanel defaultExpanded={true}>
         <ExpansionPanelSummary
@@ -65,6 +78,14 @@ class ControlPanel extends React.Component<ControlPanelProps> {
             { colorByMenuItems }
           </Select>
           <br/><br/>
+          <InputLabel id="elevationBySelectLabel">Set elevation to:</InputLabel>
+          <Select id="elevationBySelect" 
+            labelId="elevationBySelectLabel"
+            value={this.props.lunaState.elevationBySelected}
+            onChange={this.handleElevationBySelectChange}>
+            { elevationByMenuItems }
+          </Select>
+          <br/><br/>          
           <Typography>Hex Bin radius:</Typography>
           <Slider
             onChange={this.handleRadiusChange}
@@ -73,17 +94,6 @@ class ControlPanel extends React.Component<ControlPanelProps> {
             max={200}
             step={10}
             valueLabelDisplay="auto"
-          />
-          <FormControlLabel
-            control={
-              <Switch
-                checked={this.props.lunaState.checked3D}
-                onChange={this.handle3DChange}
-                name="checked3d"
-                color="primary"
-              />
-            }
-            label="3D Mode"
           />
           <Typography>Elevation Scale:</Typography>
           <Slider
@@ -117,12 +127,29 @@ class ControlPanel extends React.Component<ControlPanelProps> {
     for (let clusterKey of this.props.lunaState.annotationState.annotationKeyList) {
       menuItems.push(
         <MenuItem key={"color_by_" + clusterKey} value={"cluster_" + clusterKey}>
-          Cluster:  { clusterKey }
+          Category:  { clusterKey }
         </MenuItem>
       );
     }
     return menuItems;
   }
+
+  getElevationByMenuItems() {
+    let menuItems: Array<any> = [];
+    menuItems.push(
+      <MenuItem key={"none"} value={"none"}>
+        None
+      </MenuItem>
+    );    
+    for (let gene of this.props.lunaState.geneState.geneList) {
+      menuItems.push(
+        <MenuItem key={"elevation_by_" + gene} value={gene}>
+          Gene:  { gene }
+        </MenuItem>
+      );
+    }
+    return menuItems;
+  }  
 }
 
 export default ControlPanel;
