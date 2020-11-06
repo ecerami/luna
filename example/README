@@ -1,9 +1,0 @@
-This example directory requires an 1GB h5ad file.
-
-To obtain it run:
-
-wget https://cellxgene-example-data.czi.technology/tabula-muris.h5ad
-
-Then run:
-
-python3 ../prepare/lunaBuild.py -o ../src/data/
