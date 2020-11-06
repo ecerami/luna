@@ -10,9 +10,9 @@ The tool is being developed as part of the Human Tumor Atlas Network (HTAN) and 
 
 Note:  Currently tested via yarn 1.21.1, node 8.12.0
 
-### `yarn add package.json`
+### `yarn install`
 
-Adds all the dependencies.
+Install all the dependencies.
 
 ### `yarn start`
 
