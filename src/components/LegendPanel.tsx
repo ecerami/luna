@@ -1,6 +1,5 @@
 import React from "react";
 import { observer } from "mobx-react";
-import LunaState from "../state/LunaState";
 import ComponentProps from "./ComponentProps";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";

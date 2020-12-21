@@ -24,7 +24,7 @@ class AnnotationState {
 	 * @param annotationKey Annotation Key.
 	 */
 	loadAnnotationData(annotationKey: string) {
-		let geneURL = Luna.BASE_URL + "/clusters/" + annotationKey + ".json";
+		let geneURL = Luna.BASE_SERVER_URL + "/clusters/" + annotationKey + ".json";
 		axios({
 			method: "get",
 			url: geneURL,

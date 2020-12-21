@@ -129,7 +129,7 @@ class PlotsPanel extends React.Component<ComponentProps> {
 			this.props.lunaState.plotByGene !== LunaState.NONE
 		) {
 			let plotUrl =
-				Luna.BASE_URL +
+				Luna.BASE_SERVER_URL +
 				"/boxplot/" +
 				this.props.lunaState.plotByGene +
 				"/" +

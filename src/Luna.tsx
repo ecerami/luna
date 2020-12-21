@@ -16,12 +16,16 @@ import LegendPanel from "./components/LegendPanel";
 import ControlPanel from "./components/ViewPanel";
 import axios from "axios";
 import { LunaData } from "./utils/LunaData";
-import NightsStayIcon from '@material-ui/icons/NightsStay';
+import NightsStayIcon from "@material-ui/icons/NightsStay";
 import "./css/Luna.css";
+import CellAnnotation from "./utils/CellAnnotation";
 
+/**
+ * Core Luna UI.
+ */
 @observer
 class Luna extends React.Component<{}, {}> {
-	static BASE_URL = "http://127.0.0.1:5000";
+	static BASE_SERVER_URL = "http://127.0.0.1:3000";
 	@observable lunaState!: LunaState;
 	@observable dataLoaded = false;
 	lunaData?: LunaData;
@@ -35,25 +39,25 @@ class Luna extends React.Component<{}, {}> {
 	}
 
 	/**
-	 * Gets the Initial Data via Web API.
+	 * Gets the Initial Luna Data via Web API.
 	 */
 	componentDidMount() {
 		axios({
 			method: "get",
-			url: Luna.BASE_URL + "/umap.json",
+			url: Luna.BASE_SERVER_URL + "/umap.json",
 		})
 			.then((res) => this.initLunaData(res.data))
 			.catch((error) => console.log(error));
 	}
 
 	/**
-	 * Inits the Luna Data
+	 * Inits the Initial Luna Data
 	 */
 	initLunaData(json: any) {
 		this.lunaData = json;
 		axios({
 			method: "get",
-			url: Luna.BASE_URL + "/clusters.json",
+			url: Luna.BASE_SERVER_URL + "/clusters.json",
 		})
 			.then((res) => this.initAnnotationList(res.data))
 			.catch((error) => console.log(error));
@@ -111,7 +115,7 @@ class Luna extends React.Component<{}, {}> {
 	}
 
 	/**
-	 * Gets color based on majority vote.
+	 * Gets annotation color based on majority vote.
 	 */
 	getAnnotationColor(selectedAnnotationKey: string, dataList: any) {
 		let cellIndexList = new Array<number>();
@@ -129,7 +133,7 @@ class Luna extends React.Component<{}, {}> {
 	}
 
 	/**
-	 * Get Color based on Average Gene Expression.
+	 * Gets Color based on Average Gene Expression.
 	 */
 	getGeneColor(selectedGene: string, dataList: any) {
 		let expressionAverage = 0.0;
@@ -162,6 +166,9 @@ class Luna extends React.Component<{}, {}> {
 		}
 	}
 
+	/**
+	 * Sets Tooltip, based on Currently Selected Category.
+	 */
 	setTooltip(info: any, event: any) {
 		let object = info.object;
 		let x = info.x;
@@ -182,12 +189,8 @@ class Luna extends React.Component<{}, {}> {
 					);
 					if (cellAnnotation) {
 						showToolTip = true;
-						let html = "Number of Cells: " + points.length;
-						html += "<br>" + cellAnnotation.getMostFrequentCategory(cellIndexList);
-						el.innerHTML = html;
-						el.style.display = "block";
-						el.style.left = x + 465 + "px";
-						el.style.top = y + 50 + "px";
+						let html = this.getToolTipHtml(points, cellAnnotation, cellIndexList);
+						this.setToolTipCss(el, x, y, html);
 					}
 				}
 			}
@@ -197,35 +200,65 @@ class Luna extends React.Component<{}, {}> {
 		}
 	}
 
+	/**
+	 * Sets the ToolTip CSS.
+	 */
+	private setToolTipCss(el: HTMLElement, x: any, y: any, html: string) {
+		el.style.display = "block";
+		el.style.left = x + 465 + "px";
+		el.style.top = y + 50 + "px";
+		el.innerHTML = html;
+	}
+
+	/**
+	 * Gets Tooltip HTML.
+	 */
+	private getToolTipHtml(points: any, cellAnnotation: CellAnnotation, cellIndexList: number[]) {
+		let html = "Number of Cells: " + points.length;
+		html += "<br>" + cellAnnotation.getMostFrequentCategory(cellIndexList);
+		return html;
+	}
+
+	/**
+	 * Inits the Deck GL Hexagon Layer.
+	 */
+	private initDeckGLHexLayer(data: any, colorDomainMax: number, colorList: any) {
+		return new HexagonLayer({
+			id: "column-layer",
+			data,
+			pickable: true,
+			extruded: this.lunaState.checked3D,
+			radius: this.lunaState.hexBinRadius,
+			elevationScale: this.lunaState.elevationScale,
+			elevationDomain: [0, 10],
+			getElevationValue: this.getElevationValue,
+			getColorValue: this.getColorValue,
+			colorDomain: [0, colorDomainMax],
+			colorRange: colorList,
+			onHover: this.setTooltip,
+			autoHighlight: true,
+		});
+	}
+
+	/**
+	 * Renders core Luna Interface.
+	 */
 	render() {
 		let data: any = this.lunaData;
 		if (this.lunaState != null && this.dataLoaded === true) {
 			let colorList = this.getColorList();
 			let colorDomainMax = this.getColorDomainMax();
 
-			// Init the Deck.gl Hexagon Layer
-			const layer = new HexagonLayer({
-				id: "column-layer",
-				data,
-				pickable: true,
-				extruded: this.lunaState.checked3D,
-				radius: this.lunaState.hexBinRadius,
-				elevationScale: this.lunaState.elevationScale,
-				elevationDomain: [0, 10],
-				getElevationValue: this.getElevationValue,
-				getColorValue: this.getColorValue,
-				colorDomain: [0, colorDomainMax],
-				colorRange: colorList,
-				onHover: this.setTooltip,
-				autoHighlight: true,
-			});
+			// Inits the Deck.gl Hexagon Layer
+			const layer = this.initDeckGLHexLayer(data, colorDomainMax, colorList);
 
 			return (
 				<div>
 					<CategoryPicker lunaState={this.lunaState} />
 					<AppBar position="static">
 						<Toolbar>
-            <NightsStayIcon/>&nbsp;<Typography variant="h6">Luna: Single Cell Viewer</Typography>
+							<NightsStayIcon />
+							&nbsp;<Typography variant="h6">Luna: Single Cell Viewer</Typography>
 						</Toolbar>
 					</AppBar>
 					<Grid container spacing={3}>
@@ -251,9 +284,9 @@ class Luna extends React.Component<{}, {}> {
 						</Grid>
 						<Grid id="right-column" item xs={3}>
 							<div id="right-column-content">
-                <PlotsPanel lunaState={this.lunaState}/>
+								<PlotsPanel lunaState={this.lunaState} />
 							</div>
-						</Grid>            
+						</Grid>
 					</Grid>
 				</div>
 			);
