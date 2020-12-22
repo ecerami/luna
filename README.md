@@ -6,6 +6,10 @@ Luna is a web based tool for visualizing single cell data.
 
 The tool is being developed as part of the Human Tumor Atlas Network (HTAN) and is currently in alpha.  
 
+## Back-End API
+
+This front-end repo requires an API backend.  See:  [Luna API](https://github.com/ecerami/luna_api).
+
 ## To Run
 
 Note:  Currently tested via yarn 1.21.1, node 8.12.0.  To specify yarn and node versions, please consider using:  [yvm](https://yvm.js.org/docs/overview) and [nvm](https://github.com/nvm-sh/nvm).
