@@ -11,12 +11,10 @@ import LunaState from "./state/LunaState";
 import NavigationPanel from "./components/NavigationPanel";
 import CategoryPicker from "./components/CategoryPicker";
 import DataSummaryPanel from "./components/GenePanel";
-import PlotsPanel from "./components/PlotsPanel";
 import LegendPanel from "./components/LegendPanel";
 import ControlPanel from "./components/ViewPanel";
 import axios from "axios";
-import { LunaData } from "./utils/LunaData";
-import NightsStayIcon from "@material-ui/icons/NightsStay";
+import { Coordinate } from "./utils/LunaData";
 import "./css/Luna.css";
 import CellAnnotation from "./utils/CellAnnotation";
 
@@ -25,10 +23,11 @@ import CellAnnotation from "./utils/CellAnnotation";
  */
 @observer
 class Luna extends React.Component<{}, {}> {
-	static BASE_SERVER_URL = "http://127.0.0.1:3000";
+	static BASE_SERVER_URL = "http://127.0.0.1:8000";
+	static BUCKET_ID = 1;
 	@observable lunaState!: LunaState;
 	@observable dataLoaded = false;
-	lunaData?: LunaData;
+	lunaData?: Array<Coordinate>;
 
 	constructor(props: any) {
 		super(props);
@@ -39,25 +38,34 @@ class Luna extends React.Component<{}, {}> {
 	}
 
 	/**
-	 * Gets the Initial Luna Data via Web API.
+	 * Gets the Initial Luna Map via Web API.
 	 */
 	componentDidMount() {
 		axios({
 			method: "get",
-			url: Luna.BASE_SERVER_URL + "/umap.json",
+			url: Luna.BASE_SERVER_URL + "/umap/" + Luna.BUCKET_ID,
 		})
 			.then((res) => this.initLunaData(res.data))
 			.catch((error) => console.log(error));
 	}
 
 	/**
-	 * Inits the Initial Luna Data
+	 * Inits the Luna Map.
 	 */
 	initLunaData(json: any) {
-		this.lunaData = json;
+		var coordList: Array<Coordinate> = new Array<Coordinate>();
+		let index = 0;
+		for (let item of json) {
+			let currentCoord: Coordinate = {
+				position: [item.x, item.y],
+				index_id: index++
+			}
+			coordList.push(currentCoord)
+		}
+		this.lunaData = coordList;
 		axios({
 			method: "get",
-			url: Luna.BASE_SERVER_URL + "/clusters.json",
+			url: Luna.BASE_SERVER_URL + "/annotation_list/" + Luna.BUCKET_ID,
 		})
 			.then((res) => this.initAnnotationList(res.data))
 			.catch((error) => console.log(error));
@@ -69,7 +77,7 @@ class Luna extends React.Component<{}, {}> {
 	 */
 	initAnnotationList(json: any) {
 		this.dataLoaded = true;
-		this.lunaState.annotationState.annotationKeyList = json;
+		this.lunaState.annotationState.annotationList = json;
 	}
 
 	/**
@@ -86,9 +94,9 @@ class Luna extends React.Component<{}, {}> {
 		let colorDomainMax = 0;
 		if (this.lunaState.geneState.selectedGene !== undefined) {
 			colorDomainMax = this.lunaState.geneState.getSelectedGeneMaxExpression();
-		} else if (this.lunaState.annotationState.selectedAnnotationKey) {
+		} else if (this.lunaState.annotationState.selectedAnnotationId) {
 			let cellAnnotation = this.lunaState.annotationState.cellAnnotationMap.get(
-				this.lunaState.annotationState.selectedAnnotationKey
+				this.lunaState.annotationState.selectedAnnotationId
 			);
 			if (cellAnnotation) {
 				colorDomainMax = cellAnnotation.getActiveColorListHex().length;
@@ -104,11 +112,11 @@ class Luna extends React.Component<{}, {}> {
 	 */
 	getColorValue(dataList: any) {
 		let selectedGene = this.lunaState.geneState.selectedGene;
-		let selectedAnnotationKey = this.lunaState.annotationState.selectedAnnotationKey;
+		let selectedAnnotationId = this.lunaState.annotationState.selectedAnnotationId;
 		if (selectedGene) {
 			return this.getGeneColor(selectedGene, dataList);
-		} else if (selectedAnnotationKey) {
-			return this.getAnnotationColor(selectedAnnotationKey, dataList);
+		} else if (selectedAnnotationId) {
+			return this.getAnnotationColor(selectedAnnotationId, dataList);
 		} else {
 			return 0.0;
 		}
@@ -117,13 +125,13 @@ class Luna extends React.Component<{}, {}> {
 	/**
 	 * Gets annotation color based on majority vote.
 	 */
-	getAnnotationColor(selectedAnnotationKey: string, dataList: any) {
+	getAnnotationColor(selectedAnnotationId: number, dataList: any) {
 		let cellIndexList = new Array<number>();
 		for (let i = 0; i < dataList.length; i++) {
 			cellIndexList.push(dataList[i].index_id);
 		}
 		let cellAnnotation = this.lunaState.annotationState.cellAnnotationMap.get(
-			selectedAnnotationKey
+			selectedAnnotationId
 		);
 		if (cellAnnotation) {
 			return cellAnnotation.getColorIndex(cellIndexList);
@@ -140,7 +148,7 @@ class Luna extends React.Component<{}, {}> {
 		let expressionVector = this.lunaState.geneState.geneExpressionValuesMap.get(selectedGene);
 		if (expressionVector) {
 			for (let i = 0; i < dataList.length; i++) {
-				let cell: LunaData = dataList[i];
+				let cell: Coordinate = dataList[i];
 				let cell_index_id: number = cell.index_id;
 				let currentValue = expressionVector[cell_index_id];
 				expressionAverage += currentValue;
@@ -182,10 +190,10 @@ class Luna extends React.Component<{}, {}> {
 				for (let i = 0; i < points.length; i++) {
 					cellIndexList.push(points[i].index_id);
 				}
-				let selectedAnnotationKey = this.lunaState.annotationState.selectedAnnotationKey;
-				if (selectedAnnotationKey) {
+				let selectedAnnotationId = this.lunaState.annotationState.selectedAnnotationId;
+				if (selectedAnnotationId) {
 					let cellAnnotation = this.lunaState.annotationState.cellAnnotationMap.get(
-						selectedAnnotationKey
+						selectedAnnotationId
 					);
 					if (cellAnnotation) {
 						showToolTip = true;
@@ -257,7 +265,6 @@ class Luna extends React.Component<{}, {}> {
 					<CategoryPicker lunaState={this.lunaState} />
 					<AppBar position="static">
 						<Toolbar>
-							<NightsStayIcon />
 							&nbsp;<Typography variant="h6">Luna: Single Cell Viewer</Typography>
 						</Toolbar>
 					</AppBar>
@@ -271,7 +278,7 @@ class Luna extends React.Component<{}, {}> {
 								<div id="tooltip"></div>
 							</div>
 						</Grid>
-						<Grid item xs={6}>
+						<Grid item xs={9}>
 							<div id="map" />
 							<DeckGL
 								effects={[]}
@@ -281,11 +288,6 @@ class Luna extends React.Component<{}, {}> {
 								width={"100%"}
 								height={"800px"}
 							/>
-						</Grid>
-						<Grid id="right-column" item xs={3}>
-							<div id="right-column-content">
-								<PlotsPanel lunaState={this.lunaState} />
-							</div>
 						</Grid>
 					</Grid>
 				</div>

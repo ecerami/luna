@@ -58,7 +58,7 @@ class LegendPanel extends React.Component<ComponentProps> {
 	getLegend() {
 		if (this.props.lunaState.geneState.selectedGene !== undefined) {
 			return this.getGeneLegend();
-		} else if (this.props.lunaState.annotationState.selectedAnnotationKey !== undefined) {
+		} else if (this.props.lunaState.annotationState.selectedAnnotationId !== undefined) {
 			return this.getAnnotationLegend();
 		}
 		return <div></div>;
@@ -91,9 +91,9 @@ class LegendPanel extends React.Component<ComponentProps> {
 	private getAnnotationLegend() {
 		let legend: Array<any> = [];
 		let annotationState = this.props.lunaState.annotationState;
-		let annotationKey = annotationState.selectedAnnotationKey;
-		if (annotationKey) {
-			let cellAnnotation = annotationState.cellAnnotationMap.get(annotationKey);
+		let annotationId = annotationState.selectedAnnotationId;
+		if (annotationId) {
+			let cellAnnotation = annotationState.cellAnnotationMap.get(annotationId);
 			if (cellAnnotation) {
 				let colorList = cellAnnotation.getActiveColorListHex();
 				let uniqueCategoryList = cellAnnotation.getUniqueCategoryList();
@@ -114,7 +114,9 @@ class LegendPanel extends React.Component<ComponentProps> {
 	 * Gets the Edit Categories Button.
 	 */
 	private getLegendControls() {
-		if (this.props.lunaState.annotationState.selectedAnnotationKey) {
+		if (this.props.lunaState.annotationState.selectedAnnotationId) {
+			let cellAnnotation = this.props.lunaState.annotationState.cellAnnotationMap.get(
+				this.props.lunaState.annotationState.selectedAnnotationId);
 			let style = {
 				paddingBottom: "20px",
 			};
@@ -126,7 +128,7 @@ class LegendPanel extends React.Component<ComponentProps> {
 						color="primary"
 						onClick={this.handleLegendButtonClick}
 					>
-						Edit Categories:  {this.props.lunaState.annotationState.selectedAnnotationKey}
+						Edit:  {cellAnnotation?.getLabel()}
 					</Button>
 				</div>
 			);

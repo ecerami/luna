@@ -120,10 +120,10 @@ class ControlPanel extends React.Component<ComponentProps> {
         </MenuItem>
       );
     }
-    for (let clusterKey of this.props.lunaState.annotationState.annotationKeyList) {
+    for (let annotation of this.props.lunaState.annotationState.annotationList) {
       menuItems.push(
-        <MenuItem key={"color_by_" + clusterKey} value={"cluster_" + clusterKey}>
-          Category:  { clusterKey }
+        <MenuItem key={"color_by_" + annotation.id} value={"cluster_" + annotation.id}>
+          { annotation.label }
         </MenuItem>
       );
     }

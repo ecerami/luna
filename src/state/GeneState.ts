@@ -55,7 +55,7 @@ class GeneState {
    * @param gene Gene Symbol.
    */
   loadExpressionData(gene: string) {
-    let geneURL = Luna.BASE_SERVER_URL + "/expression/" + gene + ".json";
+    let geneURL = Luna.BASE_SERVER_URL + "/expression/" + Luna.BUCKET_ID + "/" + gene;
     axios({
       method: "get",
       url: geneURL,
@@ -71,7 +71,7 @@ class GeneState {
    */
   initExpressionData(gene: string, json: any) {
     this.geneExpressionMaxMap.set(gene, json["max_expression"]);
-    this.geneExpressionValuesMap.set(gene, json["ordered_values"]);
+    this.geneExpressionValuesMap.set(gene, json["values_ordered"]);
     this.selectedGene = gene;
     this.geneList.push(gene);
     this.lunaState.colorBySelected = "gene_" + gene;

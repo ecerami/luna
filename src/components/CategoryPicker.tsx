@@ -25,9 +25,9 @@ class CategoryPicker extends React.Component<ComponentProps> {
 
 	handleChange(event: any, categoryName: string) {
         let annotationState = this.props.lunaState.annotationState;
-		let annotationKey = this.props.lunaState.annotationState.selectedAnnotationKey;
-		if (annotationKey) {
-            let cellAnnotation = annotationState.cellAnnotationMap.get(annotationKey);
+		let annotationId = this.props.lunaState.annotationState.selectedAnnotationId;
+		if (annotationId) {
+            let cellAnnotation = annotationState.cellAnnotationMap.get(annotationId);
             let currentState = cellAnnotation?.isCategoryActive(categoryName);
             cellAnnotation?.setCategoryActive(categoryName, !currentState);
             this.props.lunaState.hexBinHack();
@@ -74,9 +74,9 @@ class CategoryPicker extends React.Component<ComponentProps> {
 	createCategorySwitches() {
 		let switches: Array<any> = [];
 		let annotationState = this.props.lunaState.annotationState;
-        let annotationKey = this.props.lunaState.annotationState.selectedAnnotationKey;
-		if (annotationKey) {
-            let cellAnnotation = annotationState.cellAnnotationMap.get(annotationKey);
+		let annotationId = this.props.lunaState.annotationState.selectedAnnotationId;
+		if (annotationId) {
+            let cellAnnotation = annotationState.cellAnnotationMap.get(annotationId);
             if (cellAnnotation) {
                 let uniqueCategoryList = cellAnnotation.getUniqueCategoryList();
                 if (uniqueCategoryList) {

@@ -90,10 +90,10 @@ class PlotsPanel extends React.Component<ComponentProps> {
 				None
 			</MenuItem>
 		);
-		for (let clusterKey of this.props.lunaState.annotationState.annotationKeyList) {
+		for (let annotation of this.props.lunaState.annotationState.annotationList) {
 			menuItems.push(
-				<MenuItem key={"plot_by_" + clusterKey} value={clusterKey}>
-					Category: {clusterKey}
+				<MenuItem key={"plot_by_" + annotation.id} value={annotation.id}>
+					Category: {annotation.label}
 				</MenuItem>
 			);
 		}

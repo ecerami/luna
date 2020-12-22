@@ -13,7 +13,7 @@ class CellAnnotation {
 	public static readonly DEFAULT_MAX_ACTIVE_CATEGORIES = 8;
 	public static readonly OTHER_DEFAULT_COLOR = "#bbbbbb";
 	public static readonly OTHER_DEFAULT_KEY = "Other / Default";
-	private key: string;
+	private label: string;
 	private orderedValueList: Array<string>;
 	private uniqueCategoryList: Array<string>;
 	private uniqueCategorySet: Set<string>;
@@ -27,17 +27,17 @@ class CellAnnotation {
 
 	/**
 	 * Constructor.
-	 * @param key unique annotation key, e.g. "sub_tissue".
+	 * @param label annotation label, e.g. "sub_tissue".
 	 * @param orderedValueList Ordered List of Values.
 	 * @param uniqueValuesList Unique List of Categories.
 	 */
 	constructor(
-		key: string,
+		label: string,
 		orderedValueList: Array<string>,
 		uniqueCategoryList: Array<string>,
 		maxActiveCategories: number
 	) {
-		this.key = key;
+		this.label = label;
 		this.orderedValueList = orderedValueList;
 		this.uniqueCategoryList = uniqueCategoryList;
 		this.categoryActiveSet = new Set<string>();
@@ -58,6 +58,10 @@ class CellAnnotation {
 		//  Activate the default category
 		this.setCategoryActive(CellAnnotation.OTHER_DEFAULT_KEY, true);
 		this.updateActiveColorList();
+	}
+
+	public getLabel(): string {
+		return this.label;
 	}
 
 	/**

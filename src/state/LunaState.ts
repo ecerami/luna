@@ -50,19 +50,19 @@ class LunaState {
 		this.colorBySelected = colorBySelected;
 		if (colorBySelected === "none") {
 			this.geneState.selectedGene = undefined;
-			this.annotationState.selectedAnnotationKey = undefined;
+			this.annotationState.selectedAnnotationId = undefined;
 			this.hexBinHack();
 		} else if (colorBySelected.startsWith("gene_")) {
 			colorBySelected = colorBySelected.replace("gene_", "");
 			this.geneState.selectedGene = colorBySelected;
-			this.annotationState.selectedAnnotationKey = undefined;
+			this.annotationState.selectedAnnotationId = undefined;
 			this.hexBinHack();
 		} else {
 			this.geneState.selectedGene = undefined;
-			colorBySelected = colorBySelected.replace("cluster_", "");
-			this.annotationState.selectedAnnotationKey = colorBySelected;
-			if (!this.annotationState.cellAnnotationMap.has(colorBySelected)) {
-				this.annotationState.loadAnnotationData(colorBySelected);
+			let attributeId = parseInt(colorBySelected.replace("cluster_", ""));
+			this.annotationState.selectedAnnotationId = attributeId;
+			if (!this.annotationState.cellAnnotationMap.has(attributeId)) {
+				this.annotationState.loadAnnotationData(attributeId);
 			}
 			this.hexBinHack();
 		}
@@ -77,9 +77,9 @@ class LunaState {
 		if (this.geneState.selectedGene) {
 			colorList = colorbrewer.Blues[6];
 			colorList.reverse();
-		} else if (this.annotationState.selectedAnnotationKey) {
+		} else if (this.annotationState.selectedAnnotationId) {
 			let cellAnnotation = this.annotationState.cellAnnotationMap.get(
-				this.annotationState.selectedAnnotationKey
+				this.annotationState.selectedAnnotationId
       );
       if (cellAnnotation) {
         colorList = cellAnnotation.getActiveColorListHex();

@@ -1,11 +1,9 @@
-// TODO:  CLEAN THIS ALL UP
-export interface LunaData {
-    position?: number[];
+export interface Coordinate {
+    position: number[];
     index_id: number;
-    clusters: Cluster[];
 }
 
-export interface Cluster {
-    name:  string;
-    value: string;
+export interface Annotation {
+    label:  string;
+    id: string;
 }
