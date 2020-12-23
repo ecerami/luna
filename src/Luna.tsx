@@ -23,7 +23,8 @@ import CellAnnotation from "./utils/CellAnnotation";
  */
 @observer
 class Luna extends React.Component<{}, {}> {
-	static BASE_SERVER_URL = "http://127.0.0.1:8000";
+	// static BASE_SERVER_URL = "http://127.0.0.1:8000";
+	static BASE_SERVER_URL = "http://66.175.211.220:8000";
 	static BUCKET_ID = 1;
 	@observable lunaState!: LunaState;
 	@observable dataLoaded = false;
@@ -46,7 +47,7 @@ class Luna extends React.Component<{}, {}> {
 			url: Luna.BASE_SERVER_URL + "/umap/" + Luna.BUCKET_ID,
 		})
 			.then((res) => this.initLunaData(res.data))
-			.catch((error) => console.log(error));
+			.catch((error) => alert("Failed to load umap coordinates."));
 	}
 
 	/**
@@ -68,7 +69,7 @@ class Luna extends React.Component<{}, {}> {
 			url: Luna.BASE_SERVER_URL + "/annotation_list/" + Luna.BUCKET_ID,
 		})
 			.then((res) => this.initAnnotationList(res.data))
-			.catch((error) => console.log(error));
+			.catch((error) => alert("Failed to load annotation list."));
 		this.lunaState = new LunaState();
 	}
 

@@ -61,7 +61,7 @@ class GeneState {
       url: geneURL,
     })
       .then((res) => this.initExpressionData(gene, res.data))
-      .catch((error) => console.log(error));
+      .catch((error) => alert("Could not load gene.  Check the gene symbol and try again!"));
   }
 
   /**
