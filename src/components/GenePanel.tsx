@@ -46,7 +46,8 @@ class DataSummaryPanel extends React.Component<ComponentProps> {
                   <TextField id="target_gene"
                     value={this.props.lunaState.currentGeneText}
                     onChange={this.handleGeneTextUpdate}
-                    label="Gene" />
+                    label="Gene."
+                    helperText="Hint:  Try Mouse Genes:  Egfr, P2ry12 or Serpina1c." />
                 </Grid>
                 <Grid item xs={3}>
                   <Button variant="contained"

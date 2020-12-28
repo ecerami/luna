@@ -28,10 +28,6 @@ class Luna extends React.Component<{}, {}> {
 	static BUCKET_ID = 1;
 	@observable dataLoaded = false;
 
-	constructor(props: any) {
-		super(props);
-	}
-
 	/**
 	 * Gets the Initial Luna Data via Web API.
 	 */

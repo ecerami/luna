@@ -6,7 +6,6 @@ import LunaState from "../state/LunaState";
 import ComponentProps from "./ComponentProps";
 import CellAnnotation from "../utils/CellAnnotation";
 import { Coordinate } from "../utils/LunaData";
-import ColorUtil from "../utils/ColorUtil";
 import { trace } from "mobx"
 
 @observer
