@@ -5,6 +5,7 @@ import { observable } from "mobx";
 import AnnotationState from "./AnnotationState";
 import GeneState from "./GeneState";
 import ColorUtil from "../utils/ColorUtil";
+import { Coordinate } from "../utils/LunaData";
 const colorbrewer = require("colorbrewer");
 
 class LunaState {
@@ -14,9 +15,11 @@ class LunaState {
 	static GENE_EXPRESSION = "gene_expression";
 	static RBA = "rba";
   static COLOR_BLACK = "black";
-  static NONE = "none";
+	static NONE = "none";
+	blues = [...colorbrewer.Blues[6]].reverse()
 
 	viewState: any;
+	mapData?: Array<Coordinate>;
 	@observable annotationState: AnnotationState = new AnnotationState();
 	@observable geneState: GeneState = new GeneState(this);
 	@observable hexBinRadiusSliderValue = LunaState.HEX_BIN_RADIUS_DEFAULT;
@@ -75,8 +78,7 @@ class LunaState {
 	getColorListByFormat(format: string): any {
 		let colorList = new Array<string>();
 		if (this.geneState.selectedGene) {
-			colorList = colorbrewer.Blues[6];
-			colorList.reverse();
+			colorList = this.blues;
 		} else if (this.annotationState.selectedAnnotationId) {
 			let cellAnnotation = this.annotationState.cellAnnotationMap.get(
 				this.annotationState.selectedAnnotationId

@@ -44,7 +44,6 @@ class ControlPanel extends React.Component<ComponentProps> {
 
   handleElevationBySelectChange(event: any, newValue: any) {
     this.props.lunaState.elevationBySelected = newValue.props.value;
-    console.log(this.props.lunaState.elevationBySelected);
     if (this.props.lunaState.elevationBySelected === "none") {
       this.props.lunaState.checked3D = false;
     } else {

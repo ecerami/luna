@@ -68,7 +68,6 @@ class PlotsPanel extends React.Component<ComponentProps> {
 	 * Handles Change to Gene Parameter.
 	 */
 	handleGeneChange(event: any, newValue: any) {
-		console.log(newValue.props.value);
 		this.props.lunaState.plotByGene = newValue.props.value;
 	}
 
@@ -76,7 +75,6 @@ class PlotsPanel extends React.Component<ComponentProps> {
 	 * Handles Change to Category Parameter.
 	 */
 	handleCategoryChange(event: any, newValue: any) {
-		console.log(newValue.props.value);
 		this.props.lunaState.plotByCategory = newValue.props.value;
 	}
 

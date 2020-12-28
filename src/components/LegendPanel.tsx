@@ -70,16 +70,16 @@ class LegendPanel extends React.Component<ComponentProps> {
 	private getGeneLegend() {
 		let legend: Array<any> = [];
 		let colorList = this.props.lunaState.getColorListByFormat("hex");
-		colorList = colorList.reverse();
 		let index = 0;
-		let maxGeneExpression = Math.ceil(
+		let maxGeneExpression = Math.floor(
 			this.props.lunaState.geneState.getSelectedGeneMaxExpression()
 		);
 		let tick = maxGeneExpression / colorList.length;
 		for (let color in colorList) {
 			let currentColor: string = colorList[color];
 			currentColor = currentColor.toString();
-			legend.push(this.getColorBox(currentColor, (index * tick).toFixed(2)));
+			let currentValue = maxGeneExpression - (index * tick)
+			legend.push(this.getColorBox(currentColor, (currentValue).toFixed(2)));
 			index += 1;
 		}
 		return legend;
