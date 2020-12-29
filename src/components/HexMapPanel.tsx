@@ -6,7 +6,6 @@ import LunaState from "../state/LunaState";
 import ComponentProps from "./ComponentProps";
 import CellAnnotation from "../utils/CellAnnotation";
 import { Coordinate } from "../utils/LunaData";
-import { trace } from "mobx"
 
 @observer
 class HexMapPanel extends React.Component<ComponentProps> {
@@ -192,7 +191,6 @@ class HexMapPanel extends React.Component<ComponentProps> {
     let colorDomainMax = this.getColorDomainMax();
 
     // Inits the Deck.gl Hexagon Layer
-    trace(false);
     const layer = this.initDeckGLHexLayer(this.props.lunaState.mapData, colorDomainMax, colorList);
 
     return (

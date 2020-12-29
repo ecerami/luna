@@ -9,7 +9,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import LunaState from "../state/LunaState";
 import ComponentProps from "./ComponentProps";
-import Luna from "../Luna";
+import Luna from "./Luna";
 import BarChartIcon from '@material-ui/icons/BarChart';
 
 
@@ -127,7 +127,7 @@ class PlotsPanel extends React.Component<ComponentProps> {
 			this.props.lunaState.plotByGene !== LunaState.NONE
 		) {
 			let plotUrl =
-				Luna.BASE_SERVER_URL +
+				this.props.lunaState.bucketId +
 				"/boxplot/" +
 				this.props.lunaState.plotByGene +
 				"/" +

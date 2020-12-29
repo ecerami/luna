@@ -3,9 +3,9 @@
  */
 import { observable } from "mobx";
 import axios from "axios";
-import Luna from "../Luna";
 import CellAnnotation from "../utils/CellAnnotation";
 import { Annotation } from "../utils/LunaData";
+import LunaState from "./LunaState";
 
 class AnnotationState {
 	// List of all cell annotations
@@ -24,8 +24,8 @@ class AnnotationState {
 	 * Load Data for the Specified Annotation.
 	 * @param annotationKey Annotation Key.
 	 */
-	loadAnnotationData(annotationId: number) {
-		let geneURL = Luna.BASE_SERVER_URL + "/annotation/" + annotationId;
+	loadAnnotationData(bucketId: string, annotationId: number) {
+		let geneURL = LunaState.BASE_SERVER_URL + "/annotation/" + annotationId;
 		axios({
 			method: "get",
 			url: geneURL,

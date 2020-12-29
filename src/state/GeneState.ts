@@ -3,8 +3,8 @@
  */
 import { observable } from "mobx";
 import axios from "axios";
-import Luna from "../Luna";
 import LunaState from "./LunaState";
+import Luna from "../components/Luna";
 
 class GeneState {
   private lunaState: LunaState;
@@ -55,7 +55,7 @@ class GeneState {
    * @param gene Gene Symbol.
    */
   loadExpressionData(gene: string) {
-    let geneURL = Luna.BASE_SERVER_URL + "/expression/" + Luna.BUCKET_ID + "/" + gene;
+    let geneURL = LunaState.BASE_SERVER_URL + "/expression/" + this.lunaState.bucketId + "/" + gene;
     axios({
       method: "get",
       url: geneURL,

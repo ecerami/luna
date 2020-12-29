@@ -9,6 +9,9 @@ import { Coordinate } from "../utils/LunaData";
 const colorbrewer = require("colorbrewer");
 
 class LunaState {
+	static BASE_SERVER_URL = "http://127.0.0.1:8000";
+	//static BASE_SERVER_URL = "http://66.175.211.220:8000";
+
 	static HEX_BIN_RADIUS_DEFAULT = 10;
 	static HEX_BIN_RADIUS_SCALE = 1000;
 	static ELEVATION_SCALE_DEFAULT = 200;
@@ -19,6 +22,7 @@ class LunaState {
 	blues = [...colorbrewer.Blues[6]].reverse()
 
 	viewState: any;
+	bucketId: string = "";
 	mapData?: Array<Coordinate>;
 	@observable annotationState: AnnotationState = new AnnotationState();
 	@observable geneState: GeneState = new GeneState(this);
@@ -65,7 +69,7 @@ class LunaState {
 			let attributeId = parseInt(colorBySelected.replace("cluster_", ""));
 			this.annotationState.selectedAnnotationId = attributeId;
 			if (!this.annotationState.cellAnnotationMap.has(attributeId)) {
-				this.annotationState.loadAnnotationData(attributeId);
+				this.annotationState.loadAnnotationData(this.bucketId, attributeId);
 			}
 			this.hexBinHack();
 		}

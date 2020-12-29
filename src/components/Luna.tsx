@@ -1,40 +1,40 @@
 import React from "react";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import LunaState from "./state/LunaState";
-import HexMapPanel from "./components/HexMapPanel";
-import NavigationPanel from "./components/NavigationPanel";
-import CategoryPicker from "./components/CategoryPicker";
-import DataSummaryPanel from "./components/GenePanel";
-import LegendPanel from "./components/LegendPanel";
-import ControlPanel from "./components/ViewPanel";
+import LunaState from "../state/LunaState";
+import HexMapPanel from "./HexMapPanel";
+import NavigationPanel from "./NavigationPanel";
+import CategoryPicker from "./CategoryPicker";
+import DataSummaryPanel from "./GenePanel";
+import LegendPanel from "./LegendPanel";
+import ControlPanel from "./ViewPanel";
 import axios from "axios";
-import { Coordinate } from "./utils/LunaData";
-import "./css/Luna.css";
+import { Coordinate } from "../utils/LunaData";
+import { withRouter } from "react-router-dom";
+import { RouteComponentProps } from 'react-router-dom';
+
+type TParams = { 
+	bucket_id: string
+	gene_symbol: string
+};
 
 /**
  * Core Luna UI.
  */
 @observer
-class Luna extends React.Component<{}, {}> {
+class Luna extends React.Component<RouteComponentProps<TParams>> {
 	lunaState: LunaState = new LunaState();
-
-	static BASE_SERVER_URL = "http://127.0.0.1:8000";
-	//static BASE_SERVER_URL = "http://66.175.211.220:8000";
-	static BUCKET_ID = 1;
 	@observable dataLoaded = false;
 
 	/**
 	 * Gets the Initial Luna Data via Web API.
 	 */
 	componentDidMount() {
+		this.lunaState.bucketId = this.props.match.params.bucket_id
 		axios({
 			method: "get",
-			url: Luna.BASE_SERVER_URL + "/umap/" + Luna.BUCKET_ID,
+			url: LunaState.BASE_SERVER_URL + "/umap/" + this.lunaState.bucketId,
 		})
 			.then((res) => this.initLunaData(res.data))
 			.catch((error) => alert("Failed to load umap coordinates."));
@@ -56,7 +56,7 @@ class Luna extends React.Component<{}, {}> {
 		this.lunaState.mapData = coordList;
 		axios({
 			method: "get",
-			url: Luna.BASE_SERVER_URL + "/annotation_list/" + Luna.BUCKET_ID,
+			url: LunaState.BASE_SERVER_URL + "/annotation_list/" + this.lunaState.bucketId,
 		})
 			.then((res) => this.initAnnotationList(res.data))
 			.catch((error) => alert("Failed to load annotation list."));
@@ -78,11 +78,6 @@ class Luna extends React.Component<{}, {}> {
 			return (
 				<div>
 					<CategoryPicker lunaState={this.lunaState} />
-					<AppBar position="static">
-						<Toolbar>
-							&nbsp;<Typography variant="h6">Luna: Single Cell Viewer</Typography>
-						</Toolbar>
-					</AppBar>
 					<Grid container spacing={3}>
 						<Grid id="left-column" item xs={3}>
 							<div id="left-column-content">
@@ -103,11 +98,12 @@ class Luna extends React.Component<{}, {}> {
 		} else {
 			return (
 				<div>
-					<img alt="loading" src="img/loading.gif" />
+					<br/>
+					<img alt="loading" src="/img/loading.gif" />
 				</div>
 			);
 		}
 	}
 }
 
-export default Luna;
+export default withRouter(Luna);
