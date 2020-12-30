@@ -61,7 +61,6 @@ class LegendPanel extends React.Component<ComponentProps> {
 		} else if (this.props.lunaState.annotationState.selectedAnnotationId !== undefined) {
 			return this.getAnnotationLegend();
 		}
-		return <div></div>;
 	}
 
   /**
