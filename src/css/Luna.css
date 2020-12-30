@@ -46,3 +46,36 @@ body {
 .legend {
   flex-direction: column;
 }
+
+.nav {
+  overflow: auto;
+  background-color:#1976d2;
+  color:white;
+  font-size: x-large;
+  padding-top:5px;
+  padding-bottom:5px;
+  padding-left:10px;
+}
+
+.nav_header {
+  font-size: medium;
+  font-weight:bold;
+  padding-left:5px;
+  padding-right:10px;
+}
+
+.nav_link {
+  font-size:  medium;
+}
+
+.nav_link a:link {
+    color: white;
+}
+
+.nav_link a:visited {
+  color: white;
+}
+
+.about {
+  margin-left: 10px;
+}

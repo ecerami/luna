@@ -67,6 +67,10 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
 	 */
 	initAnnotationList(json: any) {
 		this.lunaState.annotationState.annotationList = json;
+		let gene = this.props.match.params.gene_symbol
+		if (gene !== undefined) {
+			this.lunaState.geneState.addGene(gene)
+		}
 		this.dataLoaded = true;
 	}
 
