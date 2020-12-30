@@ -4,7 +4,6 @@
 import { observable } from "mobx";
 import axios from "axios";
 import LunaState from "./LunaState";
-import Luna from "../components/Luna";
 
 class GeneState {
   private lunaState: LunaState;

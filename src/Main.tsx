@@ -3,14 +3,9 @@ import { observer } from "mobx-react";
 import { Route } from "react-router-dom";
 import {BrowserRouter as Router} from "react-router-dom"
 import { Link } from "react-router-dom";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import Luna from "./components/Luna";
 import "./css/Luna.css";
 import ExamplesPanel from "./components/ExamplesPanel";
-import { makeStyles } from '@material-ui/core/styles';
-import { Button } from "@material-ui/core";
 import AboutPanel from "./components/AboutPanel";
 
 /**
