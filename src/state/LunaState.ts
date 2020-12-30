@@ -42,7 +42,7 @@ class LunaState {
 			longitude: 0,
 			latitude: 0,
 			zoom: 4,
-			pitch: 0,
+			pitch: 10,
 			bearing: 0,
 			transitionDuration: 0,
 			transitionInterpolator: null,

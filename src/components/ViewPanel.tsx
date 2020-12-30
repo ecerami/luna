@@ -96,7 +96,7 @@ class ControlPanel extends React.Component<ComponentProps> {
             value={this.props.lunaState.elevationScale}
             disabled={!this.props.lunaState.checked3D}
             min={1}
-            max={1000}
+            max={2000}
             step={1}
             valueLabelDisplay="auto"
           />
@@ -139,7 +139,7 @@ class ControlPanel extends React.Component<ComponentProps> {
     for (let gene of this.props.lunaState.geneState.geneList) {
       menuItems.push(
         <MenuItem key={"elevation_by_" + gene} value={gene}>
-          Gene:  { gene }
+          { gene }
         </MenuItem>
       );
     }

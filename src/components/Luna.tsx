@@ -13,6 +13,7 @@ import axios from "axios";
 import { Coordinate } from "../utils/LunaData";
 import { withRouter } from "react-router-dom";
 import { RouteComponentProps } from 'react-router-dom';
+import queryString from 'query-string';
 
 type TParams = { 
 	bucket_id: string
@@ -31,7 +32,7 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
 	 * Gets the Initial Luna Data via Web API.
 	 */
 	componentDidMount() {
-		this.lunaState.bucketId = this.props.match.params.bucket_id
+		this.lunaState.bucketId = this.props.match.params.bucket_id;
 		axios({
 			method: "get",
 			url: LunaState.BASE_SERVER_URL + "/umap/" + this.lunaState.bucketId,
@@ -71,6 +72,21 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
 		if (gene !== undefined) {
 			this.lunaState.geneState.addGene(gene)
 		}
+		let params = queryString.parse(this.props.location.search)
+		if (params.hex_bin_radius) {
+			console.log("Setting hexbin:  " + params.hex_bin_radius)
+			this.lunaState.hexBinRadiusSliderValue = Number(params.hex_bin_radius);
+			this.lunaState.hexBinRadius = this.lunaState.hexBinRadiusSliderValue * LunaState.HEX_BIN_RADIUS_SCALE
+		}
+		if (params.elevation_by) {
+			console.log("Setting elevation by:  " + params.elevation_by)
+			this.lunaState.checked3D = true;
+			this.lunaState.elevationBySelected = String(params.elevation_by);
+		}
+		if (params.elevation_scale) {
+			console.log("Setting elevation scale:  " + params.elevation_scale)
+			this.lunaState.elevationScale = Number(params.elevation_scale);
+		}		
 		this.dataLoaded = true;
 	}
 
