@@ -16,7 +16,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import queryString from 'query-string';
 
 type TParams = { 
-	bucket_id: string
+	bucket_slug: string
 	gene_symbol: string
 };
 
@@ -32,10 +32,10 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
 	 * Gets the Initial Luna Data via Web API.
 	 */
 	componentDidMount() {
-		this.lunaState.bucketId = this.props.match.params.bucket_id;
+		this.lunaState.bucketSlug = this.props.match.params.bucket_slug;
 		axios({
 			method: "get",
-			url: LunaState.BASE_SERVER_URL + "/umap/" + this.lunaState.bucketId,
+			url: LunaState.BASE_SERVER_URL + "/umap/" + this.lunaState.bucketSlug,
 		})
 			.then((res) => this.initLunaData(res.data))
 			.catch((error) => alert("Failed to load umap coordinates."));
@@ -57,7 +57,7 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
 		this.lunaState.mapData = coordList;
 		axios({
 			method: "get",
-			url: LunaState.BASE_SERVER_URL + "/annotation_list/" + this.lunaState.bucketId,
+			url: LunaState.BASE_SERVER_URL + "/annotation_list/" + this.lunaState.bucketSlug,
 		})
 			.then((res) => this.initAnnotationList(res.data))
 			.catch((error) => alert("Failed to load annotation list."));

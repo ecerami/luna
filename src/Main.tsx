@@ -29,8 +29,8 @@ class Main extends React.Component<{}, {}> {
 						<div className="content">
 						<Route exact path="/" component={ExamplesPanel}/>
 						<Route exact path="/about" component={AboutPanel}/>
-						<Route exact path="/luna/:bucket_id" component={Luna}/>
-            <Route exact path="/luna/:bucket_id/:gene_symbol" component={Luna}/>
+						<Route exact path="/luna/:bucket_slug" component={Luna}/>
+            <Route exact path="/luna/:bucket_slug/:gene_symbol" component={Luna}/>
 					</div>
 				</Router>
 				</div>

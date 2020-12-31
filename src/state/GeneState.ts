@@ -54,7 +54,7 @@ class GeneState {
    * @param gene Gene Symbol.
    */
   loadExpressionData(gene: string) {
-    let geneURL = LunaState.BASE_SERVER_URL + "/expression/" + this.lunaState.bucketId + "/" + gene;
+    let geneURL = LunaState.BASE_SERVER_URL + "/expression/" + this.lunaState.bucketSlug + "/" + gene;
     axios({
       method: "get",
       url: geneURL,

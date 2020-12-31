@@ -11,26 +11,27 @@ class AnnotationState {
 	// List of all cell annotations
 	@observable annotationList: Array<Annotation> = new Array<Annotation>();
 
-	// The currently selected annotation ID
-	@observable selectedAnnotationId?: number = undefined;
+	// The currently selected annotation slug
+	@observable selectedAnnotationSlug?: string = undefined;
 
 	// Show/Hide the dialog picker
 	@observable showAnnotationDialogPicker = false;
 
 	// Map of all cell annotations.
-	@observable cellAnnotationMap = new Map<number, CellAnnotation>();
+	@observable cellAnnotationMap = new Map<string, CellAnnotation>();
 
 	/**
 	 * Load Data for the Specified Annotation.
-	 * @param annotationKey Annotation Key.
+	 * @param annotationKey Annotation Slug.
 	 */
-	loadAnnotationData(bucketId: string, annotationId: number) {
-		let geneURL = LunaState.BASE_SERVER_URL + "/annotation/" + annotationId;
+	loadAnnotationData(bucketSlug: string, annotationSlug: string) {
+		let geneURL = LunaState.BASE_SERVER_URL + "/annotation/" 
+			+ bucketSlug + "/" + annotationSlug;
 		axios({
 			method: "get",
 			url: geneURL,
 		})
-			.then((res) => this.initAnnotationData(annotationId, res.data))
+			.then((res) => this.initAnnotationData(annotationSlug, res.data))
 			.catch((error) => console.log(error));
 	}
 
@@ -39,14 +40,15 @@ class AnnotationState {
 	 * @param annotationKey Annotation Key.
 	 * @param json JSON Content.
 	 */
-	initAnnotationData(annotationId: number, json: any) {
+	initAnnotationData(annotationSlug: string, json: any) {
 		let cellAnnotation = new CellAnnotation(
+			json["slug"],
 			json["label"],
 			json["values_ordered"],
 			json["values_distinct"],
 			CellAnnotation.DEFAULT_MAX_ACTIVE_CATEGORIES
 		);
-		this.cellAnnotationMap.set(annotationId, cellAnnotation);
+		this.cellAnnotationMap.set(annotationSlug, cellAnnotation);
 		this.showAnnotationDialogPicker = true;
 	}
 }

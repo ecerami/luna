@@ -9,7 +9,6 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import LunaState from "../state/LunaState";
 import ComponentProps from "./ComponentProps";
-import Luna from "./Luna";
 import BarChartIcon from '@material-ui/icons/BarChart';
 
 
@@ -90,7 +89,7 @@ class PlotsPanel extends React.Component<ComponentProps> {
 		);
 		for (let annotation of this.props.lunaState.annotationState.annotationList) {
 			menuItems.push(
-				<MenuItem key={"plot_by_" + annotation.id} value={annotation.id}>
+				<MenuItem key={"plot_by_" + annotation.slug} value={annotation.slug}>
 					Category: {annotation.label}
 				</MenuItem>
 			);
@@ -127,7 +126,7 @@ class PlotsPanel extends React.Component<ComponentProps> {
 			this.props.lunaState.plotByGene !== LunaState.NONE
 		) {
 			let plotUrl =
-				this.props.lunaState.bucketId +
+				this.props.lunaState.bucketSlug +
 				"/boxplot/" +
 				this.props.lunaState.plotByGene +
 				"/" +

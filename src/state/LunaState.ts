@@ -22,7 +22,7 @@ class LunaState {
 	blues = [...colorbrewer.Blues[6]].reverse()
 
 	viewState: any;
-	bucketId: string = "";
+	bucketSlug: string = "";
 	mapData?: Array<Coordinate>;
 	@observable annotationState: AnnotationState = new AnnotationState();
 	@observable geneState: GeneState = new GeneState(this);
@@ -57,19 +57,19 @@ class LunaState {
 		this.colorBySelected = colorBySelected;
 		if (colorBySelected === "none") {
 			this.geneState.selectedGene = undefined;
-			this.annotationState.selectedAnnotationId = undefined;
+			this.annotationState.selectedAnnotationSlug = undefined;
 			this.hexBinHack();
 		} else if (colorBySelected.startsWith("gene_")) {
 			colorBySelected = colorBySelected.replace("gene_", "");
 			this.geneState.selectedGene = colorBySelected;
-			this.annotationState.selectedAnnotationId = undefined;
+			this.annotationState.selectedAnnotationSlug = undefined;
 			this.hexBinHack();
 		} else {
 			this.geneState.selectedGene = undefined;
-			let attributeId = parseInt(colorBySelected.replace("cluster_", ""));
-			this.annotationState.selectedAnnotationId = attributeId;
-			if (!this.annotationState.cellAnnotationMap.has(attributeId)) {
-				this.annotationState.loadAnnotationData(this.bucketId, attributeId);
+			let attributeSlug = colorBySelected.replace("cluster_", "");
+			this.annotationState.selectedAnnotationSlug = attributeSlug;
+			if (!this.annotationState.cellAnnotationMap.has(attributeSlug)) {
+				this.annotationState.loadAnnotationData(this.bucketSlug, attributeSlug);
 			}
 			this.hexBinHack();
 		}
@@ -83,9 +83,9 @@ class LunaState {
 		let colorList = new Array<string>();
 		if (this.geneState.selectedGene) {
 			colorList = this.blues;
-		} else if (this.annotationState.selectedAnnotationId) {
+		} else if (this.annotationState.selectedAnnotationSlug) {
 			let cellAnnotation = this.annotationState.cellAnnotationMap.get(
-				this.annotationState.selectedAnnotationId
+				this.annotationState.selectedAnnotationSlug
       );
       if (cellAnnotation) {
         colorList = cellAnnotation.getActiveColorListHex();

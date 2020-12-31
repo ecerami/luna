@@ -32,9 +32,9 @@ class HexMapPanel extends React.Component<ComponentProps> {
 		let colorDomainMax = 0;
 		if (this.props.lunaState.geneState.selectedGene !== undefined) {
 			colorDomainMax = this.props.lunaState.geneState.getSelectedGeneMaxExpression();
-		} else if (this.props.lunaState.annotationState.selectedAnnotationId) {
+		} else if (this.props.lunaState.annotationState.selectedAnnotationSlug) {
 			let cellAnnotation = this.props.lunaState.annotationState.cellAnnotationMap.get(
-				this.props.lunaState.annotationState.selectedAnnotationId
+				this.props.lunaState.annotationState.selectedAnnotationSlug
 			);
 			if (cellAnnotation) {
 				colorDomainMax = cellAnnotation.getActiveColorListHex().length;
@@ -50,11 +50,11 @@ class HexMapPanel extends React.Component<ComponentProps> {
 	 */
 	getColorValue(dataList: any) {
 		let selectedGene = this.props.lunaState.geneState.selectedGene;
-		let selectedAnnotationId = this.props.lunaState.annotationState.selectedAnnotationId;
+		let selectedAnnotationSlug = this.props.lunaState.annotationState.selectedAnnotationSlug;
 		if (selectedGene) {
 			return this.getGeneColor(selectedGene, dataList);
-		} else if (selectedAnnotationId) {
-			return this.getAnnotationColor(selectedAnnotationId, dataList);
+		} else if (selectedAnnotationSlug) {
+			return this.getAnnotationColor(selectedAnnotationSlug, dataList);
 		} else {
 			return 0.0;
 		}
@@ -63,13 +63,13 @@ class HexMapPanel extends React.Component<ComponentProps> {
 	/**
 	 * Gets annotation color based on majority vote.
 	 */
-	getAnnotationColor(selectedAnnotationId: number, dataList: any) {
+	getAnnotationColor(selectedAnnotationSlug: string, dataList: any) {
 		let cellIndexList = new Array<number>();
 		for (let i = 0; i < dataList.length; i++) {
 			cellIndexList.push(dataList[i].index_id);
 		}
 		let cellAnnotation = this.props.lunaState.annotationState.cellAnnotationMap.get(
-			selectedAnnotationId
+			selectedAnnotationSlug
 		);
 		if (cellAnnotation) {
 			return cellAnnotation.getColorIndex(cellIndexList);
@@ -128,7 +128,7 @@ class HexMapPanel extends React.Component<ComponentProps> {
 				for (let i = 0; i < points.length; i++) {
 					cellIndexList.push(points[i].index_id);
 				}
-				let selectedAnnotationId = this.props.lunaState.annotationState.selectedAnnotationId;
+				let selectedAnnotationId = this.props.lunaState.annotationState.selectedAnnotationSlug;
 				if (selectedAnnotationId) {
 					let cellAnnotation = this.props.lunaState.annotationState.cellAnnotationMap.get(
 						selectedAnnotationId

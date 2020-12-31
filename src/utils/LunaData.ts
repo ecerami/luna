@@ -4,6 +4,6 @@ export interface Coordinate {
 }
 
 export interface Annotation {
+    slug: string;
     label:  string;
-    id: string;
 }

@@ -32,6 +32,7 @@ class CellAnnotation {
 	 * @param uniqueValuesList Unique List of Categories.
 	 */
 	constructor(
+		slug: string,
 		label: string,
 		orderedValueList: Array<string>,
 		uniqueCategoryList: Array<string>,
