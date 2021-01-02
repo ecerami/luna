@@ -13,6 +13,7 @@ class CellAnnotation {
 	public static readonly DEFAULT_MAX_ACTIVE_CATEGORIES = 8;
 	public static readonly OTHER_DEFAULT_COLOR = "#bbbbbb";
 	public static readonly OTHER_DEFAULT_KEY = "Other / Default";
+	private slug: string;
 	private label: string;
 	private orderedValueList: Array<string>;
 	private uniqueCategoryList: Array<string>;
@@ -38,6 +39,7 @@ class CellAnnotation {
 		uniqueCategoryList: Array<string>,
 		maxActiveCategories: number
 	) {
+		this.slug = slug;
 		this.label = label;
 		this.orderedValueList = orderedValueList;
 		this.uniqueCategoryList = uniqueCategoryList;
