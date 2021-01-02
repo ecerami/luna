@@ -14,23 +14,23 @@ body {
   position: relative !important;
 }
 
-#left-column-content{
+#left-column-content {
   margin-left: 5px;
-  margin-top:10px;
+  margin-top: 10px;
 }
 
-#right-column-content{
+#right-column-content {
   margin-left: 5px;
-  margin-top:10px;
+  margin-top: 10px;
 }
 
-.control{
+.control {
   flex-direction: column !important;
 }
 
 #tooltip {
   background-color: #eeeeee;
-  padding:10px;
+  padding: 10px;
   position: absolute;
   z-index: 1;
   pointer-events: none;
@@ -49,27 +49,27 @@ body {
 
 .nav {
   overflow: auto;
-  background-color:#1976d2;
-  color:white;
+  background-color: #1976d2;
+  color: white;
   font-size: x-large;
-  padding-top:5px;
-  padding-bottom:5px;
-  padding-left:10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
 }
 
 .nav_header {
   font-size: medium;
-  font-weight:bold;
-  padding-left:5px;
-  padding-right:10px;
+  font-weight: bold;
+  padding-left: 5px;
+  padding-right: 10px;
 }
 
 .nav_link {
-  font-size:  medium;
+  font-size: medium;
 }
 
 .nav_link a:link {
-    color: white;
+  color: white;
 }
 
 .nav_link a:visited {

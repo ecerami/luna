@@ -11,23 +11,25 @@ import ComponentProps from "./ComponentProps";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
-import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityIcon from "@material-ui/icons/Visibility";
 
 @observer
 class ControlPanel extends React.Component<ComponentProps> {
-
   constructor(props: ComponentProps) {
     super(props);
     this.handleRadiusChange = this.handleRadiusChange.bind(this);
     this.handleElevationChange = this.handleElevationChange.bind(this);
     this.handle3DChange = this.handle3DChange.bind(this);
     this.handleColorBySelectChange = this.handleColorBySelectChange.bind(this);
-    this.handleElevationBySelectChange = this.handleElevationBySelectChange.bind(this);
+    this.handleElevationBySelectChange = this.handleElevationBySelectChange.bind(
+      this
+    );
   }
 
   handleRadiusChange(event: any, newValue: any) {
     this.props.lunaState.hexBinRadiusSliderValue = newValue;
-    this.props.lunaState.hexBinRadius = newValue * LunaState.HEX_BIN_RADIUS_SCALE;
+    this.props.lunaState.hexBinRadius =
+      newValue * LunaState.HEX_BIN_RADIUS_SCALE;
   }
 
   handleElevationChange(event: any, newValue: any) {
@@ -50,7 +52,7 @@ class ControlPanel extends React.Component<ComponentProps> {
       this.props.lunaState.checked3D = true;
     }
     this.props.lunaState.hexBinHack();
-  }  
+  }
 
   render() {
     let colorByMenuItems = this.getColorByMenuItems();
@@ -62,25 +64,32 @@ class ControlPanel extends React.Component<ComponentProps> {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-        <VisibilityIcon/>&nbsp;<Typography>View</Typography>
+          <VisibilityIcon />
+          &nbsp;<Typography>View</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="control">
           <InputLabel id="colorBySelectLabel">Color by:</InputLabel>
-          <Select id="colorBySelect" 
+          <Select
+            id="colorBySelect"
             labelId="colorBySelectLabel"
             value={this.props.lunaState.colorBySelected}
-            onChange={this.handleColorBySelectChange}>
-            { colorByMenuItems }
+            onChange={this.handleColorBySelectChange}
+          >
+            {colorByMenuItems}
           </Select>
-          <br/><br/>
+          <br />
+          <br />
           <InputLabel id="elevationBySelectLabel">Set elevation to:</InputLabel>
-          <Select id="elevationBySelect" 
+          <Select
+            id="elevationBySelect"
             labelId="elevationBySelectLabel"
             value={this.props.lunaState.elevationBySelected}
-            onChange={this.handleElevationBySelectChange}>
-            { elevationByMenuItems }
+            onChange={this.handleElevationBySelectChange}
+          >
+            {elevationByMenuItems}
           </Select>
-          <br/><br/>          
+          <br />
+          <br />
           <Typography>Hex Bin radius:</Typography>
           <Slider
             onChange={this.handleRadiusChange}
@@ -111,18 +120,22 @@ class ControlPanel extends React.Component<ComponentProps> {
       <MenuItem key={"none"} value={"none"}>
         None
       </MenuItem>
-    );    
+    );
     for (let gene of this.props.lunaState.geneState.geneList) {
       menuItems.push(
         <MenuItem key={"color_by_" + gene} value={"gene_" + gene}>
-          Gene:  { gene }
+          Gene: {gene}
         </MenuItem>
       );
     }
-    for (let annotation of this.props.lunaState.annotationState.annotationList) {
+    for (let annotation of this.props.lunaState.annotationState
+      .annotationList) {
       menuItems.push(
-        <MenuItem key={"color_by_" + annotation.slug} value={"cluster_" + annotation.slug}>
-          { annotation.label }
+        <MenuItem
+          key={"color_by_" + annotation.slug}
+          value={"cluster_" + annotation.slug}
+        >
+          {annotation.label}
         </MenuItem>
       );
     }
@@ -135,16 +148,16 @@ class ControlPanel extends React.Component<ComponentProps> {
       <MenuItem key={"none"} value={"none"}>
         None
       </MenuItem>
-    );    
+    );
     for (let gene of this.props.lunaState.geneState.geneList) {
       menuItems.push(
         <MenuItem key={"elevation_by_" + gene} value={gene}>
-          { gene }
+          {gene}
         </MenuItem>
       );
     }
     return menuItems;
-  }  
+  }
 }
 
 export default ControlPanel;

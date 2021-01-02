@@ -54,13 +54,20 @@ class GeneState {
    * @param gene Gene Symbol.
    */
   loadExpressionData(gene: string) {
-    let geneURL = LunaState.BASE_SERVER_URL + "/expression/" + this.lunaState.bucketSlug + "/" + gene;
+    let geneURL =
+      LunaState.BASE_SERVER_URL +
+      "/expression/" +
+      this.lunaState.bucketSlug +
+      "/" +
+      gene;
     axios({
       method: "get",
       url: geneURL,
     })
       .then((res) => this.initExpressionData(gene, res.data))
-      .catch((error) => alert("Could not load gene.  Check the gene symbol and try again!"));
+      .catch((error) =>
+        alert("Could not load gene.  Check the gene symbol and try again!")
+      );
   }
 
   /**

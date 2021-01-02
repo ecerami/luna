@@ -5,7 +5,7 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import OpenWithIcon from '@material-ui/icons/OpenWith';
+import OpenWithIcon from "@material-ui/icons/OpenWith";
 
 @observer
 class NavigationPanel extends React.Component {
@@ -17,7 +17,8 @@ class NavigationPanel extends React.Component {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-        <OpenWithIcon/>&nbsp;<Typography>How do I navigate?</Typography>
+          <OpenWithIcon />
+          &nbsp;<Typography>How do I navigate?</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="control">
           You navigate the map with your mouse.

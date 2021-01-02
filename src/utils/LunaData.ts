@@ -1,9 +1,9 @@
 export interface Coordinate {
-    position: number[];
-    index_id: number;
+  position: number[];
+  index_id: number;
 }
 
 export interface Annotation {
-    slug: string;
-    label:  string;
+  slug: string;
+  label: string;
 }
