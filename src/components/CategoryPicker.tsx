@@ -22,31 +22,32 @@ class CategoryPicker extends React.Component<ComponentProps> {
     this.handleButtonClick = this.handleButtonClick.bind(this);
   }
 
-  handleChange(event: any, categoryName: string) {
-    let annotationState = this.props.lunaState.annotationState;
-    let annotationSlug = this.props.lunaState.annotationState
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handleChange(event: any, categoryName: string): void {
+    const annotationState = this.props.lunaState.annotationState;
+    const annotationSlug = this.props.lunaState.annotationState
       .selectedAnnotationSlug;
     if (annotationSlug) {
-      let cellAnnotation = annotationState.cellAnnotationMap.get(
+      const cellAnnotation = annotationState.cellAnnotationMap.get(
         annotationSlug
       );
-      let currentState = cellAnnotation?.isCategoryActive(categoryName);
+      const currentState = cellAnnotation?.isCategoryActive(categoryName);
       cellAnnotation?.setCategoryActive(categoryName, !currentState);
       this.props.lunaState.hexBinHack();
     }
   }
 
-  handleButtonClick(event: any) {
+  handleButtonClick(): void {
     this.props.lunaState.annotationState.showAnnotationDialogPicker = false;
   }
 
-  render() {
-    var style = {
+  render(): JSX.Element{
+    const style = {
       marginLeft: "20px",
       marginRight: "20px",
       marginBottom: "20px",
     };
-    let switches = this.createCategorySwitches();
+    const switches = this.createCategorySwitches();
     return (
       <Dialog
         aria-labelledby="simple-dialog-title"
@@ -76,19 +77,19 @@ class CategoryPicker extends React.Component<ComponentProps> {
     );
   }
 
-  createCategorySwitches() {
-    let switches: Array<any> = [];
-    let annotationState = this.props.lunaState.annotationState;
-    let annotationId = this.props.lunaState.annotationState
+  createCategorySwitches(): Array<JSX.Element> {
+    const switches: Array<JSX.Element> = [];
+    const annotationState = this.props.lunaState.annotationState;
+    const annotationId = this.props.lunaState.annotationState
       .selectedAnnotationSlug;
     if (annotationId) {
-      let cellAnnotation = annotationState.cellAnnotationMap.get(annotationId);
+      const cellAnnotation = annotationState.cellAnnotationMap.get(annotationId);
       if (cellAnnotation) {
-        let uniqueCategoryList = cellAnnotation.getUniqueCategoryList();
+        const uniqueCategoryList = cellAnnotation.getUniqueCategoryList();
         if (uniqueCategoryList) {
           for (let i = 0; i < uniqueCategoryList.length; i++) {
-            let categoryName = uniqueCategoryList[i];
-            let key = "category_picker_option_" + categoryName;
+            const categoryName = uniqueCategoryList[i];
+            const key = "category_picker_option_" + categoryName;
             switches.push(
               <FormControlLabel
                 key={key}
@@ -96,7 +97,7 @@ class CategoryPicker extends React.Component<ComponentProps> {
                   <Switch
                     checked={cellAnnotation.isCategoryActive(categoryName)}
                     name={categoryName}
-                    onChange={(e) => this.handleChange(e, categoryName)}
+                    onChange={(e): void => this.handleChange(e, categoryName)}
                   />
                 }
                 label={categoryName}

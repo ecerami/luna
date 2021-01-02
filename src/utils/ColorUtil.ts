@@ -6,8 +6,8 @@ class ColorUtil {
    * Converts Hex Color to RGB Color.
    * @param hex Hex Color.
    */
-  public static hexToRgb(hex: string) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  public static hexToRgb(hex: string): [number, number, number, number] {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     if (result !== null) {
       return [
         parseInt(result[1], 16),

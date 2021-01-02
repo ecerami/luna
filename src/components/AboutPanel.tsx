@@ -2,8 +2,8 @@ import React from "react";
 import LunaState from "../state/LunaState";
 
 class AboutPanel extends React.Component<{}, {}> {
-  render() {
-    let apiDocs = LunaState.BASE_SERVER_URL + "/docs";
+  render(): JSX.Element{
+    const apiDocs = LunaState.BASE_SERVER_URL + "/docs";
     return (
       <div className="about">
         <h2>Luna: Single Cell Viewer</h2>

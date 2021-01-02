@@ -1,10 +1,11 @@
 import CellAnnotation from "./CellAnnotation";
 
 test("verify state changes for cell annotation", () => {
-  let orderedValueList: Array<string> = ["a", "a", "b", "a", "d", "c", "c"];
-  let uniqueCategoryList: Array<string> = ["a", "b", "c", "d"];
+  const orderedValueList: Array<string> = ["a", "a", "b", "a", "d", "c", "c"];
+  const uniqueCategoryList: Array<string> = ["a", "b", "c", "d"];
 
-  let annotation = new CellAnnotation(
+  const annotation = new CellAnnotation(
+    "tissue",
     "tissue",
     orderedValueList,
     uniqueCategoryList,
@@ -44,10 +45,11 @@ test("verify state changes for cell annotation", () => {
 });
 
 test("verify active color changes", () => {
-  let orderedValueList: Array<string> = ["a", "a", "b", "a", "d", "c", "c"];
-  let uniqueCategoryList: Array<string> = ["a", "b", "c", "d"];
+  const orderedValueList: Array<string> = ["a", "a", "b", "a", "d", "c", "c"];
+  const uniqueCategoryList: Array<string> = ["a", "b", "c", "d"];
 
-  let annotation = new CellAnnotation(
+  const annotation = new CellAnnotation(
+    "tissue",
     "tissue",
     orderedValueList,
     uniqueCategoryList,
@@ -55,19 +57,19 @@ test("verify active color changes", () => {
   );
 
   // Check at beginning, we should only have one (default) color.
-  let colorList = annotation.getActiveColorListHex();
+  const colorList = annotation.getActiveColorListHex();
   expect(colorList.length).toBe(1);
   expect(colorList[0]).toBe(CellAnnotation.OTHER_DEFAULT_COLOR);
 
   // Now activate a, and verify that we have two colors.
   annotation.setCategoryActive("a", true);
-  let colorHexList = annotation.getActiveColorListHex();
+  const colorHexList = annotation.getActiveColorListHex();
   expect(colorHexList.length).toBe(2);
   expect(colorHexList[0]).toBe("#a6cee3");
   expect(colorHexList[1]).toBe(CellAnnotation.OTHER_DEFAULT_COLOR);
 
   // Verify RGB Colors also work
-  let colorRGBList = annotation.getActiveColorListRGB();
+  const colorRGBList = annotation.getActiveColorListRGB();
   expect(colorRGBList.length).toBe(2);
   expect(colorRGBList[0][0]).toBe(166);
   expect(colorRGBList[0][1]).toBe(206);
@@ -76,10 +78,11 @@ test("verify active color changes", () => {
 });
 
 test("verify active colors", () => {
-  let orderedValueList: Array<string> = ["a", "a", "b", "a", "d", "c", "c"];
-  let uniqueCategoryList: Array<string> = ["a", "b", "c", "d"];
+  const orderedValueList: Array<string> = ["a", "a", "b", "a", "d", "c", "c"];
+  const uniqueCategoryList: Array<string> = ["a", "b", "c", "d"];
 
-  let annotation = new CellAnnotation(
+  const annotation = new CellAnnotation(
+    "tissue",
     "tissue",
     orderedValueList,
     uniqueCategoryList,
@@ -103,7 +106,7 @@ test("verify active colors", () => {
 
   // Now activate a, and verify that we have three colors.
   annotation.setCategoryActive("a", true);
-  let aColorIndex = annotation.getCategoryIndexColor("a");
+  const aColorIndex = annotation.getCategoryIndexColor("a");
   expect(aColorIndex).toBe(0);
   bColorIndex = annotation.getCategoryIndexColor("b");
   expect(bColorIndex).toBe(1);
@@ -114,16 +117,17 @@ test("verify active colors", () => {
 });
 
 test("verify color schemes", () => {
-  let orderedValueList: Array<string> = ["a", "a", "b", "a", "d", "c", "c"];
-  let uniqueCategoryList: Array<string> = ["a", "b", "c", "d"];
+  const orderedValueList: Array<string> = ["a", "a", "b", "a", "d", "c", "c"];
+  const uniqueCategoryList: Array<string> = ["a", "b", "c", "d"];
 
-  let annotation = new CellAnnotation(
+  const annotation = new CellAnnotation(
+    "tissue",
     "tissue",
     orderedValueList,
     uniqueCategoryList,
     3
   );
-  let colorSchemeList = annotation.getValidColorSchemes();
+  const colorSchemeList = annotation.getValidColorSchemes();
   expect(colorSchemeList.length).toBe(3);
   expect(colorSchemeList[0]).toBe("Paired");
   expect(() => annotation.setCurrentColorScheme("Accents")).toThrow(
@@ -142,12 +146,13 @@ test("verify color schemes", () => {
 });
 
 test("verify color voting", () => {
-  let orderedValueList: Array<string> = ["a", "a", "b", "a", "d", "c", "c"];
-  let uniqueCategoryList: Array<string> = ["a", "b", "c", "d"];
-  let cellIdList1: Array<number> = [0, 1, 3, 4];
-  let cellIdList2: Array<number> = [2, 5, 6];
-  let cellIdList3: Array<number> = [0, 1, 5, 6];
-  let annotation = new CellAnnotation(
+  const orderedValueList: Array<string> = ["a", "a", "b", "a", "d", "c", "c"];
+  const uniqueCategoryList: Array<string> = ["a", "b", "c", "d"];
+  const cellIdList1: Array<number> = [0, 1, 3, 4];
+  const cellIdList2: Array<number> = [2, 5, 6];
+  const cellIdList3: Array<number> = [0, 1, 5, 6];
+  const annotation = new CellAnnotation(
+    "tissue",
     "tissue",
     orderedValueList,
     uniqueCategoryList,

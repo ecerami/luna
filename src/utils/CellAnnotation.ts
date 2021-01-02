@@ -48,7 +48,7 @@ class CellAnnotation {
     //  Always add default category
     this.uniqueCategorySet = new Set<string>();
     this.uniqueCategoryList.push(CellAnnotation.OTHER_DEFAULT_KEY);
-    for (let category of this.uniqueCategoryList) {
+    for (const category of this.uniqueCategoryList) {
       this.uniqueCategorySet.add(category);
     }
 
@@ -75,7 +75,7 @@ class CellAnnotation {
    * @param activeState Active State.
    */
   public setCategoryActive(category: string, activeState: boolean): boolean {
-    let success: boolean = false;
+    let success = false;
     if (this.uniqueCategorySet.has(category)) {
       if (
         activeState &&
@@ -100,7 +100,7 @@ class CellAnnotation {
    * Gets active/inactive state for the specified category.
    * @param category Category Name.
    */
-  public isCategoryActive(category: string) {
+  public isCategoryActive(category: string): boolean {
     if (this.categoryActiveSet.has(category)) {
       return true;
     } else {
@@ -111,7 +111,7 @@ class CellAnnotation {
   /**
    * Gets Number of Active Categories.
    */
-  public getNumActiveCategories() {
+  public getNumActiveCategories(): number {
     return this.categoryActiveSet.size;
   }
 
@@ -174,7 +174,7 @@ class CellAnnotation {
    * Gets color index, based on majority vote.
    */
   public getColorIndex(cellIdList: Array<number>) {
-    let winningCategory = this.getMostFrequentCategory(cellIdList);
+    const winningCategory = this.getMostFrequentCategory(cellIdList);
     if (winningCategory && this.isCategoryActive(winningCategory)) {
       return this.categoryToColorIndexMap.get(winningCategory);
     } else {
@@ -187,12 +187,12 @@ class CellAnnotation {
    * @param cellIdList Cell ID List.
    */
   public getMostFrequentCategory(cellIdList: Array<number>) {
-    let voteMap: Map<string, number> = new Map<string, number>();
+    const voteMap: Map<string, number> = new Map<string, number>();
     for (let i = 0; i < cellIdList.length; i++) {
-      let cell_index_id: number = cellIdList[i];
-      let currentCategory = this.orderedValueList[cell_index_id];
+      const cellIndexId: number = cellIdList[i];
+      const currentCategory = this.orderedValueList[cellIndexId];
       if (voteMap.has(currentCategory)) {
-        let currentNumVotes = voteMap.get(currentCategory);
+        const currentNumVotes = voteMap.get(currentCategory);
         if (currentNumVotes !== undefined) {
           voteMap.set(currentCategory, currentNumVotes + 1);
         }
@@ -222,7 +222,7 @@ class CellAnnotation {
   /**
    * Updates the Active Color List, based on Active Categories.
    */
-  private updateActiveColorList() {
+  private updateActiveColorList(): void {
     this.activeColorListHex = colorbrewer[this.colorScheme][9];
     this.activeColorListHex = this.activeColorListHex.slice(
       0,
@@ -234,7 +234,7 @@ class CellAnnotation {
 
     // Update the corresponding RGB Array
     this.activeColorListRGB = [];
-    for (let colorHex of this.activeColorListHex) {
+    for (const colorHex of this.activeColorListHex) {
       this.activeColorListRGB.push(ColorUtil.hexToRgb(colorHex));
     }
 
@@ -245,9 +245,9 @@ class CellAnnotation {
   /**
    * Update the Color Index Look Up Map.
    */
-  private updateColorLookUpMaps() {
+  private updateColorLookUpMaps(): void {
     let colorIndex = 0;
-    for (let category of this.uniqueCategoryList) {
+    for (const category of this.uniqueCategoryList) {
       if (this.isCategoryActive(category)) {
         this.categoryToColorIndexMap.set(category, colorIndex++);
       }

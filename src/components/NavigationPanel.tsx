@@ -9,7 +9,7 @@ import OpenWithIcon from "@material-ui/icons/OpenWith";
 
 @observer
 class NavigationPanel extends React.Component {
-  render() {
+  render(): JSX.Element {
     return (
       <ExpansionPanel>
         <ExpansionPanelSummary

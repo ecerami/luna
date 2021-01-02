@@ -31,26 +31,26 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
   /**
    * Gets the Initial Luna Data via Web API.
    */
-  componentDidMount() {
+  componentDidMount(): void {
     this.lunaState.bucketSlug = this.props.match.params.bucket_slug;
     axios({
       method: "get",
       url: LunaState.BASE_SERVER_URL + "/umap/" + this.lunaState.bucketSlug,
     })
       .then((res) => this.initLunaData(res.data))
-      .catch((error) => alert("Failed to load umap coordinates."));
+      .catch(() => alert("Failed to load umap coordinates."));
   }
 
   /**
    * Inits the Luna UMap Data.
    */
   initLunaData(json: any) {
-    var coordList: Array<Coordinate> = new Array<Coordinate>();
+    const coordList: Array<Coordinate> = new Array<Coordinate>();
     let index = 0;
-    for (let item of json) {
-      let currentCoord: Coordinate = {
+    for (const item of json) {
+      const currentCoord: Coordinate = {
         position: [item.x, item.y],
-        index_id: index++,
+        indexId: index++,
       };
       coordList.push(currentCoord);
     }
@@ -63,19 +63,19 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
         this.lunaState.bucketSlug,
     })
       .then((res) => this.initAnnotationList(res.data))
-      .catch((error) => alert("Failed to load annotation list."));
+      .catch(() => alert("Failed to load annotation list."));
   }
 
   /**
    * Inits Annotation List
    */
-  initAnnotationList(json: any) {
+  initAnnotationList(json: any): void {
     this.lunaState.annotationState.annotationList = json;
-    let gene = this.props.match.params.gene_symbol;
+    const gene = this.props.match.params.gene_symbol;
     if (gene !== undefined) {
       this.lunaState.geneState.addGene(gene);
     }
-    let params = queryString.parse(this.props.location.search);
+    const params = queryString.parse(this.props.location.search);
     if (params.hex_bin_radius) {
       console.log("Setting hexbin:  " + params.hex_bin_radius);
       this.lunaState.hexBinRadiusSliderValue = Number(params.hex_bin_radius);
@@ -97,7 +97,7 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
   /**
    * Renders core Luna Interface.
    */
-  render() {
+  render(): JSX.Element {
     if (this.dataLoaded === true) {
       return (
         <div>

@@ -20,17 +20,18 @@ class DataSummaryPanel extends React.Component<ComponentProps> {
     this.handleGeneTextUpdate = this.handleGeneTextUpdate.bind(this);
   }
 
-  handleGeneButtonClick(event: any) {
+  handleGeneButtonClick(): void {
     this.props.lunaState.geneState.addGene(
       this.props.lunaState.currentGeneText
     );
   }
 
-  handleGeneTextUpdate(event: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handleGeneTextUpdate(event: any): void {
     this.props.lunaState.currentGeneText = event.target.value;
   }
 
-  render() {
+  render(): JSX.Element {
     if (this.props.lunaState != null) {
       return (
         <ExpansionPanel defaultExpanded={true}>

@@ -24,8 +24,8 @@ class AnnotationState {
    * Load Data for the Specified Annotation.
    * @param annotationKey Annotation Slug.
    */
-  loadAnnotationData(bucketSlug: string, annotationSlug: string) {
-    let geneURL =
+  loadAnnotationData(bucketSlug: string, annotationSlug: string): void {
+    const geneURL =
       LunaState.BASE_SERVER_URL +
       "/annotation/" +
       bucketSlug +
@@ -44,8 +44,8 @@ class AnnotationState {
    * @param annotationKey Annotation Key.
    * @param json JSON Content.
    */
-  initAnnotationData(annotationSlug: string, json: any) {
-    let cellAnnotation = new CellAnnotation(
+  initAnnotationData(annotationSlug: string, json: any): void {
+    const cellAnnotation = new CellAnnotation(
       json["slug"],
       json["label"],
       json["values_ordered"],

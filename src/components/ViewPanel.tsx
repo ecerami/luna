@@ -26,25 +26,30 @@ class ControlPanel extends React.Component<ComponentProps> {
     );
   }
 
-  handleRadiusChange(event: any, newValue: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handleRadiusChange(event: any, newValue: any): void {
     this.props.lunaState.hexBinRadiusSliderValue = newValue;
     this.props.lunaState.hexBinRadius =
       newValue * LunaState.HEX_BIN_RADIUS_SCALE;
   }
 
-  handleElevationChange(event: any, newValue: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handleElevationChange(event: any, newValue: any): void {
     this.props.lunaState.elevationScale = newValue;
   }
 
-  handle3DChange(event: any, newValue: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handle3DChange(event: any, newValue: any): void {
     this.props.lunaState.checked3D = newValue;
   }
 
-  handleColorBySelectChange(event: any, newValue: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handleColorBySelectChange(event: any, newValue: any): void {
     this.props.lunaState.setColorBySelected(newValue.props.value);
   }
 
-  handleElevationBySelectChange(event: any, newValue: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handleElevationBySelectChange(event: any, newValue: any): void {
     this.props.lunaState.elevationBySelected = newValue.props.value;
     if (this.props.lunaState.elevationBySelected === "none") {
       this.props.lunaState.checked3D = false;
@@ -54,9 +59,9 @@ class ControlPanel extends React.Component<ComponentProps> {
     this.props.lunaState.hexBinHack();
   }
 
-  render() {
-    let colorByMenuItems = this.getColorByMenuItems();
-    let elevationByMenuItems = this.getElevationByMenuItems();
+  render(): JSX.Element {
+    const colorByMenuItems = this.getColorByMenuItems();
+    const elevationByMenuItems = this.getElevationByMenuItems();
     return (
       <ExpansionPanel defaultExpanded={true}>
         <ExpansionPanelSummary
@@ -114,21 +119,21 @@ class ControlPanel extends React.Component<ComponentProps> {
     );
   }
 
-  getColorByMenuItems() {
-    let menuItems: Array<any> = [];
+  getColorByMenuItems(): JSX.Element[] {
+    const menuItems: Array<JSX.Element> = [];
     menuItems.push(
       <MenuItem key={"none"} value={"none"}>
         None
       </MenuItem>
     );
-    for (let gene of this.props.lunaState.geneState.geneList) {
+    for (const gene of this.props.lunaState.geneState.geneList) {
       menuItems.push(
         <MenuItem key={"color_by_" + gene} value={"gene_" + gene}>
           Gene: {gene}
         </MenuItem>
       );
     }
-    for (let annotation of this.props.lunaState.annotationState
+    for (const annotation of this.props.lunaState.annotationState
       .annotationList) {
       menuItems.push(
         <MenuItem
@@ -142,14 +147,14 @@ class ControlPanel extends React.Component<ComponentProps> {
     return menuItems;
   }
 
-  getElevationByMenuItems() {
-    let menuItems: Array<any> = [];
+  getElevationByMenuItems(): JSX.Element[] {
+    const menuItems: Array<JSX.Element> = [];
     menuItems.push(
       <MenuItem key={"none"} value={"none"}>
         None
       </MenuItem>
     );
-    for (let gene of this.props.lunaState.geneState.geneList) {
+    for (const gene of this.props.lunaState.geneState.geneList) {
       menuItems.push(
         <MenuItem key={"elevation_by_" + gene} value={gene}>
           {gene}

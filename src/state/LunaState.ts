@@ -54,7 +54,7 @@ class LunaState {
    * Update the Color Section.
    * @param colorBySelected Color Selected Option.
    */
-  setColorBySelected(colorBySelected: string) {
+  setColorBySelected(colorBySelected: string): void {
     this.colorBySelected = colorBySelected;
     if (colorBySelected === "none") {
       this.geneState.selectedGene = undefined;
@@ -67,7 +67,7 @@ class LunaState {
       this.hexBinHack();
     } else {
       this.geneState.selectedGene = undefined;
-      let attributeSlug = colorBySelected.replace("cluster_", "");
+      const attributeSlug = colorBySelected.replace("cluster_", "");
       this.annotationState.selectedAnnotationSlug = attributeSlug;
       if (!this.annotationState.cellAnnotationMap.has(attributeSlug)) {
         this.annotationState.loadAnnotationData(this.bucketSlug, attributeSlug);
@@ -85,7 +85,7 @@ class LunaState {
     if (this.geneState.selectedGene) {
       colorList = this.blues;
     } else if (this.annotationState.selectedAnnotationSlug) {
-      let cellAnnotation = this.annotationState.cellAnnotationMap.get(
+      const cellAnnotation = this.annotationState.cellAnnotationMap.get(
         this.annotationState.selectedAnnotationSlug
       );
       if (cellAnnotation) {
@@ -100,8 +100,8 @@ class LunaState {
     if (format === "hex") {
       return colorList;
     } else {
-      let colorRgbList = [];
-      for (let currentColor of colorList) {
+      const colorRgbList = [];
+      for (const currentColor of colorList) {
         colorRgbList.push(ColorUtil.hexToRgb(currentColor));
       }
       return colorRgbList;
@@ -111,7 +111,7 @@ class LunaState {
   /**
    * HexBin Hack to Force Re-coloring of Deck.gl.
    */
-  hexBinHack() {
+  hexBinHack(): void {
     this.hexBinRadius = this.hexBinRadius + this.flipBit;
     this.flipBit = this.flipBit * -1;
   }

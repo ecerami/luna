@@ -23,7 +23,7 @@ class GeneState {
    * Adds a new gene to the state.
    * @param gene
    */
-  addGene(gene: string) {
+  addGene(gene: string): void {
     if (this.geneList.includes(gene)) {
       this.lunaState.colorBySelected = gene;
       this.selectedGene = gene;
@@ -38,7 +38,7 @@ class GeneState {
    */
   getSelectedGeneMaxExpression(): number {
     if (this.selectedGene) {
-      let maxExpression = this.geneExpressionMaxMap.get(this.selectedGene);
+      const maxExpression = this.geneExpressionMaxMap.get(this.selectedGene);
       if (maxExpression === undefined) {
         return 0.0;
       } else {
@@ -53,8 +53,8 @@ class GeneState {
    * Loads Expression Data for Specified Gene.
    * @param gene Gene Symbol.
    */
-  loadExpressionData(gene: string) {
-    let geneURL =
+  loadExpressionData(gene: string): void {
+    const geneURL =
       LunaState.BASE_SERVER_URL +
       "/expression/" +
       this.lunaState.bucketSlug +
@@ -65,7 +65,7 @@ class GeneState {
       url: geneURL,
     })
       .then((res) => this.initExpressionData(gene, res.data))
-      .catch((error) =>
+      .catch(() =>
         alert("Could not load gene.  Check the gene symbol and try again!")
       );
   }
@@ -75,7 +75,8 @@ class GeneState {
    * @param gene Gene Symbol.
    * @param json JSON Content.
    */
-  initExpressionData(gene: string, json: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  initExpressionData(gene: string, json: any): void {
     this.geneExpressionMaxMap.set(gene, json["max_expression"]);
     this.geneExpressionValuesMap.set(gene, json["values_ordered"]);
     this.selectedGene = gene;

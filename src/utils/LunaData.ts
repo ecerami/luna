@@ -1,6 +1,6 @@
 export interface Coordinate {
   position: number[];
-  index_id: number;
+  indexId: number;
 }
 
 export interface Annotation {

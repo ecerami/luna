@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 class ExamplesPanel extends React.Component<{}, {}> {
-  render() {
+  render(): JSX.Element {
     return (
       <div>
         <ul className="header">

@@ -16,7 +16,7 @@ class Main extends React.Component<{}, {}> {
   /**
    * Renders core Luna Interface.
    */
-  render() {
+  render(): JSX.Element {
     return (
       <div>
         <Router>
