@@ -65,7 +65,6 @@ class LegendPanel extends React.Component<ComponentProps> {
       return this.getAnnotationLegend();
     } else {
       const legend: Array<JSX.Element> = [];
-      legend.push(<div></div>);
       return legend;
     }
   }
