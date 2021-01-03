@@ -12,7 +12,7 @@ This front-end repo requires an API backend. See: [Luna API](https://github.com/
 
 ## To Run
 
-Note: Currently tested via yarn 1.21.1, node 8.12.0. To specify yarn and node versions, please consider using: [yvm](https://yvm.js.org/docs/overview) and [nvm](https://github.com/nvm-sh/nvm).
+Note: Currently tested via yarn 1.21.1, node 15.0.0. To specify yarn and node versions, please consider using: [yvm](https://yvm.js.org/docs/overview) and [nvm](https://github.com/nvm-sh/nvm).
 
 ### `yarn install`
 
