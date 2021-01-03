@@ -68,7 +68,7 @@ class HexMapPanel extends React.Component<ComponentProps> {
   getAnnotationColor(selectedAnnotationSlug: string, dataList: any): number {
     const cellIndexList = new Array<number>();
     for (let i = 0; i < dataList.length; i++) {
-      cellIndexList.push(dataList[i].index_id);
+      cellIndexList.push(dataList[i].indexId);
     }
     const cellAnnotation = this.props.lunaState.annotationState.cellAnnotationMap.get(
       selectedAnnotationSlug
@@ -138,7 +138,7 @@ class HexMapPanel extends React.Component<ComponentProps> {
         const points = info.object.points;
         const cellIndexList = new Array<number>();
         for (let i = 0; i < points.length; i++) {
-          cellIndexList.push(points[i].index_id);
+          cellIndexList.push(points[i].indexId);
         }
         const selectedAnnotationSlug = this.props.lunaState.annotationState
           .selectedAnnotationSlug;
