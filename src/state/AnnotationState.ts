@@ -44,6 +44,7 @@ class AnnotationState {
    * @param annotationKey Annotation Key.
    * @param json JSON Content.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initAnnotationData(annotationSlug: string, json: any): void {
     const cellAnnotation = new CellAnnotation(
       json["slug"],

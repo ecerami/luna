@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { observer } from "mobx-react";
 import DeckGL from "@deck.gl/react";
 import { HexagonLayer } from "@deck.gl/aggregation-layers";
-import LunaState from "../state/LunaState";
 import ComponentProps from "./ComponentProps";
 import CellAnnotation from "../utils/CellAnnotation";
 import { Coordinate } from "../utils/LunaData";
@@ -20,8 +20,8 @@ class HexMapPanel extends React.Component<ComponentProps> {
   /**
    * Gets Color List, based on Current Selection.
    */
-  getColorList() {
-    return this.props.lunaState.getColorListByFormat(LunaState.RBA);
+  getColorList(): Array<[number, number, number, number]>{
+    return this.props.lunaState.getColorListRGB();
   }
 
   /**
@@ -48,7 +48,7 @@ class HexMapPanel extends React.Component<ComponentProps> {
    * For clusters, the color is based on majority vote.
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getColorValue(dataList: any) {
+  getColorValue(dataList: any): number {
     const selectedGene = this.props.lunaState.geneState.selectedGene;
     const selectedAnnotationSlug = this.props.lunaState.annotationState
       .selectedAnnotationSlug;
@@ -64,7 +64,8 @@ class HexMapPanel extends React.Component<ComponentProps> {
   /**
    * Gets annotation color based on majority vote.
    */
-  getAnnotationColor(selectedAnnotationSlug: string, dataList: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getAnnotationColor(selectedAnnotationSlug: string, dataList: any): number {
     const cellIndexList = new Array<number>();
     for (let i = 0; i < dataList.length; i++) {
       cellIndexList.push(dataList[i].index_id);
@@ -73,7 +74,12 @@ class HexMapPanel extends React.Component<ComponentProps> {
       selectedAnnotationSlug
     );
     if (cellAnnotation) {
-      return cellAnnotation.getColorIndex(cellIndexList);
+      const colorIndex = cellAnnotation.getColorIndex(cellIndexList);
+      if (colorIndex === undefined) {
+        return 0;
+      } else {
+        return colorIndex;
+      }
     } else {
       return 0;
     }
@@ -82,7 +88,8 @@ class HexMapPanel extends React.Component<ComponentProps> {
   /**
    * Gets Color based on Average Gene Expression.
    */
-  getGeneColor(selectedGene: string, dataList: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getGeneColor(selectedGene: string, dataList: any): number {
     let expressionAverage = 0.0;
     const expressionVector = this.props.lunaState.geneState.geneExpressionValuesMap.get(
       selectedGene
@@ -104,6 +111,7 @@ class HexMapPanel extends React.Component<ComponentProps> {
   /**
    * Get the Elevation Value for a Set of Points
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getElevationValue(dataList: any): number {
     if (this.props.lunaState.elevationBySelected !== "none") {
       const elevation =
@@ -118,6 +126,7 @@ class HexMapPanel extends React.Component<ComponentProps> {
   /**
    * Sets Tooltip, based on Currently Selected Category.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setTooltip(info: any, event: any): void {
     const object = info.object;
     const x = info.x;
@@ -157,7 +166,7 @@ class HexMapPanel extends React.Component<ComponentProps> {
   /**
    * Sets the ToolTip CSS.
    */
-  private setToolTipCss(el: HTMLElement, x: any, y: any, html: string): void {
+  private setToolTipCss(el: HTMLElement, x: number, y: number, html: string): void {
     el.style.display = "block";
     el.style.left = x + 465 + "px";
     el.style.top = y + 50 + "px";
@@ -168,6 +177,7 @@ class HexMapPanel extends React.Component<ComponentProps> {
    * Gets Tooltip HTML.
    */
   private getToolTipHtml(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     points: any,
     cellAnnotation: CellAnnotation,
     cellIndexList: number[]
@@ -181,10 +191,11 @@ class HexMapPanel extends React.Component<ComponentProps> {
    * Inits the Deck GL Hexagon Layer.
    */
   private initDeckGLHexLayer(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any,
     colorDomainMax: number,
-    colorList: any
-  ) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    colorList: Array<[number, number, number, number]>): any {
     return new HexagonLayer({
       id: "column-layer",
       data,

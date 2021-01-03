@@ -44,7 +44,8 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
   /**
    * Inits the Luna UMap Data.
    */
-  initLunaData(json: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  initLunaData(json: any): void {
     const coordList: Array<Coordinate> = new Array<Coordinate>();
     let index = 0;
     for (const item of json) {
@@ -69,6 +70,7 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
   /**
    * Inits Annotation List
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initAnnotationList(json: any): void {
     this.lunaState.annotationState.annotationList = json;
     const gene = this.props.match.params.gene_symbol;

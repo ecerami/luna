@@ -1,6 +1,6 @@
 import ColorUtil from "./ColorUtil";
 import { observable } from "mobx";
-const colorbrewer = require("colorbrewer");
+import colorbrewer from "colorbrewer";
 
 /**
  * Encapsulates Cell Annotations.
@@ -22,13 +22,13 @@ class CellAnnotation {
   private activeColorListRGB: Array<Array<number>>;
   private categoryToColorIndexMap: Map<string, number>;
   private maxActiveCategories = CellAnnotation.DEFAULT_MAX_ACTIVE_CATEGORIES;
-  private colorScheme = "Paired";
   private validColorSchemes: Array<string>;
   @observable private categoryActiveSet: Set<string>;
 
   /**
    * Constructor.
-   * @param label annotation label, e.g. "sub_tissue".
+	 * @param slug annotation slug, e.g. "sub_tissue".
+   * @param label annotation label, e.g. "Sub Tissue".
    * @param orderedValueList Ordered List of Values.
    * @param uniqueValuesList Unique List of Categories.
    */
@@ -45,9 +45,10 @@ class CellAnnotation {
     this.uniqueCategoryList = uniqueCategoryList;
     this.categoryActiveSet = new Set<string>();
 
-    //  Always add default category
+    //  Always add the default / other category
     this.uniqueCategorySet = new Set<string>();
-    this.uniqueCategoryList.push(CellAnnotation.OTHER_DEFAULT_KEY);
+		this.uniqueCategoryList.push(CellAnnotation.OTHER_DEFAULT_KEY);
+		
     for (const category of this.uniqueCategoryList) {
       this.uniqueCategorySet.add(category);
     }
@@ -63,6 +64,9 @@ class CellAnnotation {
     this.updateActiveColorList();
   }
 
+	/**
+	 * Gets the Annotation Label.
+	 */
   public getLabel(): string {
     return this.label;
   }
@@ -118,62 +122,42 @@ class CellAnnotation {
   /**
    * Gets the Unique Category List.
    */
-  public getUniqueCategoryList() {
+  public getUniqueCategoryList(): Array<string> {
     return this.uniqueCategoryList;
   }
 
   /**
    * Gets the Active Color List in Hex Format.
    */
-  public getActiveColorListHex() {
+  public getActiveColorListHex(): Array<string> {
     return this.activeColorListHex;
   }
 
   /**
    * Gets the Active Color List in RGB Format.
    */
-  public getActiveColorListRGB() {
+  public getActiveColorListRGB(): Array<Array<number>> {
     return this.activeColorListRGB;
   }
 
   /**
    * Gets the Index Color Associated with the Target Category.
    */
-  public getCategoryIndexColor(category: string) {
+  public getCategoryIndexColor(category: string): number|undefined {
     return this.categoryToColorIndexMap.get(category);
-  }
-
-  /**
-   * Sets the Current Color Schema.
-   * @param colorScheme Color Scheme.
-   */
-  public setCurrentColorScheme(colorScheme: string) {
-    if (this.validColorSchemes.includes(colorScheme)) {
-      this.colorScheme = colorScheme;
-      this.updateActiveColorList();
-    } else {
-      throw new Error("Invalid color scheme:  " + colorScheme);
-    }
-  }
-
-  /**
-   * Gets the Current Color Schema.
-   */
-  public getColorScheme() {
-    return this.colorScheme;
   }
 
   /**
    * Gets List of Valid Color Schemes.
    */
-  public getValidColorSchemes() {
+  public getValidColorSchemes(): Array<string> {
     return this.validColorSchemes;
   }
 
   /**
    * Gets color index, based on majority vote.
    */
-  public getColorIndex(cellIdList: Array<number>) {
+  public getColorIndex(cellIdList: Array<number>): number|undefined {
     const winningCategory = this.getMostFrequentCategory(cellIdList);
     if (winningCategory && this.isCategoryActive(winningCategory)) {
       return this.categoryToColorIndexMap.get(winningCategory);
@@ -186,7 +170,7 @@ class CellAnnotation {
    * Gets Most Frequent Category in the Cell ID List.
    * @param cellIdList Cell ID List.
    */
-  public getMostFrequentCategory(cellIdList: Array<number>) {
+  public getMostFrequentCategory(cellIdList: Array<number>): string|undefined {
     const voteMap: Map<string, number> = new Map<string, number>();
     for (let i = 0; i < cellIdList.length; i++) {
       const cellIndexId: number = cellIdList[i];
@@ -207,7 +191,7 @@ class CellAnnotation {
    * Gets the Winning Category.
    * @param voteMap VoteMap.
    */
-  private getWinningCategory(voteMap: Map<string, number>) {
+  private getWinningCategory(voteMap: Map<string, number>): string|undefined {
     let winningCategory = undefined;
     let maxVotes = 0;
     voteMap.forEach((value: number, key: string) => {
@@ -223,7 +207,7 @@ class CellAnnotation {
    * Updates the Active Color List, based on Active Categories.
    */
   private updateActiveColorList(): void {
-    this.activeColorListHex = colorbrewer[this.colorScheme][9];
+    this.activeColorListHex = colorbrewer.Paired[9];
     this.activeColorListHex = this.activeColorListHex.slice(
       0,
       this.categoryActiveSet.size - 1

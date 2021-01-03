@@ -6,7 +6,7 @@ import AnnotationState from "./AnnotationState";
 import GeneState from "./GeneState";
 import ColorUtil from "../utils/ColorUtil";
 import { Coordinate } from "../utils/LunaData";
-const colorbrewer = require("colorbrewer");
+import colorbrewer from "colorbrewer";
 
 class LunaState {
   static BASE_SERVER_URL = "http://127.0.0.1:8000";
@@ -21,8 +21,10 @@ class LunaState {
   static NONE = "none";
   blues = [...colorbrewer.Blues[6]].reverse();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   viewState: any;
-  bucketSlug: string = "";
+
+  bucketSlug: string | undefined;
   mapData?: Array<Coordinate>;
   @observable annotationState: AnnotationState = new AnnotationState();
   @observable geneState: GeneState = new GeneState(this);
@@ -34,10 +36,11 @@ class LunaState {
   @observable currentGeneText = "";
   @observable colorBySelected = LunaState.NONE;
   @observable elevationBySelected = LunaState.NONE;
-  @observable plotByCategory = LunaState.NONE;
-  @observable plotByGene = LunaState.NONE;
   private flipBit = 1;
 
+  /**
+   * Constructor with Initial View State.
+   */
   constructor() {
     this.viewState = {
       longitude: 0,
@@ -51,7 +54,7 @@ class LunaState {
   }
 
   /**
-   * Update the Color Section.
+   * Updates the Color Section.
    * @param colorBySelected Color Selected Option.
    */
   setColorBySelected(colorBySelected: string): void {
@@ -69,7 +72,8 @@ class LunaState {
       this.geneState.selectedGene = undefined;
       const attributeSlug = colorBySelected.replace("cluster_", "");
       this.annotationState.selectedAnnotationSlug = attributeSlug;
-      if (!this.annotationState.cellAnnotationMap.has(attributeSlug)) {
+      if (!this.annotationState.cellAnnotationMap.has(attributeSlug)
+        && this.bucketSlug !== undefined) {
         this.annotationState.loadAnnotationData(this.bucketSlug, attributeSlug);
       }
       this.hexBinHack();
@@ -77,10 +81,21 @@ class LunaState {
   }
 
   /**
-   * Get the Color List.
-   * @param format Color Format.
+   * Gets the Color List in RGB Format.
    */
-  getColorListByFormat(format: string): any {
+  getColorListRGB(): Array<[number, number, number, number]> {
+      const colorRgbList = [];
+      const hexColorList = this.getColorListHex();
+      for (const currentColor of hexColorList) {
+        colorRgbList.push(ColorUtil.hexToRgb(currentColor));
+      }
+      return colorRgbList;
+  }
+
+  /**
+   * Gets the Color List in Hex Format.
+   */
+  getColorListHex(): Array<string> {
     let colorList = new Array<string>();
     if (this.geneState.selectedGene) {
       colorList = this.blues;
@@ -90,22 +105,12 @@ class LunaState {
       );
       if (cellAnnotation) {
         colorList = cellAnnotation.getActiveColorListHex();
-      } else {
-        colorList.push(LunaState.COLOR_BLACK);
       }
-    } else {
+    }
+    if (colorList.length === 0) {
       colorList.push(LunaState.COLOR_BLACK);
     }
-
-    if (format === "hex") {
-      return colorList;
-    } else {
-      const colorRgbList = [];
-      for (const currentColor of colorList) {
-        colorRgbList.push(ColorUtil.hexToRgb(currentColor));
-      }
-      return colorRgbList;
-    }
+    return colorList;
   }
 
   /**
