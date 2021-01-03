@@ -73,7 +73,7 @@ class LegendPanel extends React.Component<ComponentProps> {
   /**
    * Gets the Gene Legend.
    */
-  private getGeneLegend(): JSX.Element[]{
+  private getGeneLegend(): JSX.Element[] {
     const legend: Array<JSX.Element> = [];
     const colorList = this.props.lunaState.getColorListHex();
     let index = 0;
@@ -107,7 +107,9 @@ class LegendPanel extends React.Component<ComponentProps> {
         const uniqueCategoryList = cellAnnotation.getUniqueCategoryList();
         for (const categoryName of uniqueCategoryList) {
           if (cellAnnotation.isCategoryActive(categoryName)) {
-            const colorIndex = cellAnnotation.getCategoryIndexColor(categoryName);
+            const colorIndex = cellAnnotation.getCategoryIndexColor(
+              categoryName
+            );
             if (colorIndex !== undefined) {
               legend.push(
                 this.getColorBox(colorList[colorIndex], categoryName)
@@ -144,7 +146,7 @@ class LegendPanel extends React.Component<ComponentProps> {
         </div>
       );
     } else {
-      return (<div></div>);
+      return <div></div>;
     }
   }
 
@@ -153,7 +155,10 @@ class LegendPanel extends React.Component<ComponentProps> {
    * @param currentColor Current Hex Color.
    * @param categoryValue Current Category Value.
    */
-  private getColorBox(currentColor: string, categoryValue: string): JSX.Element {
+  private getColorBox(
+    currentColor: string,
+    categoryValue: string
+  ): JSX.Element {
     const boxStyle = {
       width: "50px",
       height: "12px",

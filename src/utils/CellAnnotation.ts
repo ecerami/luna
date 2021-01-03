@@ -22,12 +22,11 @@ class CellAnnotation {
   private activeColorListRGB: Array<Array<number>>;
   private categoryToColorIndexMap: Map<string, number>;
   private maxActiveCategories = CellAnnotation.DEFAULT_MAX_ACTIVE_CATEGORIES;
-  private validColorSchemes: Array<string>;
   @observable private categoryActiveSet: Set<string>;
 
   /**
    * Constructor.
-	 * @param slug annotation slug, e.g. "sub_tissue".
+   * @param slug annotation slug, e.g. "sub_tissue".
    * @param label annotation label, e.g. "Sub Tissue".
    * @param orderedValueList Ordered List of Values.
    * @param uniqueValuesList Unique List of Categories.
@@ -47,8 +46,8 @@ class CellAnnotation {
 
     //  Always add the default / other category
     this.uniqueCategorySet = new Set<string>();
-		this.uniqueCategoryList.push(CellAnnotation.OTHER_DEFAULT_KEY);
-		
+    this.uniqueCategoryList.push(CellAnnotation.OTHER_DEFAULT_KEY);
+
     for (const category of this.uniqueCategoryList) {
       this.uniqueCategorySet.add(category);
     }
@@ -57,16 +56,15 @@ class CellAnnotation {
     this.activeColorListRGB = [];
     this.categoryToColorIndexMap = new Map();
     this.maxActiveCategories = maxActiveCategories;
-    this.validColorSchemes = ["Paired", "Set1", "Set3"];
 
     //  Activate the default category
     this.setCategoryActive(CellAnnotation.OTHER_DEFAULT_KEY, true);
     this.updateActiveColorList();
   }
 
-	/**
-	 * Gets the Annotation Label.
-	 */
+  /**
+   * Gets the Annotation Label.
+   */
   public getLabel(): string {
     return this.label;
   }
@@ -143,21 +141,14 @@ class CellAnnotation {
   /**
    * Gets the Index Color Associated with the Target Category.
    */
-  public getCategoryIndexColor(category: string): number|undefined {
+  public getCategoryIndexColor(category: string): number | undefined {
     return this.categoryToColorIndexMap.get(category);
-  }
-
-  /**
-   * Gets List of Valid Color Schemes.
-   */
-  public getValidColorSchemes(): Array<string> {
-    return this.validColorSchemes;
   }
 
   /**
    * Gets color index, based on majority vote.
    */
-  public getColorIndex(cellIdList: Array<number>): number|undefined {
+  public getColorIndex(cellIdList: Array<number>): number | undefined {
     const winningCategory = this.getMostFrequentCategory(cellIdList);
     if (winningCategory && this.isCategoryActive(winningCategory)) {
       return this.categoryToColorIndexMap.get(winningCategory);
@@ -170,7 +161,9 @@ class CellAnnotation {
    * Gets Most Frequent Category in the Cell ID List.
    * @param cellIdList Cell ID List.
    */
-  public getMostFrequentCategory(cellIdList: Array<number>): string|undefined {
+  public getMostFrequentCategory(
+    cellIdList: Array<number>
+  ): string | undefined {
     const voteMap: Map<string, number> = new Map<string, number>();
     for (let i = 0; i < cellIdList.length; i++) {
       const cellIndexId: number = cellIdList[i];
@@ -191,7 +184,7 @@ class CellAnnotation {
    * Gets the Winning Category.
    * @param voteMap VoteMap.
    */
-  private getWinningCategory(voteMap: Map<string, number>): string|undefined {
+  private getWinningCategory(voteMap: Map<string, number>): string | undefined {
     let winningCategory = undefined;
     let maxVotes = 0;
     voteMap.forEach((value: number, key: string) => {

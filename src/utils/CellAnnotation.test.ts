@@ -116,35 +116,6 @@ test("verify active colors", () => {
   expect(defaultColorIndex).toBe(2);
 });
 
-test("verify color schemes", () => {
-  const orderedValueList: Array<string> = ["a", "a", "b", "a", "d", "c", "c"];
-  const uniqueCategoryList: Array<string> = ["a", "b", "c", "d"];
-
-  const annotation = new CellAnnotation(
-    "tissue",
-    "tissue",
-    orderedValueList,
-    uniqueCategoryList,
-    3
-  );
-  const colorSchemeList = annotation.getValidColorSchemes();
-  expect(colorSchemeList.length).toBe(3);
-  expect(colorSchemeList[0]).toBe("Paired");
-  expect(() => annotation.setCurrentColorScheme("Accents")).toThrow(
-    "Invalid color scheme:  Accents"
-  );
-
-  annotation.setCategoryActive("a", true);
-  annotation.setCategoryActive("b", true);
-  let colorList = annotation.getActiveColorListHex();
-  expect(colorList[0]).toBe("#a6cee3");
-  expect(colorList[2]).toBe("#bbbbbb");
-  annotation.setCurrentColorScheme("Set1");
-  colorList = annotation.getActiveColorListHex();
-  expect(colorList[0]).toBe("#e41a1c");
-  expect(colorList[2]).toBe("#bbbbbb");
-});
-
 test("verify color voting", () => {
   const orderedValueList: Array<string> = ["a", "a", "b", "a", "d", "c", "c"];
   const uniqueCategoryList: Array<string> = ["a", "b", "c", "d"];

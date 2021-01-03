@@ -72,8 +72,10 @@ class LunaState {
       this.geneState.selectedGene = undefined;
       const attributeSlug = colorBySelected.replace("cluster_", "");
       this.annotationState.selectedAnnotationSlug = attributeSlug;
-      if (!this.annotationState.cellAnnotationMap.has(attributeSlug)
-        && this.bucketSlug !== undefined) {
+      if (
+        !this.annotationState.cellAnnotationMap.has(attributeSlug) &&
+        this.bucketSlug !== undefined
+      ) {
         this.annotationState.loadAnnotationData(this.bucketSlug, attributeSlug);
       }
       this.hexBinHack();
@@ -84,12 +86,12 @@ class LunaState {
    * Gets the Color List in RGB Format.
    */
   getColorListRGB(): Array<[number, number, number, number]> {
-      const colorRgbList = [];
-      const hexColorList = this.getColorListHex();
-      for (const currentColor of hexColorList) {
-        colorRgbList.push(ColorUtil.hexToRgb(currentColor));
-      }
-      return colorRgbList;
+    const colorRgbList = [];
+    const hexColorList = this.getColorListHex();
+    for (const currentColor of hexColorList) {
+      colorRgbList.push(ColorUtil.hexToRgb(currentColor));
+    }
+    return colorRgbList;
   }
 
   /**

@@ -2,7 +2,7 @@ import React from "react";
 import LunaState from "../state/LunaState";
 
 class AboutPanel extends React.Component<{}, {}> {
-  render(): JSX.Element{
+  render(): JSX.Element {
     const apiDocs = LunaState.BASE_SERVER_URL + "/docs";
     return (
       <div className="about">

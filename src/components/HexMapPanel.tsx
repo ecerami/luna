@@ -20,7 +20,7 @@ class HexMapPanel extends React.Component<ComponentProps> {
   /**
    * Gets Color List, based on Current Selection.
    */
-  getColorList(): Array<[number, number, number, number]>{
+  getColorList(): Array<[number, number, number, number]> {
     return this.props.lunaState.getColorListRGB();
   }
 
@@ -140,11 +140,11 @@ class HexMapPanel extends React.Component<ComponentProps> {
         for (let i = 0; i < points.length; i++) {
           cellIndexList.push(points[i].index_id);
         }
-        const selectedAnnotationId = this.props.lunaState.annotationState
+        const selectedAnnotationSlug = this.props.lunaState.annotationState
           .selectedAnnotationSlug;
-        if (selectedAnnotationId) {
+        if (selectedAnnotationSlug) {
           const cellAnnotation = this.props.lunaState.annotationState.cellAnnotationMap.get(
-            selectedAnnotationId
+            selectedAnnotationSlug
           );
           if (cellAnnotation) {
             showToolTip = true;
@@ -166,7 +166,12 @@ class HexMapPanel extends React.Component<ComponentProps> {
   /**
    * Sets the ToolTip CSS.
    */
-  private setToolTipCss(el: HTMLElement, x: number, y: number, html: string): void {
+  private setToolTipCss(
+    el: HTMLElement,
+    x: number,
+    y: number,
+    html: string
+  ): void {
     el.style.display = "block";
     el.style.left = x + 465 + "px";
     el.style.top = y + 50 + "px";
@@ -195,7 +200,9 @@ class HexMapPanel extends React.Component<ComponentProps> {
     data: any,
     colorDomainMax: number,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    colorList: Array<[number, number, number, number]>): any {
+    colorList: Array<[number, number, number, number]>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): any {
     return new HexagonLayer({
       id: "column-layer",
       data,

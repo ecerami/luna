@@ -41,7 +41,7 @@ class CategoryPicker extends React.Component<ComponentProps> {
     this.props.lunaState.annotationState.showAnnotationDialogPicker = false;
   }
 
-  render(): JSX.Element{
+  render(): JSX.Element {
     const style = {
       marginLeft: "20px",
       marginRight: "20px",
@@ -83,7 +83,9 @@ class CategoryPicker extends React.Component<ComponentProps> {
     const annotationId = this.props.lunaState.annotationState
       .selectedAnnotationSlug;
     if (annotationId) {
-      const cellAnnotation = annotationState.cellAnnotationMap.get(annotationId);
+      const cellAnnotation = annotationState.cellAnnotationMap.get(
+        annotationId
+      );
       if (cellAnnotation) {
         const uniqueCategoryList = cellAnnotation.getUniqueCategoryList();
         if (uniqueCategoryList) {
