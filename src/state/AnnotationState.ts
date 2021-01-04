@@ -20,11 +20,25 @@ class AnnotationState {
   // Map of all cell annotations.
   @observable cellAnnotationMap = new Map<string, CellAnnotation>();
 
+  // Parent Luna State
+  private lunaState: LunaState;
+
+  /**
+   * Constructor with Initial View State.
+   */
+  constructor(lunaState: LunaState) {
+    this.lunaState = lunaState;
+  }
+
   /**
    * Load Data for the Specified Annotation.
    * @param annotationKey Annotation Slug.
    */
-  loadAnnotationData(bucketSlug: string, annotationSlug: string): void {
+  loadAnnotationData(
+    bucketSlug: string,
+    annotationSlug: string,
+    activeList: Array<string>
+  ): void {
     const geneURL =
       LunaState.BASE_SERVER_URL +
       "/annotation/" +
@@ -35,7 +49,9 @@ class AnnotationState {
       method: "get",
       url: geneURL,
     })
-      .then((res) => this.initAnnotationData(annotationSlug, res.data))
+      .then((res) =>
+        this.initAnnotationData(annotationSlug, activeList, res.data)
+      )
       .catch((error) => console.log(error));
   }
 
@@ -45,7 +61,12 @@ class AnnotationState {
    * @param json JSON Content.
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  initAnnotationData(annotationSlug: string, json: any): void {
+  initAnnotationData(
+    annotationSlug: string,
+    activeList: Array<string>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    json: any
+  ): void {
     const cellAnnotation = new CellAnnotation(
       json["slug"],
       json["label"],
@@ -54,7 +75,14 @@ class AnnotationState {
       CellAnnotation.DEFAULT_MAX_ACTIVE_CATEGORIES
     );
     this.cellAnnotationMap.set(annotationSlug, cellAnnotation);
-    this.showAnnotationDialogPicker = true;
+    if (activeList.length === 0) {
+      this.showAnnotationDialogPicker = true;
+    } else {
+      for (const active of activeList) {
+        cellAnnotation.setCategoryActive(active, true);
+      }
+      this.lunaState.hexBinHack();
+    }
   }
 }
 

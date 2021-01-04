@@ -173,7 +173,7 @@ class HexMapPanel extends React.Component<ComponentProps> {
     html: string
   ): void {
     el.style.display = "block";
-    el.style.left = x + 465 + "px";
+    el.style.left = x + 395 + "px";
     el.style.top = y + 50 + "px";
     el.innerHTML = html;
   }

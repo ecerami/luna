@@ -26,7 +26,7 @@ class LunaState {
 
   bucketSlug: string | undefined;
   mapData?: Array<Coordinate>;
-  @observable annotationState: AnnotationState = new AnnotationState();
+  @observable annotationState: AnnotationState = new AnnotationState(this);
   @observable geneState: GeneState = new GeneState(this);
   @observable hexBinRadiusSliderValue = LunaState.HEX_BIN_RADIUS_DEFAULT;
   @observable hexBinRadius =
@@ -76,10 +76,32 @@ class LunaState {
         !this.annotationState.cellAnnotationMap.has(attributeSlug) &&
         this.bucketSlug !== undefined
       ) {
-        this.annotationState.loadAnnotationData(this.bucketSlug, attributeSlug);
+        this.annotationState.loadAnnotationData(
+          this.bucketSlug,
+          attributeSlug,
+          []
+        );
       }
       this.hexBinHack();
     }
+  }
+
+  setColorBySelectedWithActive(
+    colorBySelected: string,
+    activeList: Array<string>
+  ): void {
+    this.colorBySelected = colorBySelected;
+    const attributeSlug = colorBySelected.replace("cluster_", "");
+    this.geneState.selectedGene = undefined;
+    this.annotationState.selectedAnnotationSlug = attributeSlug;
+    if (this.bucketSlug !== undefined) {
+      this.annotationState.loadAnnotationData(
+        this.bucketSlug,
+        attributeSlug,
+        activeList
+      );
+    }
+    this.hexBinHack();
   }
 
   /**

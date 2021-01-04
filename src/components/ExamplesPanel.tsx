@@ -25,6 +25,11 @@ class ExamplesPanel extends React.Component<{}, {}> {
               Tabula Muris: Serpina1c
             </Link>
           </li>
+          <li>
+            <Link to="/luna/tabula_muris?color_by=cell_ontology_class&active=basophil&active=astrocyte&active=microglial%20cell">
+              Tabula Muris: Highlight microglial cells
+            </Link>
+          </li>
         </ul>
       </div>
     );

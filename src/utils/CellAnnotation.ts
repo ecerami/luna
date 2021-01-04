@@ -20,8 +20,8 @@ class CellAnnotation {
   private uniqueCategorySet: Set<string>;
   private activeColorListHex: Array<string>;
   private activeColorListRGB: Array<Array<number>>;
-  private categoryToColorIndexMap: Map<string, number>;
   private maxActiveCategories = CellAnnotation.DEFAULT_MAX_ACTIVE_CATEGORIES;
+  @observable private categoryToColorIndexMap: Map<string, number>;
   @observable private categoryActiveSet: Set<string>;
 
   /**

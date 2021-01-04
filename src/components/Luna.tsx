@@ -93,6 +93,16 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
       console.log("Setting elevation scale:  " + params.elevation_scale);
       this.lunaState.elevationScale = Number(params.elevation_scale);
     }
+    if (params.color_by) {
+      let activeList = Array<string>();
+      console.log("Setting color by:  " + params.color_by);
+      if (params.active) {
+        const active = String(params.active);
+        activeList = active.split(",");
+      }
+      const colorBy = "cluster_" + String(params.color_by);
+      this.lunaState.setColorBySelectedWithActive(colorBy, activeList);
+    }
     this.dataLoaded = true;
   }
 
