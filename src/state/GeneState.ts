@@ -23,6 +23,7 @@ class GeneState {
    * Adds a new gene to the state.
    * @param gene
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async addGene(gene: string): Promise<any> {
     if (this.geneList.includes(gene)) {
       this.lunaState.colorBySelected = gene;
@@ -53,6 +54,7 @@ class GeneState {
    * Loads Expression Data for Specified Gene.
    * @param gene Gene Symbol.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async loadExpressionData(gene: string): Promise<any> {
     const geneURL =
       LunaState.BASE_SERVER_URL +
