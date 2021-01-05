@@ -23,13 +23,13 @@ class GeneState {
    * Adds a new gene to the state.
    * @param gene
    */
-  addGene(gene: string): void {
+  async addGene(gene: string): Promise<any> {
     if (this.geneList.includes(gene)) {
       this.lunaState.colorBySelected = gene;
       this.selectedGene = gene;
       this.lunaState.hexBinHack();
     } else {
-      this.loadExpressionData(gene);
+      await this.loadExpressionData(gene);
     }
   }
 
@@ -53,14 +53,14 @@ class GeneState {
    * Loads Expression Data for Specified Gene.
    * @param gene Gene Symbol.
    */
-  loadExpressionData(gene: string): void {
+  async loadExpressionData(gene: string): Promise<any> {
     const geneURL =
       LunaState.BASE_SERVER_URL +
       "/expression/" +
       this.lunaState.bucketSlug +
       "/" +
       gene;
-    axios({
+    await axios({
       method: "get",
       url: geneURL,
     })
@@ -77,6 +77,7 @@ class GeneState {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initExpressionData(gene: string, json: any): void {
+    console.log("Init Expression data for:  " + gene);
     this.geneExpressionMaxMap.set(gene, json["max_expression"]);
     this.geneExpressionValuesMap.set(gene, json["values_ordered"]);
     this.selectedGene = gene;

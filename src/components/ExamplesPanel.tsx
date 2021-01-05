@@ -30,6 +30,11 @@ class ExamplesPanel extends React.Component<{}, {}> {
               Tabula Muris: Highlight microglial cells
             </Link>
           </li>
+          <li>
+            <Link to="/luna/tabula_muris/P2ry12?hex_bin_radius=50&elevation_by=P2ry12&elevation_scale=1000&color_by=cell_ontology_class&active=microglial%20cell">
+              Tabula Muris: P2ry12 (3D), Highlight microglial cells
+            </Link>
+          </li>
         </ul>
       </div>
     );

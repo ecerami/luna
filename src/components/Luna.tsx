@@ -71,11 +71,11 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
    * Inits Annotation List
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  initAnnotationList(json: any): void {
+  async initAnnotationList(json: any): Promise<any> {
     this.lunaState.annotationState.annotationList = json;
     const gene = this.props.match.params.gene_symbol;
     if (gene !== undefined) {
-      this.lunaState.geneState.addGene(gene);
+      await this.lunaState.geneState.addGene(gene);
     }
     const params = queryString.parse(this.props.location.search);
     if (params.hex_bin_radius) {
