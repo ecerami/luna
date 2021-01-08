@@ -8,3 +8,11 @@ format:
 
 test:
 	yarn test
+
+deploy:
+	yarn build
+	cp build/index.html build/200.html
+	surge build http://luna-alpha.surge.sh/
+
+clean:
+	rm build/*
