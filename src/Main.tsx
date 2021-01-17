@@ -5,8 +5,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Luna from "./components/Luna";
 import "./css/Luna.css";
-import ExamplesPanel from "./components/ExamplesPanel";
 import AboutPanel from "./components/AboutPanel";
+import VignettesPanel from "./components/VignettesPanel";
 
 /**
  * Main UI.
@@ -31,12 +31,17 @@ class Main extends React.Component<{}, {}> {
             </span>
           </div>
           <div className="content">
-            <Route exact path="/" component={ExamplesPanel} />
+            <Route exact path="/" component={VignettesPanel} />
             <Route exact path="/about" component={AboutPanel} />
             <Route exact path="/luna/:bucket_slug" component={Luna} />
             <Route
               exact
               path="/luna/:bucket_slug/:gene_symbol"
+              component={Luna}
+            />
+            <Route
+              exact
+              path="/luna/:bucket_slug/vignette/:vignette_slug"
               component={Luna}
             />
           </div>

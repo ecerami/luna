@@ -5,7 +5,7 @@ class AboutPanel extends React.Component<{}, {}> {
   render(): JSX.Element {
     const apiDocs = LunaState.BASE_SERVER_URL + "/docs";
     return (
-      <div className="about">
+      <div className="content">
         <h2>Luna: Single Cell Viewer</h2>
         <p>
           Luna is a light-weight web platform for visualizing single cell data.

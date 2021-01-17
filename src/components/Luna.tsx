@@ -18,6 +18,7 @@ import queryString from "query-string";
 type TParams = {
   bucket_slug: string;
   gene_symbol: string;
+  vignette_slug: string;
 };
 
 /**
@@ -73,6 +74,10 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async initAnnotationList(json: any): Promise<any> {
     this.lunaState.annotationState.annotationList = json;
+
+    const vignetteSlug = this.props.match.params.vignette_slug;
+    console.log("Vignette Slug:  " + vignetteSlug);
+
     const gene = this.props.match.params.gene_symbol;
     if (gene !== undefined) {
       await this.lunaState.geneState.addGene(gene);
