@@ -26,7 +26,7 @@ type TParams = {
  */
 @observer
 class Luna extends React.Component<RouteComponentProps<TParams>> {
-  lunaState: LunaState = new LunaState();
+  lunaState: LunaState = LunaState.getInstance();
   @observable dataLoaded = false;
 
   /**
@@ -77,6 +77,13 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
 
     const vignetteSlug = this.props.match.params.vignette_slug;
     console.log("Vignette Slug:  " + vignetteSlug);
+    if (vignetteSlug !== undefined && this.lunaState.bucketSlug !== undefined) {
+      const vignetteMap = this.lunaState.bucketState.vignetteMap.get(this.lunaState.bucketSlug);
+      if (vignetteMap) {
+        const vignette = vignetteMap.get(vignetteSlug);
+        console.log(vignette);
+      }
+    }
 
     const gene = this.props.match.params.gene_symbol;
     if (gene !== undefined) {

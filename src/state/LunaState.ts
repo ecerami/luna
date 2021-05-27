@@ -2,13 +2,19 @@
  * Encapsualates Luna State.
  */
 import { observable } from "mobx";
+import axios from "axios";
 import AnnotationState from "./AnnotationState";
 import GeneState from "./GeneState";
 import ColorUtil from "../utils/ColorUtil";
 import { Coordinate } from "../utils/LunaData";
 import colorbrewer from "colorbrewer";
+import BucketState from "./BucketState";
+import { Bucket } from "../utils/LunaData";
+import { Vignette } from "../utils/LunaData";
 
 class LunaState {
+  private static instance: LunaState;
+
   static BASE_SERVER_URL = "http://127.0.0.1:8000";
   //static BASE_SERVER_URL = "http://66.175.211.220:8000";
 
@@ -36,12 +42,24 @@ class LunaState {
   @observable currentGeneText = "";
   @observable colorBySelected = LunaState.NONE;
   @observable elevationBySelected = LunaState.NONE;
+  bucketState: BucketState = new BucketState();
   private flipBit = 1;
+  @observable vignettesLoaded = false;
+
+  /**
+   * Gets the Singleton Instance.
+   */
+  public static getInstance(): LunaState {
+    if (!LunaState.instance) {
+      LunaState.instance = new LunaState();
+    }
+    return LunaState.instance;
+  }
 
   /**
    * Constructor with Initial View State.
    */
-  constructor() {
+  private constructor() {
     this.viewState = {
       longitude: 0,
       latitude: 0,
@@ -51,6 +69,7 @@ class LunaState {
       transitionDuration: 0,
       transitionInterpolator: null,
     };
+    this.getAllBuckets();
   }
 
   /**
@@ -143,6 +162,68 @@ class LunaState {
   hexBinHack(): void {
     this.hexBinRadius = this.hexBinRadius + this.flipBit;
     this.flipBit = this.flipBit * -1;
+  }
+
+  /**
+   * Retrieves all Buckets.
+   */
+  getAllBuckets(): void {
+    axios({
+      method: "get",
+      url: LunaState.BASE_SERVER_URL + "/buckets",
+    })
+      .then((res) => this.initBuckets(res.data))
+      .catch(() => alert("Failed to load Data Buckets."));
+  }
+
+  /**
+   * Inits the Data Buckets.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  initBuckets(json: any): void {
+    for (const item of json) {
+      const bucket: Bucket = {
+        slug: item["slug"],
+        name: item["name"],
+        description: item["description"],
+        url: item["url"],
+      };
+      this.bucketState.addBucket(bucket);
+      axios({
+        method: "get",
+        url: LunaState.BASE_SERVER_URL + "/vignettes/" + bucket.slug,
+      })
+        .then((res) => this.initVignetteList(bucket.slug, res.data))
+        .catch(() =>
+          alert("Failed to load vignettes for: " + bucket.slug + ".")
+        );
+    }
+  }
+
+  /**
+   * Initializes all Vignettes.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  initVignetteList(bucketSlug: string, json: any): void {
+    for (const item of json["vignettes"]) {
+      const vignette: Vignette = {
+        slug: item["slug"],
+        label: item["label"],
+        description: item["description"],
+        gene: item["gene"],
+        colorBy: item["color_by"],
+        active: item["active"],
+        hexBinRadius: item["hex_bin_radius"],
+        elevationBy: item["elevation_by"],
+        elevationScale: item["elevation_scale"]
+      };
+      this.bucketState.setVignette(
+        bucketSlug,
+        vignette.slug,
+        vignette
+      );
+    }
+    this.vignettesLoaded = true;
   }
 }
 
