@@ -36,11 +36,6 @@ class Main extends React.Component<{}, {}> {
             <Route exact path="/luna/:bucket_slug" component={Luna} />
             <Route
               exact
-              path="/luna/:bucket_slug/:gene_symbol"
-              component={Luna}
-            />
-            <Route
-              exact
               path="/luna/:bucket_slug/vignette/:vignette_slug"
               component={Luna}
             />

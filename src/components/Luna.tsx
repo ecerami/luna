@@ -81,39 +81,38 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
       const vignetteMap = this.lunaState.bucketState.vignetteMap.get(this.lunaState.bucketSlug);
       if (vignetteMap) {
         const vignette = vignetteMap.get(vignetteSlug);
-        console.log(vignette);
+        if (vignette) {
+          console.log(vignette);
+          if (vignette.gene) {
+            console.log("Retrieving data for gene:  " + vignette.gene);
+            await this.lunaState.geneState.addGene(vignette.gene);
+          }
+          if (vignette.hexBinRadius) {
+            console.log("Setting hexbin:  " + vignette.hexBinRadius);
+            this.lunaState.hexBinRadiusSliderValue = Number(vignette.hexBinRadius);
+            this.lunaState.hexBinRadius =
+              this.lunaState.hexBinRadiusSliderValue * LunaState.HEX_BIN_RADIUS_SCALE;
+          }
+          if (vignette.elevationBy) {
+            console.log("Setting elevation by:  " + vignette.elevationBy);
+            this.lunaState.checked3D = true;
+            this.lunaState.elevationBySelected = String(vignette.elevationBy);
+          }
+          if (vignette.elevationScale) {
+            console.log("Setting elevation scale:  " + vignette.elevationScale);
+            this.lunaState.elevationScale = Number(vignette.elevationScale);
+          }
+          if (vignette.colorBy) {
+            let activeList = Array<string>();
+            console.log("Setting color by:  " + vignette.colorBy);
+            if (vignette.active) {
+              activeList = vignette.active;
+            }
+            const colorBy = "cluster_" + String(vignette.colorBy);
+            this.lunaState.setColorBySelectedWithActive(colorBy, activeList);
+          }
+        }
       }
-    }
-
-    const gene = this.props.match.params.gene_symbol;
-    if (gene !== undefined) {
-      await this.lunaState.geneState.addGene(gene);
-    }
-    const params = queryString.parse(this.props.location.search);
-    if (params.hex_bin_radius) {
-      console.log("Setting hexbin:  " + params.hex_bin_radius);
-      this.lunaState.hexBinRadiusSliderValue = Number(params.hex_bin_radius);
-      this.lunaState.hexBinRadius =
-        this.lunaState.hexBinRadiusSliderValue * LunaState.HEX_BIN_RADIUS_SCALE;
-    }
-    if (params.elevation_by) {
-      console.log("Setting elevation by:  " + params.elevation_by);
-      this.lunaState.checked3D = true;
-      this.lunaState.elevationBySelected = String(params.elevation_by);
-    }
-    if (params.elevation_scale) {
-      console.log("Setting elevation scale:  " + params.elevation_scale);
-      this.lunaState.elevationScale = Number(params.elevation_scale);
-    }
-    if (params.color_by) {
-      let activeList = Array<string>();
-      console.log("Setting color by:  " + params.color_by);
-      if (params.active) {
-        const active = String(params.active);
-        activeList = active.split(",");
-      }
-      const colorBy = "cluster_" + String(params.color_by);
-      this.lunaState.setColorBySelectedWithActive(colorBy, activeList);
     }
     this.dataLoaded = true;
   }
