@@ -32,7 +32,7 @@ class BucketState {
       vignettes = new Map<string, Vignette>();
       this.vignetteMap.set(bucketSlug, vignettes);
     }
-    console.log("Adding:  " + vignetteSlug + " [" + bucketSlug + "]");
+    console.log("Adding Vignette:  " + vignetteSlug + " [" + bucketSlug + "]");
     vignettes.set(vignetteSlug, vignette);
   }
 }
