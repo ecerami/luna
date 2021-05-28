@@ -128,7 +128,6 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
           <Grid container spacing={3}>
             <Grid id="left-column" item xs={3}>
               <div id="left-column-content">
-                <DataSummaryPanel lunaState={this.lunaState} />
                 <ControlPanel lunaState={this.lunaState} />
                 <LegendPanel lunaState={this.lunaState} />
                 <NavigationPanel />
