@@ -45,6 +45,8 @@ class LunaState {
   bucketState: BucketState = new BucketState();
   private flipBit = 1;
   @observable vignettesLoaded = false;
+  private numBuckets = 0;
+  private numBucketsLoaded = 0;
 
   /**
    * Gets the Singleton Instance.
@@ -181,6 +183,7 @@ class LunaState {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initBuckets(json: any): void {
+    this.numBuckets = json.length
     for (const item of json) {
       const bucket: Bucket = {
         slug: item["slug"],
@@ -223,7 +226,10 @@ class LunaState {
         vignette
       );
     }
-    this.vignettesLoaded = true;
+    this.numBucketsLoaded +=1;
+    if (this.numBucketsLoaded === this.numBuckets) {
+      this.vignettesLoaded = true;
+    }
   }
 }
 

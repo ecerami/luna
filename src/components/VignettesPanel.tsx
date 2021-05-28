@@ -51,6 +51,9 @@ class VignettesPanel extends React.Component<{}, {}> {
           </li>
         );
       });      
+    } else {
+      const url = "/luna/" + bucketSlug + "/vignette/none";
+      items.push(<li key={url}>No vignettes available.</li>);
     }
     return items;
   }
