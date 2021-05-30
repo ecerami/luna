@@ -6,14 +6,12 @@ import LunaState from "../state/LunaState";
 import HexMapPanel from "./HexMapPanel";
 import NavigationPanel from "./NavigationPanel";
 import CategoryPicker from "./CategoryPicker";
-import DataSummaryPanel from "./GenePanel";
 import LegendPanel from "./LegendPanel";
 import ControlPanel from "./ViewPanel";
 import axios from "axios";
 import { Coordinate } from "../utils/LunaData";
 import { withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router-dom";
-import queryString from "query-string";
 
 type TParams = {
   bucket_slug: string;
@@ -34,6 +32,7 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
    */
   componentDidMount(): void {
     this.lunaState.bucketSlug = this.props.match.params.bucket_slug;
+    this.dataLoaded = false;
     axios({
       method: "get",
       url: LunaState.BASE_SERVER_URL + "/umap/" + this.lunaState.bucketSlug,
@@ -57,6 +56,7 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
       coordList.push(currentCoord);
     }
     this.lunaState.mapData = coordList;
+    console.log("UMap Coordinates loaded for:  " + this.lunaState.bucketSlug);
     axios({
       method: "get",
       url:
