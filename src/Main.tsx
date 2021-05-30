@@ -29,6 +29,9 @@ class Main extends React.Component<{}, {}> {
               {" "}
               | <Link to="/about">About</Link>
             </span>
+            <span className="nav_right">
+              Beta Release
+            </span>
           </div>
           <div className="content">
             <Route exact path="/" component={VignettesPanel} />

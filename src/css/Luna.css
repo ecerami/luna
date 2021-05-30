@@ -76,6 +76,13 @@ body {
   color: white;
 }
 
+.nav_right {
+  font-size: small;
+  float: right;
+  margin-top: 5px;
+  padding-right: 20px;
+}
+
 .content {
   margin-left: 5px;
 }
