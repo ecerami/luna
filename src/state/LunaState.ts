@@ -31,6 +31,7 @@ class LunaState {
   viewState: any;
 
   bucketSlug: string | undefined;
+  vignetteSlug: string | undefined;
   mapData?: Array<Coordinate>;
   @observable annotationState: AnnotationState = new AnnotationState(this);
   @observable geneState: GeneState = new GeneState(this);

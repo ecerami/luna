@@ -12,6 +12,7 @@ import axios from "axios";
 import { Coordinate } from "../utils/LunaData";
 import { withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router-dom";
+import DataSummaryPanel from "./DataSummaryPanel";
 
 type TParams = {
   bucket_slug: string;
@@ -78,6 +79,7 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
     const vignetteSlug = this.props.match.params.vignette_slug;
     console.log("Vignette Slug:  " + vignetteSlug);
     if (vignetteSlug !== undefined && this.lunaState.bucketSlug !== undefined) {
+      this.lunaState.vignetteSlug = vignetteSlug;
       const vignetteMap = this.lunaState.bucketState.vignetteMap.get(this.lunaState.bucketSlug);
       if (vignetteMap) {
         const vignette = vignetteMap.get(vignetteSlug);
@@ -128,6 +130,7 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
           <Grid container spacing={3}>
             <Grid id="left-column" item xs={3}>
               <div id="left-column-content">
+                <DataSummaryPanel lunaState={this.lunaState} />
                 <ControlPanel lunaState={this.lunaState} />
                 <LegendPanel lunaState={this.lunaState} />
                 <NavigationPanel />

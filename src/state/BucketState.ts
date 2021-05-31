@@ -6,6 +6,7 @@ import { Vignette } from "../utils/LunaData";
  */
 class BucketState {
   bucketList = new Array<Bucket>();
+  bucketMap = new Map<string, Bucket>();
   vignetteMap = new Map<string, Map<string, Vignette>>();
 
   /**
@@ -14,6 +15,7 @@ class BucketState {
    */
   addBucket(bucket: Bucket): void {
     this.bucketList.push(bucket);
+    this.bucketMap.set(bucket.slug, bucket)
   }
 
   /**
