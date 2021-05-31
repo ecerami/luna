@@ -88,21 +88,30 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
           if (vignette.gene) {
             console.log("Retrieving data for gene:  " + vignette.gene);
             await this.lunaState.geneState.addGene(vignette.gene);
+          } else {
+            this.lunaState.colorBySelected = LunaState.NONE;
           }
           if (vignette.hexBinRadius) {
             console.log("Setting hexbin:  " + vignette.hexBinRadius);
             this.lunaState.hexBinRadiusSliderValue = Number(vignette.hexBinRadius);
             this.lunaState.hexBinRadius =
               this.lunaState.hexBinRadiusSliderValue * LunaState.HEX_BIN_RADIUS_SCALE;
+          } else {
+            this.lunaState.hexBinRadius = LunaState.HEX_BIN_RADIUS_DEFAULT * LunaState.HEX_BIN_RADIUS_SCALE;
           }
           if (vignette.elevationBy) {
             console.log("Setting elevation by:  " + vignette.elevationBy);
             this.lunaState.checked3D = true;
             this.lunaState.elevationBySelected = String(vignette.elevationBy);
+          } else {
+            this.lunaState.checked3D = false;
+            this.lunaState.elevationBySelected = LunaState.NONE;
           }
           if (vignette.elevationScale) {
             console.log("Setting elevation scale:  " + vignette.elevationScale);
             this.lunaState.elevationScale = Number(vignette.elevationScale);
+          } else {
+            this.lunaState.elevationScale = LunaState.ELEVATION_SCALE_DEFAULT;
           }
           if (vignette.colorBy) {
             let activeList = Array<string>();
@@ -112,6 +121,8 @@ class Luna extends React.Component<RouteComponentProps<TParams>> {
             }
             const colorBy = "cluster_" + String(vignette.colorBy);
             this.lunaState.setColorBySelectedWithActive(colorBy, activeList);
+          } else {
+            this.lunaState.colorBySelected = LunaState.NONE;
           }
         }
       }
